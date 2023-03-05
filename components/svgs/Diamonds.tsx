@@ -27,6 +27,8 @@ export default function Diamonds() {
         height: '200%',
         zIndex: -1,
         overflow: 'hidden',
+        backgroundImage: 'linear-gradient(45deg, #000, #fff)',
+        mixBlendMode: 'plus-lighter',
       }}
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">

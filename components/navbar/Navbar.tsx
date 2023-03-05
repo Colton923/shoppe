@@ -67,7 +67,7 @@ const Navbar = () => {
         <div className={styles.navWrapper}>
           <Link href={'/about'} className={styles.navText}>
             <div className={styles.navAbout}>
-              About Us
+              <h1 className={styles.navLabel}>About Us</h1>
               <Image
                 src={'/icons/svg/couple.svg'}
                 width={50}
@@ -78,7 +78,8 @@ const Navbar = () => {
           </Link>
           <Link href={'/shop'} className={styles.navText}>
             <div className={styles.navShop}>
-              Shop
+              <h1 className={styles.navLabel}>Shop</h1>
+
               <Image
                 src={'/icons/svg/candy.svg'}
                 width={50}
@@ -89,7 +90,7 @@ const Navbar = () => {
           </Link>
           <Link href={'/register'} className={styles.navText}>
             <div className={styles.navWholesale}>
-              Wholesale
+              <h1 className={styles.navLabel}>Wholesale</h1>
               <Image src={'/icons/svg/box.svg'} width={50} height={50} alt={'box'} />
             </div>
           </Link>

@@ -15,8 +15,8 @@ export default function Index() {
         <Image
           src={aiPopcorn1}
           alt="aiPopcorn1"
-          width={1024}
-          height={1024}
+          width={2048}
+          height={2048}
           className={styles.image}
         />
         <h1 className={styles.caption}>
