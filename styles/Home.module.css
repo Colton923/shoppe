@@ -1,0 +1,135 @@
+.pageContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 612px;
+  overflow: hidden;
+}
+
+.image {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  overflow: hidden;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  z-index: 100;
+  font-size: 3em;
+  text-align: center;
+  height: 612px;
+  width: 100%;
+  font-size: 3em;
+  color: var(--caneWhite);
+  font-weight: 400;
+  text-align: center;
+  text-shadow: 2px 5px 0px var(--oldGold);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  backdrop-filter: brightness(0.7) blur(1px);
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 250px;
+  height: 50px;
+  margin-top: 10px;
+  background-color: var(--oldGold);
+  color: var(--caneWhite);
+  font-size: 1.5rem;
+  text-transform: full-width;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 50px;
+}
+
+.captionTwo {
+  font-size: 3em;
+  font-size: 3em;
+  color: var(--oldGold);
+  font-weight: 400;
+  text-align: center;
+  text-shadow: 2px 5px 0px var(--caneBlack);
+}
+
+.caramelContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.caramel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin-top: 10px;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid var(--oldGold);
+  box-shadow: 1px 2px 0px 0px var(--oldGold);
+}
+
+.buttonTwo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 90%;
+  height: 50px;
+  margin-top: 10px;
+  background-color: var(--oldGold);
+  color: var(--caneWhite);
+  font-size: 1.5rem;
+  text-transform: full-width;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}

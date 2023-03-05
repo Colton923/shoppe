@@ -1,0 +1,235 @@
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to right top,
+    #674c4c,
+    #775b5d,
+    #886a70,
+    #987a83,
+    #a88b96,
+    #b698a0,
+    #c4a5ab,
+    #d2b3b6,
+    #dec1bc,
+    #e7cfc4,
+    #efdfcf,
+    #f5eedc
+  );
+  opacity: 0.5;
+  border-bottom: 1px solid var(--caneBlack);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 0 10px 0 var(--caneBlack);
+  width: 100%;
+  height: 105px;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.otherBackground {
+  position: absolute;
+  top: 105px;
+  left: 0;
+  background-image: linear-gradient(
+    to right top,
+    #674c4c,
+    #775b5d,
+    #886a70,
+    #987a83,
+    #a88b96,
+    #b698a0,
+    #c4a5ab,
+    #d2b3b6,
+    #dec1bc,
+    #e7cfc4,
+    #efdfcf,
+    #f5eedc
+  );
+  opacity: 0.5;
+  border-bottom: 1px solid var(--caneBlack);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 0 10px 0 var(--caneBlack);
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: 85px;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.topNav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  height: 105px;
+  z-index: 999;
+  border-radius: 0 0 10px 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  position: relative;
+  border-bottom: 1px solid var(--caneBlack);
+}
+
+.bottomNav {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  position: sticky;
+  width: 90%;
+  height: 85px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 0;
+  top: 0;
+  margin-bottom: auto;
+  z-index: 999;
+  border-bottom: 1px solid var(--caneBlack);
+  border-radius: 0px 0px 10px 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.fancyText {
+  margin-left: 1%;
+  font-size: 2rem;
+  color: var(--oldGold);
+  position: absolute;
+  left: 0;
+  text-align: center;
+  text-shadow: 0 0 5px var(--caneBlack);
+  cursor: default;
+}
+
+.titleText {
+  position: absolute;
+  font-size: 4.5rem;
+  color: var(--oldGold);
+  left: 50%;
+  transform: translate(-50%);
+  text-shadow: 0 0 10px var(--caneBlack);
+  cursor: pointer;
+}
+
+.signIn {
+  font-size: 2rem;
+  width: 75px;
+  height: 100px;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+}
+
+.search {
+  width: 75px;
+  height: 100px;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+}
+
+.cart {
+  width: 75px;
+  height: 100px;
+  margin-right: 1%;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+}
+
+.input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--caneBlack);
+  border-bottom: 1px solid var(--caneBlack);
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 var(--caneBlack);
+  cursor: pointer;
+}
+
+.navWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.navAbout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  text-align: center;
+  margin: 1%;
+  width: 200px;
+  height: 77px;
+  border: 1px solid var(--caneBlack);
+  background-color: var(--candyBlue);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.navShop {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  text-align: center;
+  margin: 1%;
+  width: 200px;
+  height: 77px;
+  border: 1px solid var(--caneBlack);
+  background-color: var(--candyPurple);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.navWholesale {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  text-align: center;
+  margin: 1%;
+  width: 200px;
+  height: 77px;
+  border: 1px solid var(--caneBlack);
+  background-color: var(--candyOrange);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.navText {
+  font-size: 2rem;
+  color: var(--caneBlack);
+  display: flex;
+  text-decoration: none;
+}
