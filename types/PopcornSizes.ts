@@ -7,25 +7,25 @@ export type PopcornSizes = {
 
 type Box = {
   small: {
-    name: 'Small'
+    name: 'Small Box'
   }
   medium: {
-    name: 'Medium'
+    name: 'Medium Box'
   }
   large: {
-    name: 'Large'
+    name: 'Large Box'
   }
 }
 
 type Bag = {
   small: {
-    name: 'Small'
+    name: 'Small Bag'
   }
   medium: {
-    name: 'Medium'
+    name: 'Medium Bag'
   }
   large: {
-    name: 'Large'
+    name: 'Large Bag'
   }
 }
 
@@ -46,19 +46,19 @@ type EcoFriendlyCardtin = {
 
 type ClearBags = {
   small: {
-    name: 'Small'
+    name: 'Small Clear Bag'
     size: '9"x2.5"x4"'
   }
   medium: {
-    name: 'Medium'
+    name: 'Medium Clear Bag'
     size: '13.25"x2.5"x4"'
   }
   large: {
-    name: 'Large'
+    name: 'Large Clear Bag'
     size: '17"x2.5"x4"'
   }
   xLarge: {
-    name: 'X-Large'
+    name: 'X Large Clear Bag'
     size: '13.5"x3.5"x6"'
   }
 }

@@ -1,13 +1,13 @@
 export type PopcornFlavors = {
-  Regular: RegularFlavor
-  Savory: SavoryFlavor
-  Candy: CandyFlavor
-  Deluxe: DeluxeFlavor
-  Premium: PremiumFlavor
+  regular: RegularFlavor
+  savory: SavoryFlavor
+  candy: CandyFlavor
+  deluxe: DeluxeFlavor
+  premium: PremiumFlavor
 }
 
 type RegularFlavor = {
-  Regular: {
+  regular: {
     plain: {
       name: 'Plain'
     }
@@ -18,7 +18,7 @@ type RegularFlavor = {
 }
 
 type SavoryFlavor = {
-  Savory: {
+  savory: {
     baconAndCheese: {
       name: 'Bacon & Cheese'
     }
@@ -53,7 +53,7 @@ type SavoryFlavor = {
 }
 
 type CandyFlavor = {
-  Candy: {
+  candy: {
     banana: {
       name: 'Banana'
     }
@@ -97,7 +97,7 @@ type CandyFlavor = {
 }
 
 type DeluxeFlavor = {
-  Deluxe: {
+  deluxe: {
     birthdayCake: {
       name: 'Birthday Cake'
     }
@@ -138,7 +138,7 @@ type DeluxeFlavor = {
 }
 
 type PremiumFlavor = {
-  Premium: {
+  premium: {
     caramelWithAlmonds: {
       name: 'Caramel w/Almonds'
     }
