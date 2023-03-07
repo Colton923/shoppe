@@ -9,7 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await getDocs(colRef)
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        products.push(doc.data() as StripeProduct)
+        const dat = doc.data() as StripeProduct
+        dat.id = doc.id
+        products.push(dat)
       })
     })
     .then(() => {

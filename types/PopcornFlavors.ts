@@ -1,173 +1,277 @@
-export type PopcornFlavors = {
-  regular: RegularFlavor
-  savory: SavoryFlavor
-  candy: CandyFlavor
-  deluxe: DeluxeFlavor
-  premium: PremiumFlavor
+import type { PropType } from './support'
+
+export type FlavorNames = PropType<PopcornFlavors, keyof PopcornFlavors>
+
+export type FlavorCategory<T> = T extends RegularFlavor
+  ? 'RegularFlavor'
+  : T extends SavoryFlavor
+  ? 'SavoryFlavor'
+  : T extends CandyFlavor
+  ? 'CandyFlavor'
+  : T extends DeluxeFlavor
+  ? 'DeluxeFlavor'
+  : T extends PremiumFlavor
+  ? 'PremiumFlavor'
+  : never
+
+const tester = 'Creamy Dill'
+
+type test = {
+  name: typeof tester
 }
 
-type RegularFlavor = {
-  regular: {
-    plain: {
-      name: 'Plain'
-    }
-    butter: {
-      name: 'Butter'
-    }
-  }
+type Testing = FlavorCategory<test>
+
+export type PopcornFlavors =
+  | RegularFlavor
+  | SavoryFlavor
+  | CandyFlavor
+  | DeluxeFlavor
+  | PremiumFlavor
+
+type Flavor = {
+  name: string
 }
 
-type SavoryFlavor = {
-  savory: {
-    baconAndCheese: {
-      name: 'Bacon & Cheese'
-    }
-    baconRanch: {
-      name: 'Bacon Ranch'
-    }
-    creamyDill: {
-      name: 'Creamy Dill'
-    }
-    honeyMustard: {
-      name: 'Honey Mustard'
-    }
-    hotJalepeno: {
-      name: 'Hot Jalepeno'
-    }
-    parmesanGarlic: {
-      name: 'Parmesan Garlic'
-    }
-    pizza: {
-      name: 'Pizza'
-    }
-    ranch: {
-      name: 'Ranch'
-    }
-    sourCreamAndChives: {
-      name: 'Sour Cream & Chives'
-    }
-    spicyBuffalo: {
-      name: 'Spicy Buffalo'
-    }
-  }
+type RegularFlavor = Plain | Butter
+
+type Plain = Flavor & {
+  name: 'Plain'
 }
 
-type CandyFlavor = {
-  candy: {
-    banana: {
-      name: 'Banana'
-    }
-    blackCherry: {
-      name: 'Black Cherry'
-    }
-    blueRaspberry: {
-      name: 'Blue Raspberry'
-    }
-    cherry: {
-      name: 'Cherry'
-    }
-    cottonCandy: {
-      name: 'Cotton Candy'
-    }
-    grape: {
-      name: 'Grape'
-    }
-    greenApple: {
-      name: 'Green Apple'
-    }
-    lemon: {
-      name: 'Lemon'
-    }
-    marshmallow: {
-      name: 'Marshmallow'
-    }
-    orange: {
-      name: 'Orange'
-    }
-    strawberry: {
-      name: 'Strawberry'
-    }
-    tangerine: {
-      name: 'Tangerine'
-    }
-    watermelon: {
-      name: 'Watermelon'
-    }
-  }
+type Butter = Flavor & {
+  name: 'Butter'
 }
 
-type DeluxeFlavor = {
-  deluxe: {
-    birthdayCake: {
-      name: 'Birthday Cake'
-    }
-    caramel: {
-      name: 'Caramel'
-    }
-    caramelApple: {
-      name: 'Caramel Apple'
-    }
-    cheddarCheese: {
-      name: 'Cheddar Cheese'
-    }
-    hotCinnamon: {
-      name: 'Hot Cinnamon'
-    }
-    kettleCorn: {
-      name: 'Kettle Corn'
-    }
-    lime: {
-      name: 'Lime'
-    }
-    peach: {
-      name: 'Peach'
-    }
-    redRaspberry: {
-      name: 'Red Raspberry'
-    }
-    tuttiFruitti: {
-      name: 'Tutti Fruitti'
-    }
-    seaSaltCaramel: {
-      name: 'Sea Salt Caramel'
-    }
-    whiteCheddar: {
-      name: 'White Cheddar'
-    }
-  }
+type SavoryFlavor =
+  | BaconAndCheese
+  | BaconRanch
+  | CreamyDill
+  | HoneyMustard
+  | HotJalepeno
+  | ParmesanGarlic
+  | Pizza
+  | Ranch
+  | SourCreamAndChives
+  | SpicyBuffalo
+
+type BaconAndCheese = Flavor & {
+  name: 'Bacon & Cheese'
 }
 
-type PremiumFlavor = {
-  premium: {
-    caramelWithAlmonds: {
-      name: 'Caramel w/Almonds'
-    }
-    caramelWithCashews: {
-      name: 'Caramel w/Cashews'
-    }
-    caramelWithPeanuts: {
-      name: 'Caramel w/Peanuts'
-    }
-    caramelWithPecans: {
-      name: 'Caramel w/Pecans'
-    }
-    kettleWithAlmonds: {
-      name: 'Kettle w/Almonds'
-    }
-    kettleWithCashews: {
-      name: 'Kettle w/Cashews'
-    }
-    kettleWithPeanuts: {
-      name: 'Kettle w/Peanuts'
-    }
-    kettleWithPecans: {
-      name: 'Kettle w/Pecans'
-    }
-    jalapenoCheese: {
-      name: 'Jalapeno Cheese'
-    }
-    spicyNacho: {
-      name: 'Spicy Nacho'
-    }
-  }
+type BaconRanch = Flavor & {
+  name: 'Bacon Ranch'
+}
+
+type CreamyDill = Flavor & {
+  name: 'Creamy Dill'
+}
+
+type HoneyMustard = Flavor & {
+  name: 'Honey Mustard'
+}
+
+type HotJalepeno = Flavor & {
+  name: 'Hot Jalepeno'
+}
+
+type ParmesanGarlic = Flavor & {
+  name: 'Parmesan Garlic'
+}
+
+type Pizza = Flavor & {
+  name: 'Pizza'
+}
+
+type Ranch = Flavor & {
+  name: 'Ranch'
+}
+
+type SourCreamAndChives = Flavor & {
+  name: 'Sour Cream & Chives'
+}
+
+type SpicyBuffalo = Flavor & {
+  name: 'Spicy Buffalo'
+}
+
+type CandyFlavor =
+  | Banana
+  | BlackCherry
+  | BlueRaspberry
+  | Cherry
+  | CottonCandy
+  | Grape
+  | GreenApple
+  | Lemon
+  | Marshmallow
+  | Orange
+  | Strawberry
+  | Tangerine
+  | Watermelon
+
+type Banana = Flavor & {
+  name: 'Banana'
+}
+
+type BlackCherry = Flavor & {
+  name: 'Black Cherry'
+}
+
+type BlueRaspberry = Flavor & {
+  name: 'Blue Raspberry'
+}
+
+type Cherry = Flavor & {
+  name: 'Cherry'
+}
+
+type CottonCandy = Flavor & {
+  name: 'Cotton Candy'
+}
+
+type Grape = Flavor & {
+  name: 'Grape'
+}
+
+type GreenApple = Flavor & {
+  name: 'Green Apple'
+}
+
+type Lemon = Flavor & {
+  name: 'Lemon'
+}
+
+type Marshmallow = Flavor & {
+  name: 'Marshmallow'
+}
+
+type Orange = Flavor & {
+  name: 'Orange'
+}
+
+type Strawberry = Flavor & {
+  name: 'Strawberry'
+}
+
+type Tangerine = Flavor & {
+  name: 'Tangerine'
+}
+
+type Watermelon = Flavor & {
+  name: 'Watermelon'
+}
+
+type DeluxeFlavor =
+  | BirthdayCake
+  | Caramel
+  | CaramelApple
+  | CheddarCheese
+  | HotCinnamon
+  | KettleCorn
+  | Lime
+  | Peach
+  | RedRaspberry
+  | TuttiFruitti
+  | SeaSaltCaramel
+  | WhiteCheddar
+
+type BirthdayCake = Flavor & {
+  name: 'Birthday Cake'
+}
+
+type Caramel = Flavor & {
+  name: 'Caramel'
+}
+
+type CaramelApple = Flavor & {
+  name: 'Caramel Apple'
+}
+
+type CheddarCheese = Flavor & {
+  name: 'Cheddar Cheese'
+}
+
+type HotCinnamon = Flavor & {
+  name: 'Hot Cinnamon'
+}
+
+type KettleCorn = Flavor & {
+  name: 'Kettle Corn'
+}
+
+type Lime = Flavor & {
+  name: 'Lime'
+}
+
+type Peach = Flavor & {
+  name: 'Peach'
+}
+
+type RedRaspberry = Flavor & {
+  name: 'Red Raspberry'
+}
+
+type TuttiFruitti = Flavor & {
+  name: 'Tutti Fruitti'
+}
+
+type SeaSaltCaramel = Flavor & {
+  name: 'Sea Salt Caramel'
+}
+
+type WhiteCheddar = Flavor & {
+  name: 'White Cheddar'
+}
+
+type PremiumFlavor =
+  | CaramelWithAlmonds
+  | CaramelWithCashews
+  | CaramelWithPeanuts
+  | CaramelWithPecans
+  | KettleWithAlmonds
+  | KettleWithCashews
+  | KettleWithPeanuts
+  | KettleWithPecans
+  | JalapenoCheese
+  | SpicyNacho
+
+type CaramelWithAlmonds = Flavor & {
+  name: 'Caramel w/Almonds'
+}
+
+type CaramelWithCashews = Flavor & {
+  name: 'Caramel w/Cashews'
+}
+
+type CaramelWithPeanuts = Flavor & {
+  name: 'Caramel w/Peanuts'
+}
+
+type CaramelWithPecans = Flavor & {
+  name: 'Caramel w/Pecans'
+}
+
+type KettleWithAlmonds = Flavor & {
+  name: 'Kettle w/Almonds'
+}
+
+type KettleWithCashews = Flavor & {
+  name: 'Kettle w/Cashews'
+}
+
+type KettleWithPeanuts = Flavor & {
+  name: 'Kettle w/Peanuts'
+}
+
+type KettleWithPecans = Flavor & {
+  name: 'Kettle w/Pecans'
+}
+
+type JalapenoCheese = Flavor & {
+  name: 'Jalapeno Cheese'
+}
+
+type SpicyNacho = Flavor & {
+  name: 'Spicy Nacho'
 }

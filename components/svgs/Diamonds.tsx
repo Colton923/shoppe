@@ -11,6 +11,7 @@ export default function Diamonds() {
       svg.style.transform = `translate(${scrollX}px, ${scrollY}px)`
     }
   }
+
   useEffect(() => {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
@@ -24,7 +25,7 @@ export default function Diamonds() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '100%',
-        height: '200%',
+        height: '500%',
         zIndex: -1,
         overflow: 'hidden',
         backgroundImage: 'linear-gradient(45deg, #000, #fff)',

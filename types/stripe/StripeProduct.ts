@@ -1,3 +1,6 @@
+import type { FlavorNames } from 'types/PopcornFlavors'
+import type { SizeNames } from 'types/PopcornSizes'
+
 export type StripeProduct = {
   id?: string
   object?: string // 'product'
@@ -8,7 +11,9 @@ export type StripeProduct = {
   images?: string[]
   livemode?: boolean
   metadata?: {
-    [key: string]: string
+    flavor?: FlavorNames
+    size?: SizeNames
+    retailPrice?: string
   }
   name: string
   package_dimensions?: null
