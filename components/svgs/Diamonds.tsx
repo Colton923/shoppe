@@ -6,7 +6,7 @@ export default function Diamonds() {
   const onScroll = () => {
     const scrollY = window.scrollY * 0.3
     const scrollX = window.scrollX * 0.3
-    const svg = document.querySelector('svg')
+    const svg = document.getElementById('diamondSvg')
     if (svg) {
       svg.style.transform = `translate(${scrollX}px, ${scrollY}px)`
     }
@@ -28,11 +28,17 @@ export default function Diamonds() {
         height: '500%',
         zIndex: -1,
         overflow: 'hidden',
-        backgroundImage: 'linear-gradient(45deg, #000, #fff)',
-        mixBlendMode: 'plus-lighter',
+        backgroundImage:
+          'linear-gradient(45deg, rgba(255,255,255,1), rgba(255,255,255,0.7))',
+        mixBlendMode: 'soft-light',
       }}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+        id="diamondSvg"
+      >
         <defs>
           <pattern
             id="diamond-pattern"

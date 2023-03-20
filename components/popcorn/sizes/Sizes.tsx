@@ -1,4 +1,4 @@
-import styles from './Sizes.module.css'
+import styles from '../Popcorn.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
 import { allRootColors } from '@utils/allRootColors'
 
@@ -17,7 +17,12 @@ const Sizes = (props: SizesProps) => {
   const SizeInput = (size: SizeNames) => {
     return (
       <div className={activeSizes.includes(size) ? styles.active : styles.inactive}>
-        <h1 className={styles.description}>{size} </h1>
+        <div className={styles.description}>
+          <p>
+            {size} <br />
+          </p>
+        </div>
+
         <div className={styles.image}>Image Placeholder</div>
         <input
           type="button"
@@ -55,7 +60,7 @@ const Sizes = (props: SizesProps) => {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.itemsWrapper}>
       <div className={styles.category}>
         <h2 className={styles.header} style={{ color: 'var(--canePink)' }}>
           Boxes

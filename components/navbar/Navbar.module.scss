@@ -1,0 +1,121 @@
+.navbar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  mix-blend-mode: initial;
+  background-blend-mode: multiply;
+
+}
+
+.gridLayout {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 10% 5% 90%;
+  background-color: rgba(139, 0, 0, .95);
+
+  position: relative;
+  width: 100%;
+}
+
+.stickyNav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  border-bottom: 3px solid var(--brown);
+  border-radius: 0 0 10px 10px;
+  background-color: rgba(139, 0, 0, .95);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  z-index: 2;
+}
+
+.hamburger {
+  position: relative;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  border-radius: 20%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  transition: 0.4s;
+  z-index: 2;
+
+  background-image: linear-gradient(
+    45deg,
+    var(--brown) 0%,
+    rgba(255,255,255,.95),
+    rgba(255,255,255,.95),
+    rgba(255,255,255,.95),
+    rgba(255,255,255,.95),
+    rgba(255,255,255,.70),
+    rgba(255,255,255,.95),
+    rgba(255,255,255,.95),
+    var(--brown) 100%
+  );
+
+  mix-blend-mode: hard-light;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-clip: content-box;
+  transition: background-size 0.4s ease-in-out;
+  &:hover {
+    animation: BackgroundActive 1s forwards;
+  }
+  &:active {
+    animation: BackgroundActive 1s forwards;
+  }
+
+}
+
+@keyframes BackgroundActive {
+  0% {
+    background-position: 0% 50%;
+  }
+  30% {
+    background-position: 90% 50%;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  60% {
+    background-position: 80% 40%;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
+  }
+  80% {
+    background-position: 80% 40%;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, .3);
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  grid-column: 2;
+  grid-row: span 2;
+
+}
+
+.titleText {
+  font-size: 3rem;
+  color: var(--oldGold);
+  text-shadow: 0 0 5px var(--caneBlack);
+  cursor: pointer;
+  margin: 3px 0 0 3px;
+  width: 100%;
+
+  position: relative;
+  width: 100%;
+
+}
+
+.fancyText {
+  font-size: 1.25rem;
+  color: var(--brown);
+  cursor: pointer;
+  margin: 0 0 0 50px;
+  position: relative;
+}

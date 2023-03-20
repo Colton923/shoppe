@@ -1,102 +1,76 @@
 'use client'
 
 import Link from 'next/link'
-import styles from './Navbar.module.css'
+import styles from './Navbar.module.scss'
 import Image from 'next/image'
+import CartIcon from '@public/icons/svg/cart.svg'
 
 const Navbar = () => {
   return (
-    <>
-      <div className={styles.background}></div>
-      <div className={styles.otherBackground}></div>
-      <div className={styles.topNav}>
-        <h1 className={styles.fancyText}>
-          -Popcorn- & -Candy-
-          <br />
-          Lamar, CO
-        </h1>
-        <h1
-          className={styles.titleText}
-          onClick={() => {
-            window.location.href = '/'
-          }}
-        >
-          Main St. Shoppe
-        </h1>
-        <div className={styles.signIn}>
-          <Image
-            src={'/icons/svg/user.svg'}
-            width={50}
-            height={50}
-            alt={'signIn'}
-            className={styles.input}
-            style={{ backgroundColor: 'var(--candyPink)' }}
+    <div className={styles.navbar}>
+      <div className={styles.gridLayout}>
+        <span></span>
+        <div className={styles.title}>
+          <h2
+            className={styles.titleText}
             onClick={() => {
-              alert('Sign In not implemented yet')
+              window.location.href = '/'
             }}
-          />
+          >
+            Main St. <br />
+            Shoppe
+          </h2>
+          <h2 className={styles.fancyText}>- Lamar, CO -</h2>
         </div>
-        <div className={styles.search}>
+        <span></span>
+      </div>
+      <div className={styles.stickyNav}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 30 30"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.hamburger}
+        >
+          <line
+            className={styles.hamburgerLine}
+            x1="3"
+            y1="12"
+            x2="27"
+            y2="12"
+          ></line>
+          <line className={styles.hamburgerLine} x1="3" y1="6" x2="27" y2="6"></line>
+          <line
+            className={styles.hamburgerLine}
+            x1="3"
+            y1="18"
+            x2="27"
+            y2="18"
+          ></line>
+          <line
+            className={styles.hamburgerLine}
+            x1="3"
+            y1="24"
+            x2="27"
+            y2="24"
+          ></line>
+        </svg>
+        <div className={styles.hamburger}>
           <Image
-            src={'/icons/svg/search.svg'}
-            width={50}
-            height={50}
-            alt={'search'}
-            className={styles.input}
-            style={{ backgroundColor: 'var(--candyYellow)' }}
-            onInput={() => {
-              alert('Search not implemented yet')
-            }}
-          />
-        </div>
-        <div className={styles.cart}>
-          <Image
-            src={'/icons/svg/cart.svg'}
-            width={50}
-            height={50}
-            alt={'cart'}
-            className={styles.input}
-            style={{ backgroundColor: 'var(--candyGreen)' }}
-            onInput={() => {
-              alert('Cart not implemented yet')
-            }}
+            src={CartIcon}
+            alt="Cart Icon"
+            width={35}
+            height={35}
+            className={styles.cartIcon}
           />
         </div>
       </div>
-      <div className={styles.bottomNav}>
-        <div className={styles.navWrapper}>
-          <Link href={'/about'} className={styles.navText}>
-            <div className={styles.navAbout}>
-              <h1 className={styles.navLabel}>About Us</h1>
-              <Image
-                src={'/icons/svg/couple.svg'}
-                width={50}
-                height={50}
-                alt={'couple'}
-              />
-            </div>
-          </Link>
-          <Link href={'/shop'} className={styles.navText}>
-            <div className={styles.navShop}>
-              <h1 className={styles.navLabel}>Shop</h1>
-
-              <Image
-                src={'/icons/svg/candy.svg'}
-                width={50}
-                height={50}
-                alt={'candy'}
-              />
-            </div>
-          </Link>
-          <Link href={'/register'} className={styles.navText}>
-            <div className={styles.navWholesale}>
-              <h1 className={styles.navLabel}>Wholesale</h1>
-              <Image src={'/icons/svg/box.svg'} width={50} height={50} alt={'box'} />
-            </div>
-          </Link>
-        </div>
-      </div>
-    </>
+    </div>
   )
 }
 
