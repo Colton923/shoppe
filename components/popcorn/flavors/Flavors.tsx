@@ -138,7 +138,6 @@ const Flavors = (props: FlavorsProps) => {
                   value={quantity}
                   onChange={(e) => {
                     const value = e.target.value
-                    if (value.length > 1) return
                     if (value === '') {
                       setQuantity(0)
                       return
