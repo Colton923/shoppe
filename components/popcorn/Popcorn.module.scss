@@ -12,7 +12,6 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  margin: 3px;
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: 5px;
   color: var(--caneBlack);
@@ -48,7 +47,6 @@
   font-weight: 600;
   border-bottom: 2px solid rgba(255,255,255,0.3);
   border-radius: 10px;
-  padding: 2px;
   font-size: 3rem;
   text-align: center;
   color: var(--caneRed);
@@ -60,7 +58,6 @@
   height: 100%;
   align-items: center;
   align-content: center;
-  margin: 3px 10px 5px 10px;
   background-color: rgba(255, 255, 255, .8);
   backdrop-filter: blur(25px);
 }
@@ -74,7 +71,6 @@
   align-content: flex-start;
 
   position: relative;
-  padding: 5px;
   backdrop-filter: blur(2px);
 
   background-color: #fff;
@@ -91,7 +87,7 @@
   font-weight: 700;
   display: flex;
   border-radius: 10px;
-  color: #000;
+  color: var(--caneBlack);
   padding: 2px;
   margin: 0 40% 0 40%;
   padding: 0;
@@ -145,12 +141,10 @@
   text-align: flex-end;
   width: 100%;
   height: 100%;
-  animation: grow 0.2s ease-in-out forwards;
   box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
   overflow: hidden;
   position: fixed;
   z-index: 4;
-  box-shadow: 5px -3px 3px 1px rgba(0,0,0,1);
 
 }
 
@@ -165,10 +159,8 @@
   text-align: flex-end;
   width: 100%;
   height: 100%;
-  animation: grow 0.2s ease-in-out forwards;
   box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
   overflow: hidden;
-  box-shadow: 5px -3px 3px 1px rgba(0,0,0,1);
 }
 
 .positionFlavorTitle {
@@ -191,18 +183,18 @@
 }
 
 .flavorTitle {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 300;
-  color: #000;
+  color: var(--caneRed);
   text-shadow: 0 0 5px rgba(255, 255, 255, 1);
   text-transform: lowercase;
   letter-spacing: 0.1rem;
   text-align: center;
   display: flex;
   justify-content: center;
-  align-items: center;
-  align-content: center;
-  width: 100%;
+  align-items: end;
+  align-content: end;
+  width: 80%;
   height: 100%;
   border-radius: 30px;
   transition: all 0.2s ease-in-out;
@@ -231,9 +223,8 @@
 }
 
 .expandView {
-  box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
   border-radius: 30px;
-  animation: Expand 1s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+  animation: Expand .3s cubic-bezier(0.39, 0.575, 0.565, 1) forwards;
   max-width: 350px;
   max-height: 500px;
   transform: translate(0, 0);
@@ -242,7 +233,6 @@
 .collapseView {
   position: absolute;
   z-index: 6;
-  box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
   backdrop-filter: blur(2px);
   border-radius: 30px;
 }
@@ -268,9 +258,29 @@
   align-items: bottom;
   align-content: bottom;
   width: 100%;
-  height: 100%;
+  height: 80%;
   text-align: center;
-  margin: 10px;
+  margin-top: 20px;
+  position: relative;
+  bottom: 0;
+}
+
+.quantity {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: left;
+  align-content: bottom;
+  align-self: last baseline;
+
+  width: 80%;
+  height: 60%;
+  margin: 20px;
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+  font-family: 'Caveat', cursive;
+  color: #fff;
 }
 
 .sizeTitle {
@@ -284,35 +294,6 @@
   display: flex;
   justify-content: center;
   font-family: 'Caveat', cursive;
-}
-
-.sizeFlavors {
-  width: 90%;
-  height: 90%;
-  font-size: .8rem;
-  font-weight: 700;
-  font-family: 'Caveat', cursive;
-  color:#fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  text-align: start;
-}
-.quantity {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: left;
-  align-content: bottom;
-  width: 80%;
-  height: 80%;
-  margin: 20px;
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
-  font-family: 'Caveat', cursive;
-  color: #fff;
 }
 
 .numberInput {
@@ -347,8 +328,6 @@
   }
 }
 
-
-
 .picture {
   position: absolute;
   z-index: 1;
@@ -360,17 +339,84 @@
   background-color: transparent;
 }
 
+.sizePicker {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.sizeSelect {
+  position: absolute;
+  z-index: 2;
+  font-size: 1.25rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  font-family: 'Caveat', cursive;
+}
+
+.addToCart {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+.addToCartButton {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+  font-family: 'Caveat', cursive;
+  color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  z-index: 9;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  position: absolute;
+}
+
+.price {
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  top: 80%;
+  color: #fff;
+}
+
 @keyframes Expand {
   0% {
     width: 185px;
     height: 185px;
   }
-  90% {
-    width: 300px;
-    height: 550px;
-  }
   100% {
-    width: 300px;
+    width: 330px;
     height: 550px;
   }
 }
@@ -387,19 +433,6 @@
     opacity: 0.7;
   }
 }
-
-@keyframes grow {
-  0% {
-    transform: scale(1);
-  }
-  90% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 @keyframes Appear {
   0% {
     opacity: 0;

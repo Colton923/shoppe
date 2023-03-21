@@ -1,101 +1,75 @@
-import styles from '../Popcorn.module.scss'
+import styles from './Sizes.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
 import { allRootColors } from '@utils/allRootColors'
 
 interface SizesProps {
   sizes: SizeNames[]
-  activeSizes: SizeNames[]
   setActiveSizes: React.Dispatch<React.SetStateAction<SizeNames[]>>
 }
 
 const Sizes = (props: SizesProps) => {
-  const { sizes, activeSizes, setActiveSizes } = props
+  const { sizes, setActiveSizes } = props
+
   const bagSizes: SizeNames[] = sizes.filter((size) => size.includes('Clear Bag'))
   const boxSizes: SizeNames[] = sizes.filter((size) => size.includes('Box'))
   const tinSizes: SizeNames[] = sizes.filter((size) => size.includes('Gal'))
 
-  const SizeInput = (size: SizeNames) => {
-    return (
-      <div className={activeSizes.includes(size) ? styles.active : styles.inactive}>
-        <div className={styles.description}>
-          <p>
-            {size} <br />
-          </p>
-        </div>
-
-        <div className={styles.image}>Image Placeholder</div>
-        <input
-          type="button"
-          onClick={() => {
-            if (activeSizes.includes(size)) {
-              const newActiveSizes = activeSizes.filter(
-                (activeSize) => activeSize !== size
-              )
-              setActiveSizes(newActiveSizes)
-              return
-            } else {
-              setActiveSizes([size])
-            }
-          }}
-          className={styles.input}
-          style={
-            activeSizes.includes(size)
-              ? {
-                  backgroundImage: `linear-gradient(45deg,${
-                    allRootColors[
-                      Math.floor(Math.random() * allRootColors.length - 1)
-                    ]
-                  },${
-                    allRootColors[
-                      Math.floor(Math.random() * allRootColors.length - 1)
-                    ]
-                  } 100%)`,
-                  borderRadius: '30px',
-                }
-              : {}
-          }
-        />
-      </div>
-    )
+  const handleSizeClick = (sizes: SizeNames[]) => {
+    setActiveSizes(sizes)
   }
+
+  const Arrow = () => (
+    <svg
+      data-bbox="9 70.9 181 59"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 200 200"
+    >
+      <g>
+        <path d="M159 70.9l-2.2 2.4L183.6 99H9v3h174.6l-26.2 25.3 2.1 2.6 30.5-29.3-31-29.7z"></path>
+      </g>
+    </svg>
+  )
 
   return (
     <div className={styles.itemsWrapper}>
       <div className={styles.category}>
-        <h2 className={styles.header} style={{ color: 'var(--canePink)' }}>
-          Boxes
+        <h2 className={styles.header}>
+          SHOP<span style={{ fontSize: '3rem' }}>BOXES</span>
         </h2>
-        {boxSizes.map((size: string) => {
-          return (
-            <div key={size} className={styles.sizeWrapper}>
-              {SizeInput(size as SizeNames)}
-            </div>
-          )
-        })}
+        <input
+          type="button"
+          className={styles.button}
+          onClick={() => {
+            handleSizeClick(boxSizes)
+          }}
+        />
+        <Arrow />
       </div>
       <div className={styles.category}>
-        <h2 className={styles.header} style={{ color: 'var(--canePink)' }}>
-          Bags
+        <h2 className={styles.header}>
+          SHOP <span style={{ fontSize: '3rem' }}>BAGS</span>
         </h2>
-        {bagSizes.map((size: string) => {
-          return (
-            <div key={size} className={styles.sizeWrapper}>
-              {SizeInput(size as SizeNames)}
-            </div>
-          )
-        })}
+        <input
+          type="button"
+          className={styles.button}
+          onClick={() => {
+            handleSizeClick(bagSizes)
+          }}
+        />
+        <Arrow />
       </div>
       <div className={styles.category}>
-        <h2 className={styles.header} style={{ color: 'var(--canePink)' }}>
-          Tins
+        <h2 className={styles.header}>
+          SHOP <span style={{ fontSize: '3rem' }}>TINS</span>
         </h2>
-        {tinSizes.map((size: string) => {
-          return (
-            <div key={size} className={styles.sizeWrapper}>
-              {SizeInput(size as SizeNames)}
-            </div>
-          )
-        })}
+        <input
+          type="button"
+          className={styles.button}
+          onClick={() => {
+            handleSizeClick(tinSizes)
+          }}
+        />
+        <Arrow />
       </div>
     </div>
   )

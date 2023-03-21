@@ -1,7 +1,5 @@
 import styles from './Cart.module.css'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
-import AddToCartButton from './addToCartButton/AddToCartButton'
-import { AddToCartButtonProps } from './addToCartButton/AddToCartButton'
 import { loadStripe } from '@stripe/stripe-js'
 
 const stripePromise = loadStripe(
@@ -10,14 +8,14 @@ const stripePromise = loadStripe(
     : ''
 )
 
-interface CartProps extends AddToCartButtonProps {
+interface CartProps {
   cart: StripeProduct[]
 }
 
 const Cart = (props: CartProps) => {
-  const { cart, activeProduct, setCart } = props
+  const { cart } = props
 
-  const handleCheckout = async (activeProduct: StripeProduct) => {
+  const handleCheckout = async (cart: StripeProduct[]) => {
     try {
       const stripe = await stripePromise
 
@@ -25,18 +23,15 @@ const Cart = (props: CartProps) => {
         throw new Error('Stripe not loaded')
       }
 
-      const checkoutSession = await fetch(
-        '/api/post/stripe/product_ID_to_price_ID',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            productID: activeProduct?.id,
-          }),
-        }
-      )
+      await fetch('/api/post/stripe/product_ID_to_price_ID', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productID: cart[0].id,
+        }),
+      })
         .then((res) => res.json())
         .then(async (data) => {
           await fetch('/api/post/stripe/checkout_session', {
@@ -67,7 +62,6 @@ const Cart = (props: CartProps) => {
 
   return (
     <div>
-      <AddToCartButton activeProduct={activeProduct} cart={cart} setCart={setCart} />
       <h1>Cart</h1>
       {cart.map((product) => {
         if (product.metadata?.retailPrice === undefined) return null
@@ -96,8 +90,8 @@ const Cart = (props: CartProps) => {
           type="button"
           value="Checkout"
           onClick={() => {
-            if (activeProduct === undefined) return
-            handleCheckout(activeProduct)
+            if (cart === undefined) return
+            handleCheckout(cart)
           }}
           style={{ cursor: 'pointer' }}
         />

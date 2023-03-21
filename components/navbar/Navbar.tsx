@@ -20,7 +20,7 @@ const Navbar = () => {
             Main St. <br />
             Shoppe
           </h2>
-          <h2 className={styles.fancyText}>- Lamar, CO -</h2>
+          <h2 className={styles.fancyText}>email@email.com 123-1234-1234</h2>
         </div>
         <span></span>
       </div>

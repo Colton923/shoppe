@@ -7,15 +7,50 @@ import * as PopcornData from '@utils/PopcornData'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import testImg from '@public/images/mascot.png'
+import type { SizeNames } from 'types/PopcornSizes'
+import type { StripeProduct } from 'types/stripe/StripeProduct'
 
 interface FlavorsProps {
   flavors: FlavorNames[]
   activeFlavors: FlavorNames[]
   setActiveFlavors: React.Dispatch<React.SetStateAction<FlavorNames[]>>
+  activeSizes: SizeNames[]
+  setSelectedSize: React.Dispatch<React.SetStateAction<SizeNames | undefined>>
+  product: StripeProduct | undefined
+  HandleAddToCart: (quantity: number) => void
 }
 
 const Flavors = (props: FlavorsProps) => {
-  const { flavors, activeFlavors, setActiveFlavors } = props
+  const {
+    product,
+    flavors,
+    activeFlavors,
+    setActiveFlavors,
+    activeSizes,
+    setSelectedSize,
+    HandleAddToCart,
+  } = props
+  const [quantity, setQuantity] = useState<number>(1)
+
+  const Arrow = () => (
+    <svg
+      data-bbox="9 70.9 181 59"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 200 200"
+      style={{
+        position: 'absolute',
+        stroke: 'white',
+        fill: 'white',
+        transform: 'scale(0.8)',
+        top: '10%',
+        zIndex: 1,
+      }}
+    >
+      <g>
+        <path d="M159 70.9l-2.2 2.4L183.6 99H9v3h174.6l-26.2 25.3 2.1 2.6 30.5-29.3-31-29.7z"></path>
+      </g>
+    </svg>
+  )
 
   useEffect(() => {
     activeFlavors.forEach((flavor) => {
@@ -43,6 +78,10 @@ const Flavors = (props: FlavorsProps) => {
     }
   }
 
+  const HandleChangeSize = (size: SizeNames) => {
+    setSelectedSize(size)
+  }
+
   const FlavorInput = (flavor: FlavorNames) => {
     return (
       <div
@@ -68,12 +107,26 @@ const Flavors = (props: FlavorsProps) => {
         />
         {activeFlavors.includes(flavor) && (
           <div className={styles.ExpandedVisible}>
-            <h2 className={styles.sizeTitle}>Swipe/Dropdown for Size</h2>
+            <div className={styles.sizePicker}>
+              <select
+                className={styles.sizeSelect}
+                onInput={(e) => {
+                  //@ts-ignore
+                  const value = e.target.value
+                  HandleChangeSize(value)
+                }}
+              >
+                <option value={''}>Select Size</option>
+                {activeSizes.map((size: SizeNames) => {
+                  return (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  )
+                })}
+              </select>
+            </div>
             <div className={styles.SizeOptions}>
-              <div className={styles.sizeFlavors}>
-                <h3>choose up to 3 additional flavors</h3>
-                <input type="checkbox" />
-              </div>
               <div className={styles.quantity}>
                 <h3>QUANTITY</h3>
                 <input
@@ -82,8 +135,41 @@ const Flavors = (props: FlavorsProps) => {
                   placeholder={'0'}
                   min={0}
                   max={9}
+                  value={quantity}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value.length > 1) return
+                    if (value === '') {
+                      setQuantity(0)
+                      return
+                    }
+                    setQuantity(parseInt(value))
+                  }}
                 />
               </div>
+              <div className={styles.addToCart}>
+                <Arrow />
+                <input
+                  type="button"
+                  className={styles.addToCartButton}
+                  value={'Add'}
+                  onClick={() => {
+                    HandleAddToCart(quantity)
+                  }}
+                />
+              </div>
+              <h3 className={styles.price}>
+                PRICE: $
+                {product
+                  ? (
+                      parseInt(
+                        product.metadata?.retailPrice
+                          ? product.metadata.retailPrice
+                          : ''
+                      ) / 100
+                    ).toFixed(2)
+                  : '0.00'}
+              </h3>
             </div>
           </div>
         )}

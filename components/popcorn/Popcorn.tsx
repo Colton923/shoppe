@@ -8,6 +8,7 @@ import Cart from './cart/Cart'
 import type { FlavorNames } from 'types/PopcornFlavors'
 import type { SizeNames } from 'types/PopcornSizes'
 import styles from './Popcorn.module.scss'
+import Sizes from './sizes/Sizes'
 
 interface ShopProps {
   products: StripeProduct[]
@@ -22,6 +23,16 @@ const PopcornComponent = (props: ShopProps) => {
 
   const [activeFlavors, setActiveFlavors] = useState<FlavorNames[]>([])
   const [activeProduct, setActiveProduct] = useState<StripeProduct>()
+  const [activeSizes, setActiveSizes] = useState<SizeNames[]>([])
+  const [selectedSize, setSelectedSize] = useState<SizeNames>()
+
+  const HandleAddToCart = (quantity: number) => {
+    if (!activeProduct) return
+    if (quantity === 0) return
+    for (let i = 0; i < quantity; i++) {
+      setCart([...cart, activeProduct])
+    }
+  }
 
   useEffect(() => {
     if (activeFlavors.length === 0) return
@@ -37,13 +48,15 @@ const PopcornComponent = (props: ShopProps) => {
         ) {
           return null
         }
+        if (product.metadata?.size !== selectedSize) return null
+
         return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
       })
       if (productFound.length > 0) {
         setActiveProduct(productFound[0])
       }
     }
-  }, [activeFlavors])
+  }, [activeFlavors, selectedSize])
 
   if (!products || flavors.length === 0 || sizes.length === 0)
     return <div>Loading...</div>
@@ -51,12 +64,24 @@ const PopcornComponent = (props: ShopProps) => {
   return (
     <div className={styles.background}>
       <div className={styles.wrapper}>
-        <h1 className={styles.componentTitle}>Popcorn</h1>
-        <Flavors
-          flavors={flavors}
-          activeFlavors={activeFlavors}
-          setActiveFlavors={setActiveFlavors}
-        />
+        {activeSizes.length === 0 ? (
+          <div className={styles.SizeContainer}>
+            <Sizes sizes={sizes} setActiveSizes={setActiveSizes} />
+          </div>
+        ) : (
+          <>
+            <h1 className={styles.componentTitle}>Popcorn</h1>
+            <Flavors
+              flavors={flavors}
+              activeFlavors={activeFlavors}
+              setActiveFlavors={setActiveFlavors}
+              activeSizes={activeSizes}
+              setSelectedSize={setSelectedSize}
+              product={activeProduct}
+              HandleAddToCart={HandleAddToCart}
+            />
+          </>
+        )}
       </div>
     </div>
   )

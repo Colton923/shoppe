@@ -65,6 +65,8 @@ export default function Index() {
     setSizes(UniqueSizes)
   }, [products])
 
+  console.log(cart)
+
   return (
     <div className={styles.pageContent}>
       <div className={styles.container}>
