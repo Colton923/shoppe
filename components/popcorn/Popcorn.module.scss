@@ -17,9 +17,6 @@
   color: var(--caneBlack);
   width: 100%;
 
-  mix-blend-mode: hard-light;
-
-
   @media (min-width: 768px) {
     flex-direction: row;
     flex-wrap: wrap;
