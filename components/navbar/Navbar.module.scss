@@ -5,7 +5,6 @@
 
   mix-blend-mode: initial;
   background-blend-mode: multiply;
-
 }
 
 .gridLayout {
@@ -96,7 +95,7 @@
   flex-direction: column;
   grid-column: 2;
   grid-row: span 2;
-
+  height: 200px;
 }
 
 .titleText {
