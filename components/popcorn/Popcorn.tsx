@@ -28,9 +28,15 @@ const PopcornComponent = (props: ShopProps) => {
 
   const HandleAddToCart = (quantity: number) => {
     if (!activeProduct) return
+    const allProduct = activeProduct
     if (quantity === 0) return
-    for (let i = 0; i < quantity; i++) {
-      setCart([...cart, activeProduct])
+    if (quantity > 0) {
+      const newCart = [...cart]
+      for (let i = 0; i < quantity; i++) {
+        newCart.push(allProduct)
+      }
+
+      setCart(newCart)
     }
   }
 
@@ -71,6 +77,10 @@ const PopcornComponent = (props: ShopProps) => {
         ) : (
           <>
             <h1 className={styles.componentTitle}>Popcorn</h1>
+            <div className={styles.back} onClick={() => setActiveSizes([])}>
+              <span>Back</span>
+            </div>
+
             <Flavors
               flavors={flavors}
               activeFlavors={activeFlavors}

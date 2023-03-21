@@ -407,6 +407,22 @@
   color: #fff;
 }
 
+.back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Caveat', cursive;
+  color: var(--caneRed);
+  background-color: transparent;
+  cursor: pointer;
+  width: 100%;
+  height: 100px;
+}
+
 @keyframes Expand {
   0% {
     width: 185px;

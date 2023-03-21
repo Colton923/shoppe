@@ -82,6 +82,18 @@ const Flavors = (props: FlavorsProps) => {
     setSelectedSize(size)
   }
 
+  const AddButton = (quantity: number) => {
+    const resetDivs = document.getElementsByClassName(styles.flavorWrapper)
+    for (let i = 0; i < resetDivs.length; i++) {
+      if (resetDivs[i].classList.contains(styles.expandView)) {
+        resetDivs[i].classList.remove(styles.expandView)
+      }
+    }
+
+    setActiveFlavors([])
+    HandleAddToCart(quantity)
+  }
+
   const FlavorInput = (flavor: FlavorNames) => {
     return (
       <div
@@ -153,7 +165,7 @@ const Flavors = (props: FlavorsProps) => {
                   className={styles.addToCartButton}
                   value={'Add'}
                   onClick={() => {
-                    HandleAddToCart(quantity)
+                    AddButton(quantity)
                   }}
                 />
               </div>
@@ -212,7 +224,7 @@ const Flavors = (props: FlavorsProps) => {
       {flavors.map((flavor) => {
         if (PopcornData.PremiumFlavors.includes(flavor)) {
           return (
-            <div key={flavor} className={styles.flavorWrapper} id="bubble">
+            <div key={flavor} id={flavor} className={styles.flavorWrapper}>
               {FlavorInput(flavor)}
             </div>
           )
