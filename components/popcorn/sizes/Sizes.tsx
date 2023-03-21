@@ -32,7 +32,10 @@ const Sizes = (props: SizesProps) => {
 
   return (
     <div className={styles.itemsWrapper}>
-      <div className={styles.category}>
+      <div
+        className={styles.category}
+        style={{ backgroundColor: 'var(--candyPink)' }}
+      >
         <h2 className={styles.header}>
           SHOP<span style={{ fontSize: '3rem' }}>BOXES</span>
         </h2>
@@ -45,7 +48,10 @@ const Sizes = (props: SizesProps) => {
         />
         <Arrow />
       </div>
-      <div className={styles.category}>
+      <div
+        className={styles.category}
+        style={{ backgroundColor: 'var(--candyGreen)' }}
+      >
         <h2 className={styles.header}>
           SHOP <span style={{ fontSize: '3rem' }}>BAGS</span>
         </h2>
@@ -58,7 +64,10 @@ const Sizes = (props: SizesProps) => {
         />
         <Arrow />
       </div>
-      <div className={styles.category}>
+      <div
+        className={styles.category}
+        style={{ backgroundColor: 'var(--candyPurple)' }}
+      >
         <h2 className={styles.header}>
           SHOP <span style={{ fontSize: '3rem' }}>TINS</span>
         </h2>
