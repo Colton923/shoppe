@@ -1,6 +1,7 @@
 import '../styles/globals.scss'
 import Diamonds from '../components/svgs/Diamonds'
 import Navbar from '../components/navbar/Navbar'
+
 interface Props {
   children: React.ReactNode
 }

@@ -1,22 +1,12 @@
 import styles from './Sizes.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
-import { allRootColors } from '@utils/allRootColors'
+import { useLocalContext } from '../context/LocalContext'
 
-interface SizesProps {
-  sizes: SizeNames[]
-  setActiveSizes: React.Dispatch<React.SetStateAction<SizeNames[]>>
-}
-
-const Sizes = (props: SizesProps) => {
-  const { sizes, setActiveSizes } = props
-
+const Sizes = () => {
+  const { setActiveSizes, sizes } = useLocalContext()
   const bagSizes: SizeNames[] = sizes.filter((size) => size.includes('Clear Bag'))
   const boxSizes: SizeNames[] = sizes.filter((size) => size.includes('Box'))
   const tinSizes: SizeNames[] = sizes.filter((size) => size.includes('Gal'))
-
-  const handleSizeClick = (sizes: SizeNames[]) => {
-    setActiveSizes(sizes)
-  }
 
   const Arrow = () => (
     <svg
@@ -43,7 +33,7 @@ const Sizes = (props: SizesProps) => {
           type="button"
           className={styles.button}
           onClick={() => {
-            handleSizeClick(boxSizes)
+            setActiveSizes(boxSizes)
           }}
         />
         <Arrow />
@@ -59,7 +49,7 @@ const Sizes = (props: SizesProps) => {
           type="button"
           className={styles.button}
           onClick={() => {
-            handleSizeClick(bagSizes)
+            setActiveSizes(bagSizes)
           }}
         />
         <Arrow />
@@ -75,7 +65,7 @@ const Sizes = (props: SizesProps) => {
           type="button"
           className={styles.button}
           onClick={() => {
-            handleSizeClick(tinSizes)
+            setActiveSizes(tinSizes)
           }}
         />
         <Arrow />

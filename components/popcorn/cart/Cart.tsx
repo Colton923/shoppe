@@ -1,6 +1,7 @@
 import styles from './Cart.module.css'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 import { loadStripe } from '@stripe/stripe-js'
+import { useLocalContext } from '../context/LocalContext'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -8,13 +9,8 @@ const stripePromise = loadStripe(
     : ''
 )
 
-interface CartProps {
-  cart: StripeProduct[]
-}
-
-const Cart = (props: CartProps) => {
-  const { cart } = props
-
+const Cart = () => {
+  const { cart } = useLocalContext()
   const handleCheckout = async (cart: StripeProduct[]) => {
     try {
       const stripe = await stripePromise

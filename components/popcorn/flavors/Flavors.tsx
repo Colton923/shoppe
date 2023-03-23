@@ -1,36 +1,25 @@
-'use client'
-
 import styles from '../Popcorn.module.scss'
 import type { FlavorNames } from 'types/PopcornFlavors'
-import { allRootColors } from '@utils/allRootColors'
-import * as PopcornData from '@utils/PopcornData'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import testImg from '@public/images/mascot.png'
 import type { SizeNames } from 'types/PopcornSizes'
-import type { StripeProduct } from 'types/stripe/StripeProduct'
+import { useLocalContext } from '../context/LocalContext'
 
-interface FlavorsProps {
-  flavors: FlavorNames[]
-  activeFlavors: FlavorNames[]
-  setActiveFlavors: React.Dispatch<React.SetStateAction<FlavorNames[]>>
-  activeSizes: SizeNames[]
-  setSelectedSize: React.Dispatch<React.SetStateAction<SizeNames | undefined>>
-  product: StripeProduct | undefined
-  HandleAddToCart: (quantity: number) => void
-}
-
-const Flavors = (props: FlavorsProps) => {
+const Flavors = () => {
   const {
-    product,
-    flavors,
-    activeFlavors,
-    setActiveFlavors,
     activeSizes,
+    activeFlavors,
     setSelectedSize,
-    HandleAddToCart,
-  } = props
-  const [quantity, setQuantity] = useState<number>(1)
+    filteredFlavors,
+    quantity,
+    localPrice,
+    setQuantity,
+    setActiveFlavors,
+    activeProduct,
+    cart,
+    setCart,
+    setLocalPrice,
+  } = useLocalContext()
 
   const Arrow = () => (
     <svg
@@ -52,36 +41,6 @@ const Flavors = (props: FlavorsProps) => {
     </svg>
   )
 
-  useEffect(() => {
-    activeFlavors.forEach((flavor) => {
-      const div = document.getElementById(flavor)
-      if (!flavor) return
-      if (!div) return
-      if (!div.classList.contains(styles.flavorWrapper)) return
-      div.classList.add(styles.expandView)
-    })
-  }, [activeFlavors])
-
-  const NewActiveFlavor = (flavor: FlavorNames) => {
-    const isFlavor = activeFlavors.includes(flavor)
-    const div = document.getElementById(flavor)
-    if (isFlavor) {
-      activeFlavors.splice(activeFlavors.indexOf(flavor), 1)
-
-      if (!div) return
-      if (!div.classList.contains(styles.flavorWrapper)) return
-      div.classList.remove(styles.expandView)
-      div.classList.add(styles.flavorWrapper)
-      setActiveFlavors([...activeFlavors])
-    } else {
-      setActiveFlavors([...activeFlavors, flavor])
-    }
-  }
-
-  const HandleChangeSize = (size: SizeNames) => {
-    setSelectedSize(size)
-  }
-
   const AddButton = (quantity: number) => {
     const resetDivs = document.getElementsByClassName(styles.flavorWrapper)
     for (let i = 0; i < resetDivs.length; i++) {
@@ -89,148 +48,129 @@ const Flavors = (props: FlavorsProps) => {
         resetDivs[i].classList.remove(styles.expandView)
       }
     }
-
     setActiveFlavors([])
-    HandleAddToCart(quantity)
+    if (!activeProduct || quantity === 0) return
+    for (let i = 0; i < quantity; i++) {
+      cart.push(activeProduct)
+    }
+    setCart(cart)
+    setQuantity(1)
   }
 
-  const FlavorInput = (flavor: FlavorNames) => {
-    return (
-      <div
-        id={flavor + '_toggle'}
-        className={activeFlavors.includes(flavor) ? styles.active : styles.inactive}
-      >
-        <Image
-          className={styles.picture}
-          src={testImg}
-          alt="test"
-          width={120}
-          height={120}
-        />
-        <div className={styles.positionFlavorTitle}>
-          <h2 className={styles.flavorTitle}>{flavor}</h2>
-        </div>{' '}
-        <input
-          type="button"
-          onClick={() => {
-            NewActiveFlavor(flavor)
-          }}
-          className={styles.input}
-        />
-        {activeFlavors.includes(flavor) && (
-          <div className={styles.ExpandedVisible}>
-            <div className={styles.sizePicker}>
-              <select
-                className={styles.sizeSelect}
-                onInput={(e) => {
-                  //@ts-ignore
-                  const value = e.target.value
-                  HandleChangeSize(value)
-                }}
-              >
-                <option value={''}>Select Size</option>
-                {activeSizes.map((size: SizeNames) => {
-                  return (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-            <div className={styles.SizeOptions}>
-              <div className={styles.quantity}>
-                <h3>QUANTITY</h3>
-                <input
-                  type="tel"
-                  className={styles.numberInput}
-                  placeholder={'0'}
-                  min={0}
-                  max={9}
-                  value={quantity}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    if (value === '') {
-                      setQuantity(0)
-                      return
-                    }
-                    setQuantity(parseInt(value))
-                  }}
-                />
-              </div>
-              <div className={styles.addToCart}>
-                <Arrow />
-                <input
-                  type="button"
-                  className={styles.addToCartButton}
-                  value={'Add'}
-                  onClick={() => {
-                    AddButton(quantity)
-                  }}
-                />
-              </div>
-              <h3 className={styles.price}>
-                PRICE: $
-                {product
-                  ? (
-                      parseInt(
-                        product.metadata?.retailPrice
-                          ? product.metadata.retailPrice
-                          : ''
-                      ) / 100
-                    ).toFixed(2)
-                  : '0.00'}
-              </h3>
-            </div>
-          </div>
-        )}
-      </div>
-    )
+  const NewActiveFlavor = (flavor: FlavorNames) => {
+    const isFlavor = activeFlavors.includes(flavor)
+    const div = document.getElementsByClassName(styles.flavorWrapper)
+    const divs = Array.from(div)
+    activeFlavors.splice(activeFlavors.indexOf(flavor), 1)
+    divs.forEach((div) => {
+      if (isFlavor) {
+        if (!div) return
+        if (!div.classList.contains(styles.flavorWrapper)) return
+        div.classList.remove(styles.expandView)
+        div.classList.add(styles.flavorWrapper)
+      } else {
+        if (!div) return
+        div.classList.remove(styles.expandView)
+      }
+    })
+    setActiveFlavors([flavor])
   }
 
   return (
-    <div className={styles.itemsWrapper}>
-      <h2 className={styles.subHeader}>Regular</h2>
-      {flavors.map((flavor) => {
-        if (PopcornData.RegularFlavors.includes(flavor)) {
-          return (
+    <>
+      {Object.entries(filteredFlavors).map(([category]) => (
+        <div className={styles.itemsWrapper} key={category}>
+          <h2 className={styles.subHeader}>{category}</h2>
+          {/* @ts-ignore */}
+          {filteredFlavors[category].map((flavor: FlavorNames) => (
             <div key={flavor} id={flavor} className={styles.flavorWrapper}>
-              {FlavorInput(flavor)}
+              <div
+                id={flavor + '_toggle'}
+                className={
+                  activeFlavors.includes(flavor) ? styles.active : styles.inactive
+                }
+              >
+                <Image
+                  className={styles.picture}
+                  src={testImg}
+                  alt="test"
+                  width={120}
+                  height={120}
+                />
+                <div className={styles.positionFlavorTitle}>
+                  <h2 className={styles.flavorTitle}>{flavor}</h2>
+                </div>{' '}
+                <input
+                  type="button"
+                  onClick={() => {
+                    NewActiveFlavor(flavor)
+                  }}
+                  className={styles.input}
+                />
+                {activeFlavors.includes(flavor) ? (
+                  <div className={styles.ExpandedVisible}>
+                    <div className={styles.sizePicker}>
+                      <select
+                        className={styles.sizeSelect}
+                        onInput={(e) => {
+                          //@ts-ignore
+                          const value = e.target.value
+                          setSelectedSize(value)
+                        }}
+                      >
+                        <option value={''}>Select Size</option>
+                        {activeSizes.map((size: SizeNames) => {
+                          return (
+                            <option key={size} value={size}>
+                              {size}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </div>
+                    <div className={styles.SizeOptions}>
+                      <div className={styles.quantity}>
+                        <h3>QUANTITY</h3>
+                        <input
+                          type="tel"
+                          className={styles.numberInput}
+                          placeholder={'0'}
+                          min={0}
+                          max={9}
+                          value={quantity}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            if (value === '') {
+                              setQuantity(0)
+                              return
+                            }
+                            setQuantity(parseInt(value))
+                          }}
+                        />
+                      </div>
+                      <div className={styles.addToCart}>
+                        <Arrow />
+                        <input
+                          type="button"
+                          className={styles.addToCartButton}
+                          value={'Add'}
+                          onClick={() => {
+                            AddButton(quantity)
+                          }}
+                        />
+                      </div>
+                      <h3 className={styles.price}>
+                        PRICE: ${(localPrice / 100).toFixed(2)}
+                      </h3>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
-          )
-        }
-      })}
-      <h2 className={styles.subHeader}>Savory</h2>
-      {flavors.map((flavor) => {
-        if (PopcornData.SavoryFlavors.includes(flavor)) {
-          return (
-            <div key={flavor} id={flavor} className={styles.flavorWrapper}>
-              {FlavorInput(flavor)}
-            </div>
-          )
-        }
-      })}
-      <h2 className={styles.subHeader}>Candy</h2>
-      {flavors.map((flavor) => {
-        if (PopcornData.CandyFlavors.includes(flavor)) {
-          return (
-            <div key={flavor} id={flavor} className={styles.flavorWrapper}>
-              {FlavorInput(flavor)}
-            </div>
-          )
-        }
-      })}
-      <h2 className={styles.subHeader}>Premium</h2>
-      {flavors.map((flavor) => {
-        if (PopcornData.PremiumFlavors.includes(flavor)) {
-          return (
-            <div key={flavor} id={flavor} className={styles.flavorWrapper}>
-              {FlavorInput(flavor)}
-            </div>
-          )
-        }
-      })}
-    </div>
+          ))}
+        </div>
+      ))}
+    </>
   )
 }
 
