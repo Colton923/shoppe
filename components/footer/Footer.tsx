@@ -6,7 +6,9 @@ const Footer = () => {
     <div className={styles.footer}>
       <div className={styles.gridLayout}>
         <div className={styles.footerLeft}>
-          <h2 className={styles.footerTitle}>Main St Shoppe</h2>
+          <h2 className={styles.footerTitle}>
+            Your favorite old-school-cool Candy Shoppe
+          </h2>
           <h3 className={styles.footerSubtitle}>106 South Main Street Lamar, CO</h3>
         </div>
         <div className={styles.footerRight}>

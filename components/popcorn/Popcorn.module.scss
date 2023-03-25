@@ -17,24 +17,6 @@
   z-index: 4;
 }
 
-.componentTitle {
-  font-weight: 600;
-  border-bottom: 8px solid var(--caneRed);
-  font-size: 3rem;
-  text-align: center;
-  color: var(--caneRed);
-  text-transform: uppercase;
-  letter-spacing: 1rem;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  align-content: center;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
-  background-color: #fff;
-}
-
 .back {
   display: flex;
   justify-content: center;
@@ -53,6 +35,7 @@
   border-left: 1px solid var(--caneRed);
   border-radius: 20px;
   height: 40px;
+  margin: 10px;
   backdrop-filter: blur(75px);
   &:hover {
     transform: translate(-1px, 2px) scaleY(0.96);

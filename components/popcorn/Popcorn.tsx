@@ -16,7 +16,6 @@ const PopcornComponent = () => {
         <Sizes />
       ) : (
         <>
-          <h1 className={styles.componentTitle}>Popcorn</h1>
           <div className={styles.back} onClick={() => setActiveSizes([])}>
             <span>Back</span>
           </div>

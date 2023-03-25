@@ -150,9 +150,12 @@ const Flavors = () => {
                         }}
                       />
                     </div>
-                    <h3 className={styles.price}>
-                      ${(localPrice / 100).toFixed(2)}
-                    </h3>
+                    <div className={styles.itemInfo}>
+                      <h3 className={styles.infoPrice}>
+                        ${(localPrice / 100).toFixed(2)}
+                      </h3>
+                      <h3 className={styles.infoName}>{flavor}</h3>
+                    </div>
                   </div>
                 </div>
               ) : null}
