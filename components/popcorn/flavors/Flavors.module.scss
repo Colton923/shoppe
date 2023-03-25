@@ -13,6 +13,8 @@
   border-radius: 10px;
   width: 100%;
   background-color: #fff;
+  font-family: 'Lobster Two', cursive;
+  margin: 25px;
 }
 
 
@@ -29,14 +31,11 @@
   padding: 0;
   width: 100%;
   margin-bottom: 5px;
-  z-index: 0;
+  z-index: 6;
   background-color: transparent;
   text-align: center;
 
 
-  @media (min-width: 768px) {
-    display: none;
-  }
 }
 
 // Flavor By Name
@@ -56,13 +55,14 @@
   width: 350px;
   height: 500px;
   position: absolute;
-  margin: 0 10px 0 10px;
-  padding: 0;
+  margin: 30px;
+  padding: 5px;
   border-radius: 10px;
   backdrop-filter: brightness(3) blur(15px);
   transition: all 0.2s ease-in-out;
   background-color: transparent;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+
 }
 
 .inactive {
@@ -73,9 +73,14 @@
   align-content: flex-end;
   text-align: end;
   backdrop-filter: blur(10px);
-  margin: 5px;
-  width: 165px;
-  min-height: 190px;
+  position: relative;
+  overflow: hidden;
+  z-index: 15;
+
+  border-radius: 50%;
+  margin: 10px;
+  width: 145px;
+  min-height: 145px;
   background-color: rgba(255,255,255,1);
   mix-blend-mode: multiply;
 }
@@ -343,7 +348,6 @@
   align-items: space-around;
   align-content: space-around;
   text-align: center;
-
 }
 
 .infoPrice {

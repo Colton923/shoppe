@@ -16,6 +16,8 @@ export type FilteredFlavors = {
 }
 
 type LocalContextScope = {
+  AddButton: (quantity: number) => void
+  NewActiveFlavor: (flavor: FlavorNames) => void
   activeFlavors: FlavorNames[]
   activeProduct: StripeProduct | undefined
   activeSizes: SizeNames[]
@@ -121,31 +123,55 @@ export const LocalContextProvider = (props: Props) => {
     }
   }, [activeFlavors, selectedSize, products])
 
+  const AddButton = (quantity: number) => {
+    setActiveFlavors([])
+    if (!activeProduct || quantity === 0) return
+    for (let i = 0; i < quantity; i++) {
+      cart.push(activeProduct)
+    }
+    setCart(cart)
+    setQuantity(1)
+    const cartDiv = document.getElementById('cart')
+    if (cartDiv) {
+      cartDiv.classList.add(styles.cartActive)
+      setTimeout(() => {
+        cartDiv.classList.remove(styles.cartActive)
+      }, 1000)
+    }
+  }
+
+  const NewActiveFlavor = (flavor: FlavorNames) => {
+    activeFlavors.splice(activeFlavors.indexOf(flavor), 1)
+
+    setActiveFlavors([flavor])
+  }
+
   const contextValue = useMemo(
     () => ({
+      AddButton,
+      NewActiveFlavor,
       activeFlavors,
       activeProduct,
       activeSizes,
       selectedSize,
       cart,
       products,
-      quantity,
-      localPrice,
       flavors,
       sizes,
-      setQuantity,
+      quantity,
+      localPrice,
       filteredFlavors,
       setFilteredFlavors,
       setSizes,
       setFlavors,
       setProducts,
-
+      setLocalPrice,
       setActiveFlavors,
       setActiveSizes,
       setCart,
       setSelectedSize,
       setProductFound,
-      setLocalPrice,
+      setQuantity,
     }),
     [
       activeFlavors,

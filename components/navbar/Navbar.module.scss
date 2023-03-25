@@ -7,20 +7,22 @@
 
   mix-blend-mode: initial;
   background-blend-mode: multiply;
+
 }
 
 .navBackground {
   position: absolute;
   width: 100vw;
-  height: 200px;
+  height: 100px;
   top: 0;
+  font-family: 'Lobster Two', cursive;
 
 }
 
 .bg {
   position: relative;
   width: 100%;
-  height: calc(100% - 75px);
+  height: 100%;
   aspect-ratio: 1/1;
   background-image: url('/images/Popcorn_Background.png');
   background-position: -100px -10px;
@@ -28,6 +30,8 @@
   background-repeat: repeat;
   z-index: 5;
   background-color: rgba(255, 255, 255, 1);
+  font-family: 'Lobster Two', cursive;
+
 }
 
 .gridLayout {
@@ -37,9 +41,11 @@
   position: relative;
   width: 75%;
   top: 0;
+  height: 100px;
   z-index: 10;
   margin: 0 10% 0 10%;
-  position: absolute;
+  font-family: 'Lobster Two', cursive;
+
 }
 
 .stickyNav {
@@ -48,8 +54,9 @@
   width: 100%;
   height: 50px;
   display: flex;
-  margin-top: 105px;
   justify-content: space-between;
+  font-family: 'Lobster Two', cursive;
+
   flex-direction: row;
   border-radius: 30px;
   z-index: 5;
