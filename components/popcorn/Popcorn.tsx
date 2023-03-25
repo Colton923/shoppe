@@ -11,22 +11,18 @@ const PopcornComponent = () => {
   if (!products || flavors.length === 0 || sizes.length === 0) return null
 
   return (
-    <div className={styles.background}>
-      <div className={styles.wrapper}>
-        {activeSizes.length === 0 ? (
-          <div className={styles.SizeContainer}>
-            <Sizes />
+    <div className={styles.wrapper}>
+      {activeSizes.length === 0 ? (
+        <Sizes />
+      ) : (
+        <>
+          <h1 className={styles.componentTitle}>Popcorn</h1>
+          <div className={styles.back} onClick={() => setActiveSizes([])}>
+            <span>Back</span>
           </div>
-        ) : (
-          <>
-            <h1 className={styles.componentTitle}>Popcorn</h1>
-            <div className={styles.back} onClick={() => setActiveSizes([])}>
-              <span>Back</span>
-            </div>
-            <Flavors />
-          </>
-        )}
-      </div>
+          <Flavors />
+        </>
+      )}
     </div>
   )
 }

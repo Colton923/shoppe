@@ -4,10 +4,14 @@ import Link from 'next/link'
 import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
+import Background from '@public/images/Popcorn_Background.png'
 
 const Navbar = () => {
   return (
-    <div className={styles.navbar}>
+    <>
+      <div className={styles.navBackground}>
+        <div className={styles.bg} />
+      </div>
       <div className={styles.gridLayout}>
         <span></span>
         <div className={styles.title}>
@@ -20,7 +24,14 @@ const Navbar = () => {
             Main St. <br />
             Shoppe
           </h2>
-          <h2 className={styles.fancyText}>email@email.com 123-1234-1234</h2>
+          <h2 className={styles.fancyText}>
+            <Link className={styles.textLink} href={'email@email.com'}>
+              email@email.com
+            </Link>
+            <Link className={styles.textLink} href={'123-1234-1234'}>
+              123-1234-1234
+            </Link>
+          </h2>
         </div>
         <span></span>
       </div>
@@ -60,7 +71,7 @@ const Navbar = () => {
             y2="24"
           ></line>
         </svg>
-        <div className={styles.hamburger}>
+        <div className={styles.hamburger} id="cart">
           <Image
             src={CartIcon}
             alt="Cart Icon"
@@ -70,7 +81,7 @@ const Navbar = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

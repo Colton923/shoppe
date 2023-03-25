@@ -1,46 +1,25 @@
-.background {
-  margin: 3px;
-  z-index: 0;
-  border-radius: 5px;
-  margin-top: 100px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .wrapper {
   display: flex;
   flex-direction: column;
   color: var(--caneBlack);
   width: 100%;
-
   @media (min-width: 768px) {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
     align-content: center;
-    width: 50%;
+    width: 70%;
     align-self: center;
-    margin: 3px;
   }
-}
-
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  align-content: center;
+  overflow: hidden;
+  margin: 50px 3px 250px 3px;
+  z-index: 4;
 }
 
 .componentTitle {
   font-weight: 600;
-  border-bottom: 2px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
+  border-bottom: 8px solid var(--caneRed);
   font-size: 3rem;
   text-align: center;
   color: var(--caneRed);
@@ -52,355 +31,8 @@
   height: 100%;
   align-items: center;
   align-content: center;
-  background-color: rgba(255, 255, 255, .8);
-  backdrop-filter: blur(25px);
-}
-
-.itemsWrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  align-content: flex-start;
-
-  position: relative;
-  backdrop-filter: blur(2px);
-
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
   background-color: #fff;
-
-  border-radius: 10px;
-  width: 100%;
-
-}
-
-.subHeader {
-  position: relative;
-  margin-top: 10px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  display: flex;
-  border-radius: 10px;
-  color: var(--caneBlack);
-  padding: 2px;
-  margin: 0 40% 0 40%;
-  padding: 0;
-  width: 100%;
-  margin-bottom: 5px;
-  z-index: 6;
-  background-color: transparent;
-  text-align: center;
-
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-}
-.flavorWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  align-content: flex-end;
-  text-align: end;
-  width: 120px;
-  height: 185px;
-  backdrop-filter: blur(2px);
-  margin: 5px;
-
-  animation: Appear 0.5s ease-in-out forwards;
-}
-.sizeWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  min-width: 130px;
-  min-height: 265px;
-
-  margin-bottom: 10px;
-  backdrop-filter: blur(2px);
-
-}
-.active {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  align-content: flex-end;
-  text-align: flex-end;
-  width: 100%;
-  height: 100%;
-  box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
-  overflow: hidden;
-  position: fixed;
-  z-index: 4;
-
-}
-
-.inactive {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  align-content: flex-end;
-  text-align: flex-end;
-  width: 100%;
-  height: 100%;
-  box-shadow: 5px -3px 3px 1px rgba(255,255,255,0.05);
-  overflow: hidden;
-}
-
-.positionFlavorTitle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  z-index: 5;
-  border-radius: 30px;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
-}
-
-.flavorTitle {
-  font-size: 2rem;
-  font-weight: 300;
-  color: var(--caneRed);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 1);
-  text-transform: lowercase;
-  letter-spacing: 0.1rem;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  align-content: end;
-  width: 80%;
-  height: 100%;
-  border-radius: 30px;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.01);
-  }
-  background-blend-mode: color;
-}
-
-.input {
-  display: flex;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  border: none;
-  cursor: pointer;
-  z-index: 8;
-  mix-blend-mode: multiply;
-  background-color: white;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-}
-
-.expandView {
-  border-radius: 30px;
-  animation: Expand 1s cubic-bezier(0.25, 0.48, 0.565, 1) forwards;
-  max-width: 350px;
-  max-height: 500px;
-  transform: translate(0, 0);
-}
-
-.collapseView {
-  position: absolute;
-  z-index: 6;
-  backdrop-filter: blur(2px);
-  border-radius: 30px;
-}
-
-.ExpandedVisible {
-  position: absolute;
-  z-index: 9;
-  bottom: 0;
-  right: 0;
-  height: 40%;
-  opacity: 1;
-  background-color: var(--caneRed);
-  backdrop-filter: blur(20px);
-  box-shadow: 5px 0px 3px 1px rgba(0,0,0,1);
-
-}
-.SizeOptions {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: bottom;
-  align-content: bottom;
-  width: 100%;
-  height: 80%;
-  text-align: center;
-  margin-top: 20px;
-  position: relative;
-  bottom: 0;
-}
-
-.quantity {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: left;
-  align-content: bottom;
-  align-self: last baseline;
-
-  width: 80%;
-  height: 60%;
-  margin: 20px;
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
-  font-family: 'Caveat', cursive;
-  color: #fff;
-}
-
-.sizeTitle {
-  width: 100%;
-  height: 25px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color:rgba(255, 255,255,1);
-  margin: 5px 0 10px 0;
-  grid-column: 1 / 2;
-  display: flex;
-  justify-content: center;
-  font-family: 'Caveat', cursive;
-}
-
-.numberInput {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-family: 'Caveat', cursive;
-  color: #fff;
-  background-color: transparent;
-  border: none;
-  outline: none;
-
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
-
-.picture {
-  position: absolute;
-  z-index: 1;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-}
-
-.sizePicker {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px;
-  background-color: transparent;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-}
-
-.sizeSelect {
-  position: absolute;
-  z-index: 2;
-  font-size: 1.25rem;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 1);
-  font-family: 'Caveat', cursive;
-}
-
-.addToCart {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  font-family: 'Caveat', cursive;
-  color: #fff;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-}
-
-.addToCartButton {
-  display: flex;
-  width: 100px;
-  height: 100px;
-  margin: 10px;
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
-  font-family: 'Caveat', cursive;
-  color: #fff;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-  z-index: 9;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  position: absolute;
-}
-
-.price {
-  position: absolute;
-  z-index: 9;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  top: 80%;
-  color: #fff;
 }
 
 .back {
@@ -413,40 +45,18 @@
   font-weight: 700;
   font-family: 'Caveat', cursive;
   color: var(--caneRed);
-  background-color: transparent;
   cursor: pointer;
-  width: 100%;
-  height: 100px;
-}
+  width: 100px;
+  border-top: 1px solid var(--caneRed);
+  border-right: 1px solid var(--caneRed);
+  border-bottom: 3px solid var(--caneRed);
+  border-left: 1px solid var(--caneRed);
+  border-radius: 20px;
+  height: 40px;
+  backdrop-filter: blur(75px);
+  &:hover {
+    transform: translate(-1px, 2px) scaleY(0.96);
+  }
+  background-color: #fff;
 
-@keyframes Expand {
-  0% {
-    width: 185px;
-    height: 185px;
-  }
-  100% {
-    width: 330px;
-    height: 550px;
-  }
-}
-
-@keyframes Collapse {
-  0% {
-    width: 300px;
-    height: 550px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 550px;
-    opacity: 0.7;
-  }
-}
-@keyframes Appear {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }

@@ -8,6 +8,7 @@
   align-self: center;
   width: 100%;
   align-self: center;
+  margin-top: 100px;
 }
 
 .category {
@@ -18,11 +19,14 @@
   align-content: center;
   width: 100%;
   height: 100%;
+  min-height: 100px;
+  min-width: 150px;
   margin: 3px 0 3px 0;
-  backdrop-filter: blur(25px);
-  border: 2px solid var(--caneRed);
-  border-radius: 10px;
-  box-shadow: 1px 2px 0px 0px var(--caneRed);
+  backdrop-filter: blur(3px);
+  border: 2px solid var(--caneBlack);
+  box-shadow: inset 5px 1px 5px 0px var(--caneBlack);
+  overflow: hidden;
+  font-family: 'Caveat Brush', cursive;
 }
 
 .header {
@@ -32,10 +36,43 @@
   align-items: center;
   text-align: center;
   align-content: center;
-  font-family: 'Caveat Brush', cursive;
+
   height: 100%;
   width: 100%;
+  z-index: 10;
+  color: var(--caneBlack);
+
 }
+
+.headerText{
+  position: absolute;
+  left: 50px;
+  display: block;
+  font-size: 2.6rem;
+  animation: Wiggle 5s ease-in-out infinite;
+
+  &:nth-child(2) {
+    color: white;
+    font-size: 2.3rem;
+    animation: none;
+  }
+}
+
+
+.headerCaps {
+  position: absolute;
+  left: 150px;
+  font-size: 6rem;
+  animation: Wiggle 5s ease-in-out infinite;
+
+  &:nth-child(2) {
+    color: white;
+    font-size: 5.7rem;
+    animation: none;
+
+  }
+}
+
 
 .sizeWrapper {
   display: flex;
@@ -67,11 +104,63 @@
   width: 100%;
   height: 100%;
   margin: 0;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.0);
   border: none;
-  z-index: 9;
+  z-index: 100;
+
 
   &:hover {
     cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.boxImage {
+  position: absolute;
+  width: 2048px;
+  height: 2048px;
+  transform: scale(.3);
+  background-color: white;
+}
+
+.bagImage {
+  position: absolute;
+  width: 2048px;
+  height: 2048px;
+  transform: scale(.3);
+  background-color: white;
+}
+
+.tinImage {
+  position: absolute;
+  width: 2048px;
+  height: 2048px;
+  transform: scale(.3);
+  background-color: white;
+}
+
+.arrow {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(4.5) scaleY(2);
+}
+
+@keyframes Wiggle {
+0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }

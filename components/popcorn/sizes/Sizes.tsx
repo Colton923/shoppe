@@ -1,6 +1,10 @@
 import styles from './Sizes.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
 import { useLocalContext } from '../context/LocalContext'
+import BoxImage from '@public/images/Box.jpeg'
+import BagImage from '@public/images/caramel1.png'
+import TinImage from '@public/images/Tin.png'
+import Image from 'next/image'
 
 const Sizes = () => {
   const { setActiveSizes, sizes } = useLocalContext()
@@ -13,6 +17,7 @@ const Sizes = () => {
       data-bbox="9 70.9 181 59"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 200 200"
+      className={styles.arrow}
     >
       <g>
         <path d="M159 70.9l-2.2 2.4L183.6 99H9v3h174.6l-26.2 25.3 2.1 2.6 30.5-29.3-31-29.7z"></path>
@@ -22,12 +27,21 @@ const Sizes = () => {
 
   return (
     <div className={styles.itemsWrapper}>
-      <div
-        className={styles.category}
-        style={{ backgroundColor: 'var(--candyPink)' }}
-      >
+      <div className={styles.category}>
+        <Image
+          src={BoxImage}
+          alt="Box"
+          width={2048}
+          height={2048}
+          className={styles.boxImage}
+        />
         <h2 className={styles.header}>
-          SHOP<span style={{ fontSize: '3rem' }}>BOXES</span>
+          <p className={styles.headerText}>SHOP</p>
+          <p className={styles.headerText}>SHOP</p>
+        </h2>
+        <h2 className={styles.header}>
+          <p className={styles.headerCaps}>BOXES</p>
+          <p className={styles.headerCaps}>BOXES</p>
         </h2>
         <input
           type="button"
@@ -38,12 +52,21 @@ const Sizes = () => {
         />
         <Arrow />
       </div>
-      <div
-        className={styles.category}
-        style={{ backgroundColor: 'var(--candyGreen)' }}
-      >
+      <div className={styles.category}>
+        <Image
+          src={BagImage}
+          alt="Bag"
+          width={2048}
+          height={2048}
+          className={styles.bagImage}
+        />
         <h2 className={styles.header}>
-          SHOP <span style={{ fontSize: '3rem' }}>BAGS</span>
+          <p className={styles.headerText}>SHOP</p>
+          <p className={styles.headerText}>SHOP</p>
+        </h2>
+        <h2 className={styles.header}>
+          <p className={styles.headerCaps}>BAGS</p>
+          <p className={styles.headerCaps}>BAGS</p>
         </h2>
         <input
           type="button"
@@ -54,12 +77,21 @@ const Sizes = () => {
         />
         <Arrow />
       </div>
-      <div
-        className={styles.category}
-        style={{ backgroundColor: 'var(--candyPurple)' }}
-      >
+      <div className={styles.category}>
+        <Image
+          src={TinImage}
+          alt="Tin"
+          width={2048}
+          height={2048}
+          className={styles.tinImage}
+        />
         <h2 className={styles.header}>
-          SHOP <span style={{ fontSize: '3rem' }}>TINS</span>
+          <p className={styles.headerText}>SHOP</p>
+          <p className={styles.headerText}>SHOP</p>
+        </h2>
+        <h2 className={styles.header}>
+          <p className={styles.headerCaps}>TINS</p>
+          <p className={styles.headerCaps}>TINS</p>
         </h2>
         <input
           type="button"
