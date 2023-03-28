@@ -1,8 +1,10 @@
 import Flavors from './flavors/Flavors'
 import styles from './Popcorn.module.scss'
 import Sizes from './sizes/Sizes'
-import { useLocalContext } from './context/LocalContext'
+import { useLocalContext } from '@components/context/LocalContext'
 import Static from './static/Static'
+import Cart from './cart/Cart'
+import Category from './category/Category'
 
 const PopcornComponent = () => {
   const {
@@ -13,6 +15,7 @@ const PopcornComponent = () => {
     activeSizes,
     activeFlavors,
     setActiveFlavors,
+    activeCategory,
   } = useLocalContext()
   Static()
 
@@ -29,18 +32,20 @@ const PopcornComponent = () => {
           </div>
           <Flavors />
         </>
-      ) : (
-        <div className={styles.back} onClick={() => setActiveFlavors([])}>
-          <span>Back</span>
-
-          <div className={styles.cart}>
-            <span>Cart</span>
-
-            <div className={styles.cartItems}>
-              <span>Items</span>
-            </div>
+      ) : activeCategory === '' ? (
+        <>
+          <div className={styles.back} onClick={() => setActiveFlavors([])}>
+            <span>Back</span>
           </div>
-        </div>
+          <Category />
+        </>
+      ) : (
+        <>
+          <div className={styles.back} onClick={() => setActiveFlavors([])}>
+            <span>Back</span>
+          </div>
+          <Cart />
+        </>
       )}
     </div>
   )

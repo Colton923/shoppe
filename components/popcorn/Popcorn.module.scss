@@ -1,20 +1,22 @@
 .wrapper {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+  align-self: center;
   flex-direction: column;
   color: var(--caneBlack);
   width: 100%;
   @media (min-width: 768px) {
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: center;
+
     width: 70%;
-    align-self: center;
   }
   overflow: hidden;
   margin: 50px 3px 250px 3px;
   z-index: 4;
+  min-height: 100%;
 }
 
 .back {

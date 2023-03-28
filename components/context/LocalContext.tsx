@@ -1,12 +1,10 @@
 'use client'
 
 import { useMemo, memo, createContext, useContext, useState, useEffect } from 'react'
-import { FlavorNames } from '../../../types/PopcornFlavors'
-import { SizeNames } from '../../../types/PopcornSizes'
-import { StripeProduct } from '../../../types/stripe/StripeProduct'
-import styles from '../Popcorn.module.scss'
-import * as PopcornData from '@utils/PopcornData'
-import Static from '@components/popcorn/static/Static'
+import { FlavorNames } from '../../types/PopcornFlavors'
+import { SizeNames } from '../../types/PopcornSizes'
+import { StripeProduct } from '../../types/stripe/StripeProduct'
+import styles from './Context.module.scss'
 
 export type FilteredFlavors = {
   Regular: FlavorNames[]
@@ -16,8 +14,9 @@ export type FilteredFlavors = {
 }
 
 type LocalContextScope = {
+  activeCart: boolean
+  setActiveCart: (activeCart: boolean) => void
   AddButton: (quantity: number) => void
-  NewActiveFlavor: (flavor: FlavorNames) => void
   activeFlavors: FlavorNames[]
   activeProduct: StripeProduct | undefined
   activeSizes: SizeNames[]
@@ -40,6 +39,8 @@ type LocalContextScope = {
   setSelectedSize: (size: SizeNames | undefined) => void
   setProductFound: (product: StripeProduct | undefined) => void
   setQuantity: (quantity: number) => void
+  activeCategory: string
+  setActiveCategory: (category: string) => void
 }
 interface Props {
   children: React.ReactNode
@@ -67,16 +68,8 @@ export const LocalContextProvider = (props: Props) => {
     Candy: [],
     Premium: [],
   })
-
-  useEffect(() => {
-    activeFlavors.forEach((flavor) => {
-      const div = document.getElementById(flavor)
-      if (!flavor) return
-      if (!div) return
-      if (!div.classList.contains(styles.flavorWrapper)) return
-      div.classList.add(styles.expandView)
-    })
-  }, [activeFlavors])
+  const [activeCart, setActiveCart] = useState<boolean>(false)
+  const [activeCategory, setActiveCategory] = useState<string>('')
 
   useEffect(() => {
     if (!activeProduct) return
@@ -115,41 +108,40 @@ export const LocalContextProvider = (props: Props) => {
 
         return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
       })
-      if (foundProduct) {
-        setProductFound(foundProduct)
-      } else {
-        setProductFound(undefined)
-      }
+      setProductFound(foundProduct)
     }
   }, [activeFlavors, selectedSize, products])
 
+  useEffect(() => {
+    const ShoppingCartOverlay = document.getElementById('cartOverlay')
+    if (!ShoppingCartOverlay) return
+    if (activeCart) {
+      ShoppingCartOverlay.classList.add(styles.allowCartOverlay)
+    } else {
+      ShoppingCartOverlay.classList.remove(styles.allowCartOverlay)
+    }
+  }, [activeCart])
+
   const AddButton = (quantity: number) => {
     setActiveFlavors([])
+    setActiveSizes([])
+    console.log('cart before: ', cart)
     if (!activeProduct || quantity === 0) return
     for (let i = 0; i < quantity; i++) {
       cart.push(activeProduct)
     }
     setCart(cart)
     setQuantity(1)
-    const cartDiv = document.getElementById('cart')
-    if (cartDiv) {
-      cartDiv.classList.add(styles.cartActive)
-      setTimeout(() => {
-        cartDiv.classList.remove(styles.cartActive)
-      }, 1000)
-    }
-  }
-
-  const NewActiveFlavor = (flavor: FlavorNames) => {
-    activeFlavors.splice(activeFlavors.indexOf(flavor), 1)
-
-    setActiveFlavors([flavor])
+    setProductFound(undefined)
+    setSelectedSize(undefined)
+    setActiveCategory('')
+    setActiveCart(true)
+    console.log('cart after: ', cart)
   }
 
   const contextValue = useMemo(
     () => ({
       AddButton,
-      NewActiveFlavor,
       activeFlavors,
       activeProduct,
       activeSizes,
@@ -172,6 +164,9 @@ export const LocalContextProvider = (props: Props) => {
       setSelectedSize,
       setProductFound,
       setQuantity,
+      activeCart,
+      setActiveCart,
+      activeCategory,
     }),
     [
       activeFlavors,
@@ -196,6 +191,9 @@ export const LocalContextProvider = (props: Props) => {
       setSizes,
       setFlavors,
       setProducts,
+      activeCart,
+      setActiveCart,
+      activeCategory,
     ]
   )
 

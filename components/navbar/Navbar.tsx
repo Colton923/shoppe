@@ -4,9 +4,10 @@ import Link from 'next/link'
 import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
-import Background from '@public/images/Popcorn_Background.png'
+import { useLocalContext } from '@components/context/LocalContext'
 
 const Navbar = () => {
+  const { activeCart, setActiveCart } = useLocalContext()
   return (
     <>
       <div className={styles.navBackground}>
@@ -78,6 +79,9 @@ const Navbar = () => {
             width={35}
             height={35}
             className={styles.cartIcon}
+            onClick={() => {
+              setActiveCart(!activeCart)
+            }}
           />
         </div>
       </div>

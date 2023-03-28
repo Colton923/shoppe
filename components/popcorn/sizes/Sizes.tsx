@@ -1,6 +1,6 @@
 import styles from './Sizes.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
-import { useLocalContext } from '../context/LocalContext'
+import { useLocalContext } from '@components/context/LocalContext'
 import BoxImage from '@public/images/Box.jpeg'
 import BagImage from '@public/images/caramel1.png'
 import TinImage from '@public/images/Tin.png'
@@ -8,9 +8,15 @@ import Image from 'next/image'
 
 const Sizes = () => {
   const { setActiveSizes, sizes } = useLocalContext()
-  const bagSizes: SizeNames[] = sizes.filter((size) => size.includes('Clear Bag'))
-  const boxSizes: SizeNames[] = sizes.filter((size) => size.includes('Box'))
-  const tinSizes: SizeNames[] = sizes.filter((size) => size.includes('Gal'))
+  const bagSizes: (typeof sizes)[number][] = sizes.filter((size) =>
+    size.includes('Clear Bag')
+  ) as (typeof sizes)[number][]
+  const boxSizes: (typeof sizes)[number][] = sizes.filter((size) =>
+    size.includes('Box')
+  ) as (typeof sizes)[number][]
+  const tinSizes: (typeof sizes)[number][] = sizes.filter((size) =>
+    size.includes('Gal')
+  ) as (typeof sizes)[number][]
 
   const Arrow = () => (
     <svg

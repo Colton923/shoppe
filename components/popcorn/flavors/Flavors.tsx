@@ -1,10 +1,12 @@
 import styles from './Flavors.module.scss'
 import type { FlavorNames } from 'types/PopcornFlavors'
-import { useLocalContext } from '../context/LocalContext'
+import { useLocalContext } from '@components/context/LocalContext'
 import * as Images from './Images'
 
 const Flavors = () => {
-  const { activeFlavors, filteredFlavors, NewActiveFlavor } = useLocalContext()
+  const { activeFlavors, filteredFlavors, activeSizes, setActiveFlavors } =
+    useLocalContext()
+  const localFlavors: FlavorNames[] = []
 
   return (
     <>
@@ -27,7 +29,23 @@ const Flavors = () => {
               <input
                 type="button"
                 onClick={() => {
-                  NewActiveFlavor(flavor)
+                  localFlavors.push(flavor)
+                  console.log(localFlavors)
+                  console.log(activeSizes)
+                  if (
+                    localFlavors.length ===
+                    (activeSizes.filter((size) => size.includes('Gal')).length > 0
+                      ? activeSizes.filter((size) => size.includes('1')).length > 0
+                        ? 2
+                        : activeSizes.filter((size) => size.includes('2')).length > 0
+                        ? 3
+                        : activeSizes.filter((size) => size.includes('3')).length > 0
+                        ? 4
+                        : 1
+                      : 1)
+                  ) {
+                    setActiveFlavors(localFlavors)
+                  }
                 }}
                 className={styles.input}
               />

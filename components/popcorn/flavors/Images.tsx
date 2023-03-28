@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import type { StaticImageData } from 'next/image'
 import { FlavorNames } from 'types/PopcornFlavors'
-import { useLocalContext } from '../context/LocalContext'
+import { useLocalContext } from '@components/context/LocalContext'
 import styles from './Flavors.module.scss'
 import Plain from '@public/images/caramel1.png'
 import Butter from '@public/images/caramel2.png'

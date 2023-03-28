@@ -119,33 +119,33 @@
   &:nth-child(1) {
     z-index: 15;
 
-  background-image: linear-gradient(
-    45deg,
-    var(--caneBlack) 0%,
-    rgba(95,95,95,.95),
-    rgba(95,95,95,.95),
-    rgba(95,95,95,.95),
-    rgba(95,95,95,.95),
-    rgba(255,255,255,.70),
-    rgba(95,95,95,.95),
-    rgba(95,95,95,.95),
-    var(--caneBlack) 100%
-  );
+    background-image: linear-gradient(
+      45deg,
+      var(--caneBlack) 0%,
+      rgba(95,95,95,.95),
+      rgba(95,95,95,.95),
+      rgba(95,95,95,.95),
+      rgba(95,95,95,.95),
+      rgba(255,255,255,.70),
+      rgba(95,95,95,.95),
+      rgba(95,95,95,.95),
+      var(--caneBlack) 100%
+    );
 
-  mix-blend-mode: hard-light;
-  background-size: 200% 200%;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-clip: content-box;
-  transition: background-size 0.4s ease-in-out;
-  &:hover {
-    animation: BackgroundActive 1s forwards;
-    cursor: pointer;
-  }
-  &:active {
-    animation: BackgroundActive 1s forwards;
-    cursor: pointer;
-  }
+    mix-blend-mode: hard-light;
+    background-size: 200% 200%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-clip: content-box;
+    transition: background-size 0.4s ease-in-out;
+    &:hover {
+      animation: BackgroundActive 1s forwards;
+      cursor: pointer;
+    }
+    &:active {
+      animation: BackgroundActive 1s forwards;
+      cursor: pointer;
+    }
   }
 
   @media (max-width: 600px) {
@@ -167,18 +167,26 @@
 }
 
 .title {
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  grid-column: 2;
-  grid-row: span 2;
-  height: 200px;
+  grid-column: 1;
+  grid-row: span 3;
+  max-height: 165px;
+  max-width: 65%;
+  height: 100%;
+  width: 100%;
+  margin: 0 30px 0 30px;
   z-index: 10;
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-rows: 1fr;
 }
 
 .titleText {
-  font-size: 4rem;
+  grid-column: 1;
+  column-span: all;
+  font-size: 2.5rem;
   color: var(--oldGold);
   text-shadow: 1px 1px 5px var(--caneBlack);
   cursor: pointer;
@@ -199,11 +207,11 @@
 }
 
 .fancyText {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: var(--brown);
   text-shadow: 1px 1px 2px var(--caneBlack);
   cursor: pointer;
-  margin: 0 0 0 50px;
+  margin: 0 50px 0 10px;
   position: relative;
   z-index: 10;
   width: 30%;
@@ -233,3 +241,4 @@
     cursor: pointer;
   }
 }
+

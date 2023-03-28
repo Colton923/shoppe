@@ -3,10 +3,10 @@
 import { useEffect } from 'react'
 import { FlavorNames } from '../../../types/PopcornFlavors'
 import { SizeNames } from '../../../types/PopcornSizes'
-import type { FilteredFlavors } from '../context/LocalContext'
+import type { FilteredFlavors } from '@components/context/LocalContext'
 import type { StripeProduct } from '../../../types/stripe/StripeProduct'
 import * as PopcornData from '@utils/PopcornData'
-import { useLocalContext } from '../context/LocalContext'
+import { useLocalContext } from '@components/context/LocalContext'
 
 const Static = () => {
   const { setProducts, setFlavors, setSizes, setFilteredFlavors } = useLocalContext()
