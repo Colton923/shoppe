@@ -14,6 +14,7 @@ type CartContextScope = {
   setUniqueCart: (uniqueCart: StripeProduct[]) => void
   setDuplicatesInCart: (duplicatesInCart: number[]) => void
   CheckItemInCart: (index: number) => void
+  Checkout: () => void
 }
 interface Props {
   children: React.ReactNode
@@ -25,7 +26,6 @@ export const CartContextProvider = (props: Props) => {
   const { children } = props
   const [activeItems, setActiveItems] = useState<boolean[]>([])
   const { cart, setCart, activeCart } = useLocalContext()
-  const [subTotal, setSubTotal] = useState<string>('')
   const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
   const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
 
@@ -41,13 +41,15 @@ export const CartContextProvider = (props: Props) => {
   }
 
   useEffect(() => {
-    const newActiveItems = activeItems.map((item) => {
+    const newUnique = UniqueCart()
+    setUniqueCart(newUnique)
+
+    const newActiveItems = newUnique.map((item) => {
       return true
     })
-
     setActiveItems(newActiveItems)
-    setUniqueCart(UniqueCart())
-    setDuplicatesInCart(DuplicatesInCart(UniqueCart()))
+
+    setDuplicatesInCart(DuplicatesInCart(newUnique))
   }, [cart, setCart, activeCart, setActiveItems])
 
   const GetSubTotal = () => {
@@ -78,6 +80,16 @@ export const CartContextProvider = (props: Props) => {
     setActiveItems(newActiveItems)
   }
 
+  const Checkout = () => {
+    const newCart: StripeProduct[] = []
+    cart.forEach((item, index) => {
+      if (activeItems[index]) {
+        newCart.push(item)
+      }
+    })
+    setCart(newCart)
+  }
+
   const contextValue: CartContextScope = useMemo(
     () => ({
       activeItems,
@@ -88,6 +100,7 @@ export const CartContextProvider = (props: Props) => {
       setUniqueCart,
       setDuplicatesInCart,
       CheckItemInCart,
+      Checkout,
     }),
     [
       activeItems,

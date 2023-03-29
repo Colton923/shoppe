@@ -9,7 +9,7 @@ import Cart from '@components/cart/Cart'
 
 export default function Index() {
   return (
-    <div className={styles.pageContent}>
+    <div className={styles.pageContent} id={'pageContent'}>
       <LocalContextProvider>
         <Navbar />
         {/* <Progress stage={progress} /> */}

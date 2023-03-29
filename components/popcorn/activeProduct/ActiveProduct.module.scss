@@ -1,0 +1,88 @@
+.shoppingCartItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+
+  cursor: pointer;
+  z-index: 9999;
+  font-family: 'Caveat', cursive;
+  max-height: 200px;
+
+  width: 100%;
+  height: 100%;
+  margin-top: 1px;
+  padding: 10px;
+
+  color: var(--caneBlack);
+  background-color: rgba(255, 255, 255, 1);
+
+  border: 1px solid rgba(255, 255, 255, 1);
+}
+.shoppingCartItem__image {
+  margin-right: 10px;
+  z-index: inherit;
+}
+.shoppingCartItem__info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin-right: 10px;
+  z-index: inherit;
+  max-height: 90%;
+}
+
+.shoppingCartItem__info__divider {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  flex-wrap: wrap;
+}
+
+.shoppingCartItem__info__name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+
+  width: 100%;
+  z-index: inherit;
+}
+.shoppingCartItem__info__flavor {
+  font-size: .8rem;
+  font-weight: 400;
+  margin-bottom: 3px;
+  width: 40%;
+  z-index: inherit;
+
+}
+.shoppingCartItem__info__size {
+  font-size: .8rem;
+  font-weight: 400;
+  margin-bottom: 3px;
+  width: 40%;
+
+  z-index: inherit;
+
+}
+.shoppingCartItem__info__quantity {
+  font-size: .8rem;
+  font-weight: 400;
+  margin-bottom: 3px;
+  width: 40%;
+
+  z-index: inherit;
+
+}
+.shoppingCartItem__info__price {
+
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+  width: 40%;
+
+  z-index: inherit;
+
+}

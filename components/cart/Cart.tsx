@@ -4,21 +4,10 @@ import ShoppingCartItem from './ShoppingCartItem'
 import SubTotal from './SubTotal'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 import CartContextProvider from './CartContext'
-import ActiveProduct from '@components/activeProduct/ActiveProduct'
+import CheckoutButton from './CheckoutButton'
 
 const Cart = () => {
-  const {
-    activeCart,
-    cart,
-    activeCategory,
-    activeSizes,
-    activeFlavors,
-    selectedSize,
-  } = useLocalContext()
-
-  const UniqueCart = () => {
-    return [...new Set(cart)]
-  }
+  const { activeCart, cart, setCheckingOut, checkingOut } = useLocalContext()
 
   const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
     const duplicates = uniqueCart.map((item) => {
@@ -28,30 +17,36 @@ const Cart = () => {
   }
 
   return (
-    <CartContextProvider>
-      {activeCart ? (
-        <div className={styles.cart}>
-          <h2 className={styles.cart__title}>Shopping Cart</h2>
-          {UniqueCart().map((item, index) => {
-            return (
-              <ShoppingCartItem
-                index={index}
-                item={item}
-                key={index}
-                quantity={DuplicatesInCart(UniqueCart())[index]}
-              />
-            )
-          })}
-          <SubTotal />
-        </div>
-      ) : selectedSize !== undefined && activeFlavors.length > 0 ? (
-        <div className={styles.ActiveProduct} id="ActiveProduct">
-          <ActiveProduct />
-        </div>
-      ) : (
-        <></>
-      )}
-    </CartContextProvider>
+    <div className={styles.cart} id="cartPopOut">
+      <CartContextProvider>
+        {activeCart ? (
+          <>
+            <h2 className={styles.cart__title}>Cart</h2>
+            {[...new Set(cart)].map((item, index) => {
+              return (
+                <ShoppingCartItem
+                  index={index}
+                  item={item}
+                  key={index}
+                  quantity={
+                    DuplicatesInCart([...new Set(cart)])[index] === undefined
+                      ? 0
+                      : DuplicatesInCart([...new Set(cart)])[index]
+                  }
+                />
+              )
+            })}
+            <CheckoutButton
+              setCheckingOut={setCheckingOut}
+              checkingOut={checkingOut}
+            />
+            <SubTotal />
+          </>
+        ) : (
+          <></>
+        )}
+      </CartContextProvider>
+    </div>
   )
 }
 

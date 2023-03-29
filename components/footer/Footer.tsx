@@ -7,7 +7,7 @@ const Footer = () => {
       <div className={styles.gridLayout}>
         <div className={styles.footerLeft}>
           <h2 className={styles.footerTitle}>
-            Your favorite old-school-cool Candy Shoppe
+            your favorite old-school-cool candy shoppe
           </h2>
           <h3 className={styles.footerSubtitle}>106 South Main Street Lamar, CO</h3>
         </div>

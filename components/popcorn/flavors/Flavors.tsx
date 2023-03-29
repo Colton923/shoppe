@@ -30,8 +30,6 @@ const Flavors = () => {
                 type="button"
                 onClick={() => {
                   localFlavors.push(flavor)
-                  console.log(localFlavors)
-                  console.log(activeSizes)
                   if (
                     localFlavors.length ===
                     (activeSizes.filter((size) => size.includes('Gal')).length > 0

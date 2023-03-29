@@ -3,16 +3,9 @@ const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const priceId = req.body.priceID
-
     try {
       const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            price: priceId,
-            quantity: 1,
-          },
-        ],
+        line_items: req.body.line_items,
         mode: 'payment',
         success_url: 'http://localhost:3000/?success=true',
         cancel_url: 'http://localhost:3000/?canceled=true',

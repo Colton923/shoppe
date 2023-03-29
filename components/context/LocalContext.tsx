@@ -5,6 +5,7 @@ import { FlavorNames } from '../../types/PopcornFlavors'
 import { SizeNames } from '../../types/PopcornSizes'
 import { StripeProduct } from '../../types/stripe/StripeProduct'
 import styles from './Context.module.scss'
+import type { StripeCart } from '@components/popcorn/cart/Cart'
 
 export type FilteredFlavors = {
   Regular: FlavorNames[]
@@ -28,6 +29,9 @@ type LocalContextScope = {
   quantity: number
   localPrice: number
   filteredFlavors: FilteredFlavors
+  checkingOut: boolean
+  stripeCart: StripeCart[]
+  setStripeCart: (stripeCart: StripeCart[]) => void
   setFilteredFlavors: (filteredFlavors: FilteredFlavors) => void
   setSizes: (sizes: SizeNames[]) => void
   setFlavors: (flavors: FlavorNames[]) => void
@@ -39,8 +43,7 @@ type LocalContextScope = {
   setSelectedSize: (size: SizeNames | undefined) => void
   setProductFound: (product: StripeProduct | undefined) => void
   setQuantity: (quantity: number) => void
-  activeCategory: string
-  setActiveCategory: (category: string) => void
+  setCheckingOut: (checkingOut: boolean) => void
 }
 interface Props {
   children: React.ReactNode
@@ -56,7 +59,9 @@ export const LocalContextProvider = (props: Props) => {
   const [activeSizes, setActiveSizes] = useState<SizeNames[]>([])
   const [cart, setCart] = useState<StripeProduct[]>([])
   const [activeFlavors, setActiveFlavors] = useState<FlavorNames[]>([])
-  const [selectedSize, setSelectedSize] = useState<SizeNames | undefined>(undefined)
+  const [selectedSize, setSelectedSize] = useState<SizeNames | undefined>(
+    'Small Bag'
+  )
   const [quantity, setQuantity] = useState<number>(1)
   const [localPrice, setLocalPrice] = useState<number>(0)
   const [products, setProducts] = useState<StripeProduct[]>([])
@@ -69,14 +74,44 @@ export const LocalContextProvider = (props: Props) => {
     Premium: [],
   })
   const [activeCart, setActiveCart] = useState<boolean>(false)
-  const [activeCategory, setActiveCategory] = useState<string>('')
+  const [checkingOut, setCheckingOut] = useState<boolean>(false)
+
+  const UniqueCart = () => {
+    return [...new Set(cart)]
+  }
+
+  const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
+    const duplicates = uniqueCart.map((item) => {
+      return cart.filter((cartItem) => cartItem === item).length
+    })
+    return duplicates
+  }
+
+  const MakeCart = () => {
+    const newCart = UniqueCart()
+    const duplicates = DuplicatesInCart(newCart)
+    const stripeCart: StripeCart[] = []
+    newCart.forEach((item, index) => {
+      stripeCart.push({
+        item: item,
+        quantity: duplicates[index],
+      })
+    })
+    return stripeCart
+  }
+
+  const [stripeCart, setStripeCart] = useState<StripeCart[]>(MakeCart())
+
+  useEffect(() => {
+    setStripeCart(MakeCart())
+  }, [cart, activeCart, checkingOut])
 
   useEffect(() => {
     if (!activeProduct) return
     if (!activeProduct.metadata) return
     if (!activeProduct.metadata.retailPrice) return
     setLocalPrice(parseInt(activeProduct.metadata.retailPrice) * quantity)
-  }, [activeProduct, quantity, selectedSize])
+  }, [activeProduct, quantity, selectedSize, activeFlavors])
 
   useEffect(() => {
     if (!products) return
@@ -110,22 +145,21 @@ export const LocalContextProvider = (props: Props) => {
       })
       setProductFound(foundProduct)
     }
-  }, [activeFlavors, selectedSize, products])
+  }, [activeFlavors, selectedSize, products, activeFlavors])
 
   useEffect(() => {
     const ShoppingCartOverlay = document.getElementById('cartOverlay')
     if (!ShoppingCartOverlay) return
-    if (activeCart) {
+    if (activeCart && !checkingOut) {
       ShoppingCartOverlay.classList.add(styles.allowCartOverlay)
     } else {
       ShoppingCartOverlay.classList.remove(styles.allowCartOverlay)
     }
-  }, [activeCart])
+  }, [activeCart, checkingOut, cart, setActiveCart])
 
   const AddButton = (quantity: number) => {
     setActiveFlavors([])
     setActiveSizes([])
-    console.log('cart before: ', cart)
     if (!activeProduct || quantity === 0) return
     for (let i = 0; i < quantity; i++) {
       cart.push(activeProduct)
@@ -134,9 +168,7 @@ export const LocalContextProvider = (props: Props) => {
     setQuantity(1)
     setProductFound(undefined)
     setSelectedSize(undefined)
-    setActiveCategory('')
     setActiveCart(true)
-    console.log('cart after: ', cart)
   }
 
   const contextValue = useMemo(
@@ -153,6 +185,8 @@ export const LocalContextProvider = (props: Props) => {
       quantity,
       localPrice,
       filteredFlavors,
+      checkingOut,
+      setCheckingOut,
       setFilteredFlavors,
       setSizes,
       setFlavors,
@@ -166,7 +200,8 @@ export const LocalContextProvider = (props: Props) => {
       setQuantity,
       activeCart,
       setActiveCart,
-      activeCategory,
+      stripeCart,
+      setStripeCart,
     }),
     [
       activeFlavors,
@@ -179,6 +214,7 @@ export const LocalContextProvider = (props: Props) => {
       sizes,
       quantity,
       localPrice,
+      checkingOut,
       setLocalPrice,
       setActiveFlavors,
       setActiveSizes,
@@ -193,7 +229,6 @@ export const LocalContextProvider = (props: Props) => {
       setProducts,
       activeCart,
       setActiveCart,
-      activeCategory,
     ]
   )
 

@@ -1,13 +1,19 @@
+'use client'
+
 import styles from './Category.module.scss'
 import type { SizeNames } from 'types/PopcornSizes'
 import { useLocalContext } from '@components/context/LocalContext'
-
-/*
- * This component knows the container (tin, box, bag) and the flavor ()
- */
+import ActiveProduct from '../activeProduct/ActiveProduct'
+import { useEffect } from 'react'
 
 const Category = () => {
-  const { activeSizes, setSelectedSize } = useLocalContext()
+  const { activeSizes, setSelectedSize, selectedSize } = useLocalContext()
+
+  useEffect(() => {
+    if (!selectedSize) return
+    if (activeSizes.includes(selectedSize)) return
+    setSelectedSize(activeSizes[0])
+  }, [])
 
   return (
     <div className={styles.category}>
@@ -19,14 +25,15 @@ const Category = () => {
         onChange={(e) => {
           setSelectedSize(e.target.value as SizeNames)
         }}
+        value={selectedSize}
       >
-        <option value="">Select a Size</option>
         {activeSizes.map((size: SizeNames) => (
           <option key={size} value={size}>
             {size}
           </option>
         ))}
       </select>
+      <ActiveProduct />
     </div>
   )
 }

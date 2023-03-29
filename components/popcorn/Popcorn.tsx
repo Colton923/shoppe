@@ -12,18 +12,34 @@ const PopcornComponent = () => {
     products,
     flavors,
     sizes,
-    activeSizes,
     activeFlavors,
     setActiveFlavors,
-    activeCategory,
+    activeSizes,
+    setSelectedSize,
+    selectedSize,
+    checkingOut,
+    setCheckingOut,
   } = useLocalContext()
   Static()
 
   if (!products || flavors.length === 0 || sizes.length === 0) return null
-
   return (
     <div className={styles.wrapper}>
-      {activeSizes.length === 0 ? (
+      {checkingOut ? (
+        <>
+          <div
+            className={styles.back}
+            onClick={() => {
+              setCheckingOut(false)
+              setSelectedSize('Small Box')
+              setSelectedSize(selectedSize)
+            }}
+          >
+            <span>Back</span>
+          </div>
+          <Cart />
+        </>
+      ) : activeSizes.length === 0 ? (
         <Sizes />
       ) : activeFlavors.length === 0 ? (
         <>
@@ -32,21 +48,20 @@ const PopcornComponent = () => {
           </div>
           <Flavors />
         </>
-      ) : activeCategory === '' ? (
+      ) : activeSizes.length > 0 && activeFlavors.length > 0 ? (
         <>
-          <div className={styles.back} onClick={() => setActiveFlavors([])}>
+          <div
+            className={styles.back}
+            onClick={() => {
+              setSelectedSize(selectedSize)
+              setActiveFlavors([])
+            }}
+          >
             <span>Back</span>
           </div>
           <Category />
         </>
-      ) : (
-        <>
-          <div className={styles.back} onClick={() => setActiveFlavors([])}>
-            <span>Back</span>
-          </div>
-          <Cart />
-        </>
-      )}
+      ) : null}
     </div>
   )
 }
