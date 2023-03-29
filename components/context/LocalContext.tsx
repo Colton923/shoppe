@@ -44,6 +44,7 @@ type LocalContextScope = {
   setProductFound: (product: StripeProduct | undefined) => void
   setQuantity: (quantity: number) => void
   setCheckingOut: (checkingOut: boolean) => void
+  Checkout: () => Promise<void>
 }
 interface Props {
   children: React.ReactNode
@@ -158,13 +159,13 @@ export const LocalContextProvider = (props: Props) => {
   }, [activeCart, checkingOut, cart, setActiveCart])
 
   const AddButton = (quantity: number) => {
-    setActiveFlavors([])
-    setActiveSizes([])
     if (!activeProduct || quantity === 0) return
+    const newCart = [...cart]
+
     for (let i = 0; i < quantity; i++) {
-      cart.push(activeProduct)
+      newCart.push(activeProduct)
     }
-    setCart(cart)
+    setCart(newCart)
     setQuantity(1)
     setProductFound(undefined)
     setSelectedSize(undefined)

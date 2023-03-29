@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(req.body.line_items)
+
   if (req.method === 'POST') {
     try {
       const session = await stripe.checkout.sessions.create({

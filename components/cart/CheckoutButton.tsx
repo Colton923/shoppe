@@ -1,28 +1,28 @@
 import styles from './Cart.module.scss'
-import { useCartContext } from './CartContext'
+import type { CartProps } from './Cart'
+import { useLocalContext } from '@components/context/LocalContext'
 
-interface CheckoutButtonProps {
+interface CheckoutButtonProps extends CartProps {
   setCheckingOut: (checkingOut: boolean) => void
   checkingOut: boolean
 }
 
 const CheckoutButton = (props: CheckoutButtonProps) => {
-  const { setCheckingOut, checkingOut } = props
-  const { Checkout } = useCartContext()
+  const { setCheckingOut, checkingOut, CheckoutFn } = props
+  const { stripeCart } = useLocalContext()
 
   return (
     <div className={styles.checkoutButton}>
       <input
         className={styles.checkoutButton__button}
         type="button"
-        value="Checkout"
+        value={CheckoutFn ? 'Pay' : 'Checkout'}
         onClick={() => {
-          Checkout()
           setCheckingOut(!checkingOut)
+          CheckoutFn ? CheckoutFn(stripeCart) : null
         }}
       />
     </div>
   )
 }
-
 export default CheckoutButton

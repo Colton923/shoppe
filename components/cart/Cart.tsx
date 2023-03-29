@@ -5,8 +5,14 @@ import SubTotal from './SubTotal'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 import CartContextProvider from './CartContext'
 import CheckoutButton from './CheckoutButton'
+import type { StripeCart } from '@components/popcorn/cart/Cart'
 
-const Cart = () => {
+export interface CartProps {
+  CheckoutFn?: (props: StripeCart[]) => Promise<void>
+}
+
+const Cart = (props: CartProps) => {
+  const { CheckoutFn } = props
   const { activeCart, cart, setCheckingOut, checkingOut } = useLocalContext()
 
   const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
@@ -21,7 +27,7 @@ const Cart = () => {
       <CartContextProvider>
         {activeCart ? (
           <>
-            <h2 className={styles.cart__title}>Cart</h2>
+            <h2 className={styles.cart__title}>{CheckoutFn ? '' : 'Cart'}</h2>
             {[...new Set(cart)].map((item, index) => {
               return (
                 <ShoppingCartItem
@@ -33,14 +39,16 @@ const Cart = () => {
                       ? 0
                       : DuplicatesInCart([...new Set(cart)])[index]
                   }
+                  CheckoutFn={CheckoutFn}
                 />
               )
             })}
             <CheckoutButton
               setCheckingOut={setCheckingOut}
               checkingOut={checkingOut}
+              CheckoutFn={CheckoutFn}
             />
-            <SubTotal />
+            <SubTotal CheckoutFn={CheckoutFn} />
           </>
         ) : (
           <></>

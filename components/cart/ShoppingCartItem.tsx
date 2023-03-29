@@ -4,8 +4,9 @@ import type { StripeProduct } from 'types/stripe/StripeProduct'
 import intToCash from '@utils/intToCash'
 import PopcornNamer from '@utils/PopcornNamer'
 import { useCartContext } from './CartContext'
+import type { CartProps } from './Cart'
 
-type ShoppingCartItemProps = {
+interface ShoppingCartItemProps extends CartProps {
   item: StripeProduct
   index: number
   quantity: number
@@ -14,7 +15,7 @@ type ShoppingCartItemProps = {
 const ShoppingCartItem: (props: ShoppingCartItemProps) => JSX.Element = (
   props: ShoppingCartItemProps
 ) => {
-  const { item, index, quantity } = props
+  const { item, index, quantity, CheckoutFn } = props
   const { activeItems, CheckItemInCart } = useCartContext()
   const { metadata } = { ...item }
   if (!metadata) return <></>
@@ -24,16 +25,18 @@ const ShoppingCartItem: (props: ShoppingCartItemProps) => JSX.Element = (
 
   return (
     <div className={styles.shoppingCartItem}>
-      <div className={styles.selectedActive}>
-        <input
-          type="checkbox"
-          className={styles.selectedActive__checkbox}
-          checked={activeItems[index]}
-          onChange={() => {
-            CheckItemInCart(index)
-          }}
-        />
-      </div>
+      {!CheckoutFn && (
+        <div className={styles.selectedActive}>
+          <input
+            type="checkbox"
+            className={styles.selectedActive__checkbox}
+            checked={activeItems[index]}
+            onChange={() => {
+              CheckItemInCart(index)
+            }}
+          />
+        </div>
+      )}
       <div className={styles.shoppingCartItem__image}>
         {images && images[0] && (
           <Image src={images[0]} alt={name} width={125} height={125} />

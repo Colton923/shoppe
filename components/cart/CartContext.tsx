@@ -5,6 +5,8 @@ import { useLocalContext } from '@components/context/LocalContext'
 import intToCash from '@utils/intToCash'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 import styles from './Cart.module.scss'
+import Checkout from '@components/popcorn/Checkout'
+
 type CartContextScope = {
   activeItems: boolean[]
   setActiveItems: (activeItems: boolean[]) => void
@@ -14,7 +16,6 @@ type CartContextScope = {
   setUniqueCart: (uniqueCart: StripeProduct[]) => void
   setDuplicatesInCart: (duplicatesInCart: number[]) => void
   CheckItemInCart: (index: number) => void
-  Checkout: () => void
 }
 interface Props {
   children: React.ReactNode
@@ -25,10 +26,9 @@ export const CartContext = createContext<CartContextScope | null>(null)
 export const CartContextProvider = (props: Props) => {
   const { children } = props
   const [activeItems, setActiveItems] = useState<boolean[]>([])
-  const { cart, setCart, activeCart } = useLocalContext()
+  const { cart, setCart, activeCart, stripeCart } = useLocalContext()
   const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
   const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
-
   const UniqueCart = () => {
     return [...new Set(cart)]
   }
@@ -80,16 +80,6 @@ export const CartContextProvider = (props: Props) => {
     setActiveItems(newActiveItems)
   }
 
-  const Checkout = () => {
-    const newCart: StripeProduct[] = []
-    cart.forEach((item, index) => {
-      if (activeItems[index]) {
-        newCart.push(item)
-      }
-    })
-    setCart(newCart)
-  }
-
   const contextValue: CartContextScope = useMemo(
     () => ({
       activeItems,
@@ -100,7 +90,6 @@ export const CartContextProvider = (props: Props) => {
       setUniqueCart,
       setDuplicatesInCart,
       CheckItemInCart,
-      Checkout,
     }),
     [
       activeItems,
@@ -110,6 +99,7 @@ export const CartContextProvider = (props: Props) => {
       duplicatesInCart,
       setUniqueCart,
       setDuplicatesInCart,
+      CheckItemInCart,
     ]
   )
 
