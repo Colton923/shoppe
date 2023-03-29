@@ -26,12 +26,14 @@ const Navbar = () => {
             Shoppe
           </h2>
           <h2 className={styles.fancyText}>
-            <Link className={styles.textLink} href={'email@email.com'}>
-              email@email.com
-            </Link>
-            <Link className={styles.textLink} href={'123-1234-1234'}>
-              123-1234-1234
-            </Link>
+            <Link
+              className={styles.textLink}
+              href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}}`}
+            ></Link>
+            <Link
+              className={styles.textLink}
+              href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
+            ></Link>
           </h2>
         </div>
         <span></span>
