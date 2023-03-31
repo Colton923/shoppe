@@ -15,8 +15,6 @@ export type FilteredFlavors = {
 }
 
 type LocalContextScope = {
-  activeCart: boolean
-  setActiveCart: (activeCart: boolean) => void
   AddButton: (quantity: number) => void
   activeFlavors: FlavorNames[]
   activeProduct: StripeProduct | undefined
@@ -44,7 +42,8 @@ type LocalContextScope = {
   setProductFound: (product: StripeProduct | undefined) => void
   setQuantity: (quantity: number) => void
   setCheckingOut: (checkingOut: boolean) => void
-  Checkout: () => Promise<void>
+  localSizes: SizeNames[]
+  setLocalSizes: (sizes: SizeNames[]) => void
 }
 interface Props {
   children: React.ReactNode
@@ -74,8 +73,8 @@ export const LocalContextProvider = (props: Props) => {
     Candy: [],
     Premium: [],
   })
-  const [activeCart, setActiveCart] = useState<boolean>(false)
   const [checkingOut, setCheckingOut] = useState<boolean>(false)
+  const [localSizes, setLocalSizes] = useState<SizeNames[]>([])
 
   const UniqueCart = () => {
     return [...new Set(cart)]
@@ -104,10 +103,6 @@ export const LocalContextProvider = (props: Props) => {
   const [stripeCart, setStripeCart] = useState<StripeCart[]>(MakeCart())
 
   useEffect(() => {
-    setStripeCart(MakeCart())
-  }, [cart, activeCart, checkingOut])
-
-  useEffect(() => {
     if (!activeProduct) return
     if (!activeProduct.metadata) return
     if (!activeProduct.metadata.retailPrice) return
@@ -116,6 +111,12 @@ export const LocalContextProvider = (props: Props) => {
 
   useEffect(() => {
     if (!products) return
+
+    const effectiveSize = selectedSize
+      ? localSizes.includes(selectedSize)
+        ? selectedSize
+        : localSizes[0]
+      : localSizes[0]
     setLocalPrice(
       parseInt(
         products.find((product) => {
@@ -125,38 +126,58 @@ export const LocalContextProvider = (props: Props) => {
           ) {
             return false
           }
-          if (product.metadata?.size !== selectedSize) {
+          if (product.metadata?.size !== effectiveSize) {
             return false
           }
           return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
         })?.metadata?.retailPrice ?? '0'
       )
     )
-    if (activeFlavors.length === 1) {
-      const foundProduct = products.find((product) => {
-        if (
-          product.metadata?.flavor === undefined ||
-          product.metadata?.size === undefined
-        ) {
-          return false
-        }
-        if (product.metadata?.size !== selectedSize) return false
+    const foundProduct = products.find((product) => {
+      if (
+        product.metadata?.flavor === undefined ||
+        product.metadata?.size === undefined
+      ) {
+        return false
+      }
+      if (product.metadata?.size !== effectiveSize) return false
 
-        return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
-      })
-      setProductFound(foundProduct)
-    }
-  }, [activeFlavors, selectedSize, products, activeFlavors])
+      return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
+    })
+    setProductFound(foundProduct)
+  }, [activeFlavors, selectedSize, products, activeFlavors, setActiveFlavors])
 
   useEffect(() => {
     const ShoppingCartOverlay = document.getElementById('cartOverlay')
-    if (!ShoppingCartOverlay) return
-    if (activeCart && !checkingOut) {
-      ShoppingCartOverlay.classList.add(styles.allowCartOverlay)
-    } else {
-      ShoppingCartOverlay.classList.remove(styles.allowCartOverlay)
+
+    const ClickOffOverlayHandler = (e: MouseEvent) => {
+      const overlayDiv = document.getElementById('cartOverlay')
+      const pageContentDiv = document.getElementById('pageContent')
+      if (!overlayDiv) return
+      if (!pageContentDiv) return
+      if (overlayDiv.classList.contains(styles.allowCartOverlay)) {
+        if (overlayDiv.contains(e.target as Node)) return
+        overlayDiv.classList.remove(styles.allowCartOverlay)
+        document.body.removeEventListener('click', ClickOffOverlayHandler)
+      }
     }
-  }, [activeCart, checkingOut, cart, setActiveCart])
+
+    setStripeCart(MakeCart())
+
+    if (!ShoppingCartOverlay) return
+    if (ShoppingCartOverlay.classList.contains(styles.allowCartOverlay)) {
+      ShoppingCartOverlay.classList.remove(styles.allowCartOverlay)
+    } else {
+      ShoppingCartOverlay.classList.add(styles.allowCartOverlay)
+      const pageContentDiv = document.getElementById('pageContent')
+      if (!pageContentDiv) return
+      document.body.addEventListener('click', ClickOffOverlayHandler)
+    }
+
+    return () => {
+      document.body.removeEventListener('click', ClickOffOverlayHandler)
+    }
+  }, [checkingOut, cart])
 
   const AddButton = (quantity: number) => {
     if (!activeProduct || quantity === 0) return
@@ -169,7 +190,8 @@ export const LocalContextProvider = (props: Props) => {
     setQuantity(1)
     setProductFound(undefined)
     setSelectedSize(undefined)
-    setActiveCart(true)
+    setActiveSizes([])
+    setActiveFlavors([])
   }
 
   const contextValue = useMemo(
@@ -199,10 +221,10 @@ export const LocalContextProvider = (props: Props) => {
       setSelectedSize,
       setProductFound,
       setQuantity,
-      activeCart,
-      setActiveCart,
       stripeCart,
       setStripeCart,
+      localSizes,
+      setLocalSizes,
     }),
     [
       activeFlavors,
@@ -228,8 +250,8 @@ export const LocalContextProvider = (props: Props) => {
       setSizes,
       setFlavors,
       setProducts,
-      activeCart,
-      setActiveCart,
+      localSizes,
+      setLocalSizes,
     ]
   )
 

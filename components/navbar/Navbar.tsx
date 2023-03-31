@@ -1,13 +1,11 @@
-'use client'
-
 import Link from 'next/link'
 import styles from './Navbar.module.scss'
+import stylez from '@components/context/Context.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
 import { useLocalContext } from '@components/context/LocalContext'
 
 const Navbar = () => {
-  const { activeCart, setActiveCart } = useLocalContext()
   return (
     <>
       <div className={styles.navBackground}>
@@ -82,7 +80,9 @@ const Navbar = () => {
             height={35}
             className={styles.cartIcon}
             onClick={() => {
-              setActiveCart(!activeCart)
+              document
+                .getElementById('cartOverlay')
+                ?.classList.toggle(stylez.allowCartOverlay)
             }}
           />
         </div>

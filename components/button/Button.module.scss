@@ -1,0 +1,71 @@
+.button{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  padding: 6px;
+  position: relative;
+  background-color: rgba(250,250,250,1);
+  border-top: 1px solid rgba(100, 100, 100, 0.9);
+  border-left: 2px solid rgba(100, 100, 100, 0.9);
+  border-bottom: 5px solid rgba(220,220,220, .9);
+  border-right: 5px solid rgba(220,220,220, .9);
+  color: black;
+  border-radius: 30px;
+  box-shadow: -1px -1px 2px 1px rgba(100, 100, 100, 0.9);
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 9999;
+  min-width: 110px;
+  min-height: 32px;
+  &:hover {
+    background-color: rgba(242,242,242,1);
+    border-top: 4px solid rgba(242, 242, 242, 1);
+    border-left: 5px solid rgba(242, 242, 242, 1);
+    border-bottom: 2px solid rgba(160,160,160, .8);
+    border-right: 2px solid rgba(160,160,160, .8);
+    box-shadow: -1px -1px 1px 0px rgba(255, 255, 255, 0.4), 1px 1px 1px 0px rgba(100, 100, 100, 0.9);
+  }
+  &:active {
+    background-color: rgba(242,242,242,1);
+    border-top: 4px solid rgba(242, 242, 242, 1);
+    border-left: 4px solid rgba(242, 242, 242, 1);
+    border-bottom: 3px solid rgba(160,160,160, .8);
+    border-right: 2px solid rgba(160,160,160, .8);
+    box-shadow: -1px -1px 1px 0px rgba(255, 255, 255, 0.4), 1px 1px 1px 0px rgba(100, 100, 100, 0.9);
+  }
+}
+
+.button__backdrop {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  box-shadow: 2px 3px 3px 0px rgba(180,180,180,.8), -1px -1px 1px 0px rgba(120, 120, 120, 0.8), inset 3px 3px 1px 0px rgba(230,230,230,.8);
+  z-index: -1;
+}
+
+.button__button{
+  display: flex;
+  position: relative;
+  font-size: 1.5rem;
+  font-family: 'Caveat brush', cursive;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  height: 100%;
+  text-shadow: 1px 1px 1px rgba(140, 140, 140, 0.9);
+  &:hover {
+    cursor: pointer;
+  }
+}

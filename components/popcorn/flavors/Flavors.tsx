@@ -1,15 +1,39 @@
+'use client'
+
 import styles from './Flavors.module.scss'
 import type { FlavorNames } from 'types/PopcornFlavors'
 import { useLocalContext } from '@components/context/LocalContext'
 import * as Images from './Images'
+import Tin from './tin/Tin'
+import { useState } from 'react'
 
 const Flavors = () => {
   const { activeFlavors, filteredFlavors, activeSizes, setActiveFlavors } =
     useLocalContext()
-  const localFlavors: FlavorNames[] = []
+  const [localFlavors, setLocalFlavors] = useState<FlavorNames[]>([])
+
+  const HandleSelectFlavor = (flavor: FlavorNames) => {
+    if (localFlavors.includes(flavor)) {
+      setLocalFlavors(localFlavors.filter((f) => f !== flavor))
+    } else {
+      setLocalFlavors([...localFlavors, flavor])
+    }
+    if (activeSizes.find((size) => size.includes('Gal'))) {
+      return
+    } else {
+      if (activeFlavors.includes(flavor)) {
+        setActiveFlavors(activeFlavors.filter((f) => f !== flavor))
+      } else {
+        setActiveFlavors([...activeFlavors, flavor])
+      }
+    }
+  }
 
   return (
     <>
+      {activeSizes.find((size) => size.includes('Gal')) && (
+        <Tin localFlavors={localFlavors} />
+      )}
       {Object.entries(filteredFlavors).map(([category]) => (
         <div className={styles.itemsWrapper} key={category}>
           <h2 className={styles.subHeader}>{category}</h2>
@@ -29,21 +53,7 @@ const Flavors = () => {
               <input
                 type="button"
                 onClick={() => {
-                  localFlavors.push(flavor)
-                  if (
-                    localFlavors.length ===
-                    (activeSizes.filter((size) => size.includes('Gal')).length > 0
-                      ? activeSizes.filter((size) => size.includes('1')).length > 0
-                        ? 2
-                        : activeSizes.filter((size) => size.includes('2')).length > 0
-                        ? 3
-                        : activeSizes.filter((size) => size.includes('3')).length > 0
-                        ? 4
-                        : 1
-                      : 1)
-                  ) {
-                    setActiveFlavors(localFlavors)
-                  }
+                  HandleSelectFlavor(flavor)
                 }}
                 className={styles.input}
               />

@@ -7,7 +7,7 @@ import TinImage from '@public/images/Tin.png'
 import Image from 'next/image'
 
 const Sizes = () => {
-  const { setActiveSizes, sizes } = useLocalContext()
+  const { setActiveSizes, sizes, setLocalSizes } = useLocalContext()
   const bagSizes: (typeof sizes)[number][] = sizes.filter((size) =>
     size.includes('Clear Bag')
   ) as (typeof sizes)[number][]
@@ -54,6 +54,7 @@ const Sizes = () => {
           className={styles.button}
           onClick={() => {
             setActiveSizes(boxSizes)
+            setLocalSizes(boxSizes)
           }}
         />
         <Arrow />
@@ -79,6 +80,7 @@ const Sizes = () => {
           className={styles.button}
           onClick={() => {
             setActiveSizes(bagSizes)
+            setLocalSizes(bagSizes)
           }}
         />
         <Arrow />
@@ -104,6 +106,7 @@ const Sizes = () => {
           className={styles.button}
           onClick={() => {
             setActiveSizes(tinSizes)
+            setLocalSizes(tinSizes)
           }}
         />
         <Arrow />

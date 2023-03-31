@@ -4,8 +4,6 @@ import { useMemo, memo, createContext, useContext, useState, useEffect } from 'r
 import { useLocalContext } from '@components/context/LocalContext'
 import intToCash from '@utils/intToCash'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
-import styles from './Cart.module.scss'
-import Checkout from '@components/popcorn/Checkout'
 
 type CartContextScope = {
   activeItems: boolean[]
@@ -26,7 +24,7 @@ export const CartContext = createContext<CartContextScope | null>(null)
 export const CartContextProvider = (props: Props) => {
   const { children } = props
   const [activeItems, setActiveItems] = useState<boolean[]>([])
-  const { cart, setCart, activeCart, stripeCart } = useLocalContext()
+  const { cart, setCart } = useLocalContext()
   const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
   const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
   const UniqueCart = () => {
@@ -44,18 +42,18 @@ export const CartContextProvider = (props: Props) => {
     const newUnique = UniqueCart()
     setUniqueCart(newUnique)
 
-    const newActiveItems = newUnique.map((item) => {
+    const newActiveItems = newUnique.map(() => {
       return true
     })
     setActiveItems(newActiveItems)
 
     setDuplicatesInCart(DuplicatesInCart(newUnique))
-  }, [cart, setCart, activeCart, setActiveItems])
+  }, [cart, setCart, setActiveItems])
 
   const GetSubTotal = () => {
     const subTotal: number[] = []
     let itemTotal = 0
-    cart.forEach((item, index) => {
+    cart.forEach((item) => {
       if (item.metadata?.retailPrice === undefined) return
       if (itemTotal === parseInt(item.metadata?.retailPrice)) return
       itemTotal = parseInt(item.metadata?.retailPrice)

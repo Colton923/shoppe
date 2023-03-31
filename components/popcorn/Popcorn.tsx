@@ -19,6 +19,7 @@ const PopcornComponent = () => {
     selectedSize,
     checkingOut,
     setCheckingOut,
+    setLocalSizes,
   } = useLocalContext()
   Static()
 
@@ -33,6 +34,7 @@ const PopcornComponent = () => {
               setCheckingOut(false)
               setSelectedSize('Small Box')
               setSelectedSize(selectedSize)
+              setLocalSizes(activeSizes)
             }}
           >
             <span>Back</span>
@@ -55,6 +57,7 @@ const PopcornComponent = () => {
             onClick={() => {
               setSelectedSize(selectedSize)
               setActiveFlavors([])
+              setLocalSizes(activeSizes)
             }}
           >
             <span>Back</span>

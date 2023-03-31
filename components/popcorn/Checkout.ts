@@ -9,7 +9,6 @@ const stripePromise = loadStripe(
 
 const Checkout = async (props: StripeCart[]) => {
   const stripeCart = props
-
   const PriceIDs = async () => {
     const res = await fetch('/api/post/stripe/product_ID_to_price_ID', {
       method: 'POST',
@@ -33,8 +32,14 @@ const Checkout = async (props: StripeCart[]) => {
 
     await PriceIDs()
       .then((data) => {
-        console.log('priceID Prices', data)
-        return
+        // data = priceIDs [ 'price_1MioZlHtHKdtig1S3Xabd1Vp', 'price_1MioXUHtHKdtig1SwTXgvBNJ' ]
+        //@ts-ignore
+        return data.map((priceID, index) => {
+          return {
+            price: priceID,
+            quantity: stripeCart[index].quantity,
+          }
+        })
       })
       .then((data) => {
         return {
@@ -44,7 +49,6 @@ const Checkout = async (props: StripeCart[]) => {
       .then((data) => {
         return JSON.stringify(data)
       })
-
       .then((data) => {
         return {
           method: 'POST',
@@ -59,14 +63,13 @@ const Checkout = async (props: StripeCart[]) => {
       })
       .then((res) => res.json())
       .then(async (data) => {
-        return
-        // const id = data.id
-        // const result = await stripe.redirectToCheckout({
-        //   sessionId: id,
-        // })
-        // if (result.error) {
-        //   alert(result.error.message)
-        // }
+        const id = data.id
+        const result = await stripe.redirectToCheckout({
+          sessionId: id,
+        })
+        if (result.error) {
+          alert(result.error.message)
+        }
       })
   } catch (error) {
     console.log(error)

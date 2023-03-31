@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   align-self: center;
@@ -14,7 +14,7 @@
     width: 70%;
   }
   overflow: hidden;
-  margin: 50px 3px 250px 3px;
+  margin: 50px 3px 150px 3px;
   z-index: 4;
   min-height: 100%;
 }
@@ -27,7 +27,7 @@
   text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: 'Caveat', cursive;
+  font-family: 'Caveat Brush', cursive;
   color: var(--caneRed);
   cursor: pointer;
   width: 100px;

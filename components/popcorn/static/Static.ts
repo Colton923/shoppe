@@ -11,7 +11,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 const Static = () => {
   const { setProducts, setFlavors, setSizes, setFilteredFlavors } = useLocalContext()
   useEffect(() => {
-    console.log('render')
+    console.log('rendering static data')
 
     try {
       fetch('/api/get/products', {
