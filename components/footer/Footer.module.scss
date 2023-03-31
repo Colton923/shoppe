@@ -18,11 +18,10 @@
     height: 125px;
   }
 
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   z-index: 1002;
-  min-width: 110px;
 
   border-top: 3px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
