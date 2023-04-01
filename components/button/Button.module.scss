@@ -1,78 +1,52 @@
-@mixin BorderAndShadow($lightColorOne, $lightColorTwo, $darkColorOne, $darkColorTwo, $includeEffects: true) {
+$localButtonLightOne: white;
+$localButtonLightTwo: var(--caneRed);
+$localButtonDarkOne: rgba(139, 0, 0, 1);
+$localButtonDarkTwo: rgba(139, 0, 0, .5);
+
+
+@mixin BorderAndShadow($lightColorOne, $lightColorTwo, $darkColorOne, $darkColorTwo, $includeEffects) {
   background-color: $lightColorOne;
-  border: 5px solid $lightColorTwo;
   border-top: 1px solid $darkColorOne;
   border-left: 2px solid $darkColorOne;
   border-radius: 30px;
-  box-shadow: -1px -1px 2px 1px $darkColorOne;
-
-  @if $includeEffects == true {
+  box-shadow: 1px 1px 2px 1px $darkColorOne;
+  mix-blend-mode: luminosity;
+  @if $includeEffects {
     &:hover {
-      background-color: $darkColorTwo;
-      border-top: 4px solid $lightColorTwo;
-      border-left: 5px solid $lightColorTwo;
-      border-bottom: 2px solid $darkColorTwo;
-      border-right: 2px solid $darkColorTwo;
-      box-shadow: -1px -1px 1px 0px rgba(255, 255, 255, 0.4), 1px 1px 1px 0px $darkColorOne;
+      border-top: 1px solid $lightColorTwo;
+      border-left: 3px solid $lightColorTwo;
+      box-shadow: inset 1px 1px 2px 1px $lightColorOne;
+
     }
     &:active {
-      background-color: $darkColorTwo;
-      border-top: 4px solid $lightColorTwo;
-      border-left: 5px solid $lightColorTwo;
-      border-bottom: 2px solid $darkColorTwo;
-      border-right: 2px solid $darkColorTwo;
-      box-shadow: -1px -1px 1px 0px rgba(255, 255, 255, 0.4), 1px 1px 1px 0px $darkColorOne;
+      border-top: 1px solid $lightColorTwo;
+      border-left: 3px solid $lightColorTwo;
+      box-shadow: inset 1px 1px 2px 1px $lightColorOne;
     }
   }
 }
 
 .button{
-  @include BorderAndShadowAndHover(rgba(250,250,250,1), rgba(100, 100, 100, 0.9), rgba(220,220,220, .9), rgba(242,242,242,1), false);
-  padding: 6px;
-  position: relative;
-  min-width: 110px;
-  min-height: 32px;
-  z-index: 9999;
-
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-
-  color: black;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.button__backdrop {
-  display: flex;
-  position: absolute;
-    top: 0;
-    left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  box-shadow: 2px 3px 3px 0px rgba(180,180,180,.8), -1px -1px 1px 0px rgba(120, 120, 120, 0.8), inset 3px 3px 1px 0px rgba(230,230,230,.8);
-  z-index: -1;
 }
 
 .button__button{
-  display: flex;
-  position: relative;
-  font-size: 1.5rem;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  height: 100%;
-  text-shadow: 1px 1px 1px rgba(140, 140, 140, 0.9);
+  @include BorderAndShadow($localButtonLightOne, $localButtonLightTwo, $localButtonDarkOne, $localButtonDarkTwo, true);
+  font-family: 'Caveat Brush', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--caneRed);
+  cursor: pointer;
+  border-top: 1px solid var(--caneRed);
+  border-right: 1px solid var(--caneRed);
+  border-bottom: 3px solid var(--caneRed);
+  border-left: 1px solid var(--caneRed);
+  border-radius: 20px;
+  margin: 10px;
+  padding: 5px 10px 5px 10px;
+  backdrop-filter: blur(75px);
   &:hover {
-    cursor: pointer;
+    transform: translate(-1px, 2px) scaleY(0.96);
   }
+  background-color: #fff;
 }

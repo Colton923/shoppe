@@ -37,8 +37,12 @@
 .shoppingCartItem__info__divider {
   display: flex;
   justify-content: space-between;
-  text-align: left;
+  text-align: center;
   flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  margin: 10px;
+  width: 100%;
 }
 
 .shoppingCartItem__info__name {
@@ -67,8 +71,8 @@
 
 }
 .shoppingCartItem__info__quantity {
-  font-size: .8rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 300;
   margin-bottom: 3px;
   width: 40%;
 
@@ -78,7 +82,7 @@
 .shoppingCartItem__info__price {
 
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 300;
   margin-bottom: 3px;
   width: 40%;
 
@@ -102,34 +106,47 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--caneBlack);
-  background-color: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(255, 255, 255, 1);
-  border-radius: 50%;
   width: 30px;
   height: 30px;
   margin: 0 5px;
   padding: 0;
-  text-align: center;
-  z-index: 9999;
+  z-index: 9999;  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 3px;
+  backdrop-filter: blur(3px);
+  overflow: hidden;
+
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  text-transform: lowercase;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.9);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
   }
 
   &:active {
     background-color: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-  }
-
-  &:disabled {
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.9);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
   }
 
   &::-webkit-outer-spin-button,

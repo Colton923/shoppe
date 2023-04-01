@@ -12,7 +12,7 @@ const Button = (props: ButtonProps) => {
   const { title, onClick } = props
 
   return (
-    <ButtonContextProvider>
+    <ButtonContextProvider key={title}>
       <Input
         {...{
           title,

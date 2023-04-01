@@ -46,8 +46,6 @@ type Range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 export const ButtonContext = createContext<ButtonContextScope | null>(null)
 
 export const ButtonContextProvider = (props: Props) => {
-  //Variable Land
-
   const { children } = props
   const [active, setActive] = useState(false)
   const [size, setSize] = useState<Pick<Range, number>>([0])
@@ -67,22 +65,6 @@ export const ButtonContextProvider = (props: Props) => {
       9: { r: 255, g: 255, b: 255, a: 0.1 },
     },
   } as Theme)
-  //Function Land
-
-  useEffect(() => {
-    const handleActive = () => {
-      setActive(true)
-      console.log('active', active)
-    }
-
-    window.addEventListener('click', handleActive)
-
-    return () => {
-      window.removeEventListener('click', handleActive)
-    }
-  }, [])
-
-  // Export fun things to context Land
 
   const contextValue: ButtonContextScope = useMemo(
     () => ({

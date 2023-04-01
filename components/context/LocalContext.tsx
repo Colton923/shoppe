@@ -14,6 +14,16 @@ export type FilteredFlavors = {
   Premium: FlavorNames[]
 }
 
+export type Customer = {
+  name: string
+  address: string
+  city: string
+  state: string
+  zip: string
+  email?: string
+  phone?: string
+}
+
 type LocalContextScope = {
   AddButton: (quantity: number) => void
   activeFlavors: FlavorNames[]
@@ -46,6 +56,8 @@ type LocalContextScope = {
   setLocalSizes: (sizes: SizeNames[]) => void
   isCartOverlay: boolean
   setIsCartOverlay: (isCartOverlay: boolean) => void
+  customer: Customer
+  setCustomer: (customer: Customer) => void
 }
 interface Props {
   children: React.ReactNode
@@ -78,6 +90,13 @@ export const LocalContextProvider = (props: Props) => {
   const [checkingOut, setCheckingOut] = useState<boolean>(false)
   const [localSizes, setLocalSizes] = useState<SizeNames[]>([])
   const [isCartOverlay, setIsCartOverlay] = useState<boolean>(false)
+  const [customer, setCustomer] = useState<Customer>({
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+  })
 
   const UniqueCart = () => {
     return [...new Set(cart)]
@@ -232,6 +251,8 @@ export const LocalContextProvider = (props: Props) => {
       setLocalSizes,
       isCartOverlay,
       setIsCartOverlay,
+      customer,
+      setCustomer,
     }),
     [
       activeFlavors,
@@ -263,6 +284,7 @@ export const LocalContextProvider = (props: Props) => {
       setStripeCart,
       isCartOverlay,
       setIsCartOverlay,
+      customer,
     ]
   )
 

@@ -22,6 +22,8 @@ const Cart = (props: CartProps) => {
     return duplicates
   }
 
+  if (cart.length === 0) return null
+
   return (
     <div className={styles.cart} id="cartPopOut">
       <CartContextProvider>

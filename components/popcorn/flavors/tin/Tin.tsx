@@ -44,7 +44,14 @@ const Tin = (props: TinProps) => {
     <div className={styles.tin}>
       <div className={styles.flavorCounter}>
         <h2 className={styles.flavorCounter__title}>Selected Flavors</h2>
-        <h2 className={styles.flavorCounter__count}>{localFlavors.length}</h2>
+        {localFlavors.map((flavor) => (
+          <h2
+            className={styles.flavorCounter__count}
+            key={'selectedFlavor' + flavor}
+          >
+            {flavor}
+          </h2>
+        ))}
       </div>
       <div className={styles.tin__continue}>
         <Button

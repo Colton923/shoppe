@@ -1,4 +1,3 @@
-import styles from './Cart.module.scss'
 import type { CartProps } from './Cart'
 import { useLocalContext } from '@components/context/LocalContext'
 import Button from '@components/button/Button'
@@ -16,23 +15,10 @@ const CheckoutButton = (props: CheckoutButtonProps) => {
     <Button
       title={CheckoutFn ? 'Pay' : 'Checkout'}
       onClick={() => {
-        setCheckingOut(true)
+        setCheckingOut(!checkingOut)
         CheckoutFn ? CheckoutFn(stripeCart) : null
       }}
     />
-
-    // <div className={styles.checkoutButton}>
-    //   <div className={styles.buttonBackdrop}></div>
-    //   <input
-    //     className={styles.checkoutButton__button}
-    //     type="button"
-    //     value={CheckoutFn ? 'Pay' : 'Checkout'}
-    //     onClick={() => {
-    //       setCheckingOut(!checkingOut)
-    //       CheckoutFn ? CheckoutFn(stripeCart) : null
-    //     }}
-    //   />
-    // </div>
   )
 }
 export default CheckoutButton

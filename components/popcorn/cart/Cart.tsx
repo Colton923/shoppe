@@ -5,6 +5,7 @@ import type { StripeProduct } from 'types/stripe/StripeProduct'
 
 import * as subCart from '@components/cart/Cart'
 import Checkout from '../Checkout'
+import { useLocalContext } from '@components/context/LocalContext'
 
 export type StripeCart = {
   item: StripeProduct
@@ -12,32 +13,63 @@ export type StripeCart = {
 }
 
 const Cart = () => {
+  const { customer, setCustomer } = useLocalContext()
+
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>Please Verify your Shipping Address</h2>
       <div className={styles.customerShippingInfo}>
         <div className={styles.customerShippingInfo__name}>
-          <h3>Name</h3>
-          <p>John Doe</p>
+          <h3 className={styles.customerShippingInfo__name__title}>Name</h3>
+          <input
+            type="text"
+            value={customer.name}
+            onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+            placeholder="First and Last Name"
+            className={styles.customerShippingInfo__name__input}
+          />
         </div>
         <div className={styles.customerShippingInfo__address}>
-          <h3>Address</h3>
-          <p>1234 Main St</p>
+          <h3 className={styles.customerShippingInfo__address__title}>Address</h3>
+          <input
+            type="text"
+            value={customer.address}
+            onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
+            placeholder="Street Address"
+            className={styles.customerShippingInfo__address__input}
+          />
         </div>
         <div className={styles.customerShippingInfo__city}>
-          <h3>City</h3>
-          <p>Los Angeles</p>
+          <h3 className={styles.customerShippingInfo__city__title}>City</h3>
+          <input
+            type="text"
+            value={customer.city}
+            onChange={(e) => setCustomer({ ...customer, city: e.target.value })}
+            placeholder="City"
+            className={styles.customerShippingInfo__city__input}
+          />
         </div>
         <div className={styles.customerShippingInfo__state}>
-          <h3>State</h3>
-          <p>CA</p>
+          <h3 className={styles.customerShippingInfo__state__title}>State</h3>
+          <input
+            type="text"
+            value={customer.state}
+            onChange={(e) => setCustomer({ ...customer, state: e.target.value })}
+            placeholder="State"
+            className={styles.customerShippingInfo__state__input}
+          />
         </div>
         <div className={styles.customerShippingInfo__zip}>
-          <h3>Zip</h3>
-          <p>90001</p>
+          <h3 className={styles.customerShippingInfo__zip__title}>Zip</h3>
+          <input
+            type="text"
+            value={customer.zip}
+            onChange={(e) => setCustomer({ ...customer, zip: e.target.value })}
+            placeholder="Zip"
+            className={styles.customerShippingInfo__zip__input}
+          />
         </div>
       </div>
-      <h2 className={styles.title}>Your Order</h2>
       <subCart.default CheckoutFn={Checkout} />
     </div>
   )

@@ -5,11 +5,12 @@
   justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  align-self: center;
   width: 100%;
   align-self: center;
   font-family: 'Lobster Two', cursive;
-
+  position: relative;
+  margin-top: 150px;
+  margin-bottom: 150px;
 }
 
 .category {
@@ -23,6 +24,7 @@
   min-height: 100px;
   min-width: 150px;
   max-width: 600px;
+  max-height: 125px;
   margin: 3px 0 3px 0;
   backdrop-filter: blur(3px);
   border: 2px solid var(--caneBlack);
