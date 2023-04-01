@@ -5,6 +5,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 import Static from './static/Static'
 import Cart from './cart/Cart'
 import Category from './category/Category'
+import Footer from '@components/footer/Footer'
 
 const PopcornComponent = () => {
   const {
@@ -25,7 +26,7 @@ const PopcornComponent = () => {
 
   if (!products || flavors.length === 0 || sizes.length === 0) return null
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} id="wrapper">
       {checkingOut ? (
         <>
           <div
@@ -65,6 +66,7 @@ const PopcornComponent = () => {
           <Category />
         </>
       ) : null}
+      <Footer />
     </div>
   )
 }

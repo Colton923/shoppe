@@ -1,7 +1,6 @@
 @mixin BIGTEXT {
   font-size: 4rem;
   font-weight: 300;
-  font-family: 'Caveat', cursive;
   color: var(--caneBlack);
 }
 
@@ -44,7 +43,6 @@
   margin-left: 5%;
   font-size: 2rem;
   font-weight: 300;
-  font-family: 'Caveat', cursive;
   color: var(--caneBlack);
   border-bottom: 1px solid rgba(200,200,200,1);
 }
@@ -106,7 +104,6 @@
 
   cursor: pointer;
   z-index: 9999;
-  font-family: 'Caveat', cursive;
   max-height: 200px;
 
   width: 100%;
@@ -206,7 +203,6 @@
   justify-content: right;
   align-items: right;
   align-content: right;
-  font-family: 'Caveat', cursive;
 
   text-align: right;
   width: 95%;
@@ -304,7 +300,6 @@
   display: flex;
   position: relative;
   font-size: 1.5rem;
-  font-family: 'Caveat brush', cursive;
   flex-direction: row;
   justify-content: center;
   align-items: center;

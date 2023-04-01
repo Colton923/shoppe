@@ -6,6 +6,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 import Image from 'next/image'
 import PopcornNamer from '@utils/PopcornNamer'
 import intToCash from '@utils/intToCash'
+import Button from '@components/button/Button'
 import { SizeNames } from 'types/PopcornSizes'
 
 interface ActiveProductProps {
@@ -73,14 +74,14 @@ const ActiveProduct = (props: ActiveProductProps) => {
         </div>
       </div>
 
-      <input
-        type="button"
-        value="Add to Cart"
-        onClick={() => {
-          AddButton(localQuantity)
-        }}
-        className={styles.addButton}
-      />
+      <div className={styles.addButton}>
+        <Button
+          title={'Add to Cart'}
+          onClick={() => {
+            AddButton(localQuantity)
+          }}
+        />
+      </div>
     </>
   )
 }

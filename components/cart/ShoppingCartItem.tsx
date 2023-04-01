@@ -12,9 +12,7 @@ interface ShoppingCartItemProps extends CartProps {
   quantity: number
 }
 
-const ShoppingCartItem: (props: ShoppingCartItemProps) => JSX.Element = (
-  props: ShoppingCartItemProps
-) => {
+const ShoppingCartItem = (props: ShoppingCartItemProps) => {
   const { item, index, quantity, CheckoutFn } = props
   const { activeItems, CheckItemInCart } = useCartContext()
   const { metadata } = { ...item }

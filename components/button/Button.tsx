@@ -1,21 +1,25 @@
 import styles from './Button.module.scss'
+import { ButtonContextProvider } from './ButtonContext'
+import Input from './Input'
 
-interface ButtonProps {
+export interface ButtonProps {
   title: string
   onClick: () => void
+  size?: string
 }
 
 const Button = (props: ButtonProps) => {
+  const { title, onClick } = props
+
   return (
-    <div className={styles.button}>
-      <div className={styles.button__backdrop}></div>
-      <input
-        className={styles.button__button}
-        type="button"
-        value={props.title}
-        onClick={props.onClick}
+    <ButtonContextProvider>
+      <Input
+        {...{
+          title,
+          onClick,
+        }}
       />
-    </div>
+    </ButtonContextProvider>
   )
 }
 export default Button

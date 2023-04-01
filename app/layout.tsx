@@ -1,5 +1,6 @@
 import '../styles/globals.scss'
 import Diamonds from '../components/svgs/Diamonds'
+import styles from '@styles/Home.module.scss'
 
 interface Props {
   children: React.ReactNode
@@ -20,7 +21,9 @@ export default async function RootLayout({ children }: Props) {
       <body>
         <main>
           <Diamonds />
-          {children}
+          <div className={styles.pageContent} id={'pageContent'}>
+            {children}
+          </div>
         </main>
       </body>
     </html>

@@ -31,6 +31,7 @@ const Category = () => {
         activeSize={selectedSize ? selectedSize : localSizes[0]}
         activePrice={localPrice}
         activeFlavors={activeFlavors}
+        key={selectedSize}
       />
     </div>
   )

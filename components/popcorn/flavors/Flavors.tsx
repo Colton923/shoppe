@@ -5,7 +5,7 @@ import type { FlavorNames } from 'types/PopcornFlavors'
 import { useLocalContext } from '@components/context/LocalContext'
 import * as Images from './Images'
 import Tin from './tin/Tin'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Flavors = () => {
   const { activeFlavors, filteredFlavors, activeSizes, setActiveFlavors } =

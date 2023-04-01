@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const Footer = () => {
   return (
-    <div className={styles.footer}>
+    <div className={styles.footer} id={'footer'}>
       <div className={styles.gridLayout}>
         <div className={styles.footerLeft}>
           <h2 className={styles.footerTitle}>
