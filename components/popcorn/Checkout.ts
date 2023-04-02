@@ -7,8 +7,14 @@ const stripePromise = loadStripe(
     : ''
 )
 
-const Checkout = async (props: StripeCart[]) => {
-  const stripeCart = props
+export interface CheckoutProps {
+  stripeCart: StripeCart[]
+  customer: any
+}
+
+const Checkout = async (props: CheckoutProps) => {
+  const { stripeCart, customer } = { ...props }
+  console.log('customer', customer)
   const PriceIDs = async () => {
     const res = await fetch('/api/post/stripe/product_ID_to_price_ID', {
       method: 'POST',

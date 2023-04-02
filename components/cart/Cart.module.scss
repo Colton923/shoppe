@@ -104,10 +104,10 @@
 
 .shoppingCartItem {
   position: relative;
-  margin: 10px;
+  margin: 10px auto 10px auto;
   padding: 10px;
   max-height: 200px;
-  width: 95%;
+  width: 85%;
   height: 100%;
   z-index: 9999;
   border-radius: 30px;
@@ -339,5 +339,22 @@
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+.cartItemsScroller {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0px;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+
+  //hide all scrollbars
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }

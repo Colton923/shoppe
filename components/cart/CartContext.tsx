@@ -73,9 +73,10 @@ export const CartContextProvider = (props: Props) => {
   }
 
   const CheckItemInCart = (index: number) => {
-    const newActiveItems = [...activeItems]
-    newActiveItems[index] = !newActiveItems[index]
-    setActiveItems(newActiveItems)
+    //Did not get this going for version 1
+    // const newActiveItems = [...activeItems]
+    // newActiveItems[index] = !newActiveItems[index]
+    // setActiveItems(newActiveItems)
   }
 
   const contextValue: CartContextScope = useMemo(

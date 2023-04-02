@@ -5,7 +5,7 @@ import type { FlavorNames } from 'types/PopcornFlavors'
 import { useLocalContext } from '@components/context/LocalContext'
 import * as Images from './Images'
 import Tin from './tin/Tin'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const Flavors = () => {
   const { activeFlavors, filteredFlavors, activeSizes, setActiveFlavors } =
@@ -31,6 +31,9 @@ const Flavors = () => {
 
   return (
     <>
+      <h1 className={styles.title}>
+        Pick any of the flavors below. Tins can hold up to 4 flavors.
+      </h1>
       {activeSizes.find((size) => size.includes('Gal')) && (
         <Tin localFlavors={localFlavors} />
       )}
@@ -47,9 +50,7 @@ const Flavors = () => {
               }
             >
               {Images.Images({ name: flavor })}
-              <div className={styles.positionFlavorTitle}>
-                <h2 className={styles.flavorTitle}>{flavor}</h2>
-              </div>
+              <h2 className={styles.flavorTitle}>{flavor}</h2>
               <input
                 type="button"
                 onClick={() => {

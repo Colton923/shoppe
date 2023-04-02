@@ -6,9 +6,10 @@ import type { StripeProduct } from 'types/stripe/StripeProduct'
 import CartContextProvider from './CartContext'
 import CheckoutButton from './CheckoutButton'
 import type { StripeCart } from '@components/popcorn/cart/Cart'
+import type { CheckoutProps } from '@components/popcorn/Checkout'
 
 export interface CartProps {
-  CheckoutFn?: (props: StripeCart[]) => Promise<void>
+  CheckoutFn?: (props: CheckoutProps) => Promise<void>
 }
 
 const Cart = (props: CartProps) => {
@@ -22,27 +23,29 @@ const Cart = (props: CartProps) => {
     return duplicates
   }
 
-  if (cart.length === 0) return null
+  if (cart.length === 0) return <>Cart: Empty</>
 
   return (
     <div className={styles.cart} id="cartPopOut">
       <CartContextProvider>
         <h2 className={styles.cart__title}>{CheckoutFn ? '' : 'Cart'}</h2>
-        {[...new Set(cart)].map((item, index) => {
-          return (
-            <ShoppingCartItem
-              index={index}
-              item={item}
-              key={index}
-              quantity={
-                DuplicatesInCart([...new Set(cart)])[index] === undefined
-                  ? 0
-                  : DuplicatesInCart([...new Set(cart)])[index]
-              }
-              CheckoutFn={CheckoutFn}
-            />
-          )
-        })}
+        <div className={styles.cartItemsScroller}>
+          {[...new Set(cart)].map((item, index) => {
+            return (
+              <ShoppingCartItem
+                index={index}
+                item={item}
+                key={index}
+                quantity={
+                  DuplicatesInCart([...new Set(cart)])[index] === undefined
+                    ? 0
+                    : DuplicatesInCart([...new Set(cart)])[index]
+                }
+                CheckoutFn={CheckoutFn}
+              />
+            )
+          })}
+        </div>
         <CheckoutButton
           setCheckingOut={setCheckingOut}
           checkingOut={checkingOut}

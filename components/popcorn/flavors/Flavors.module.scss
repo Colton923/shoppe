@@ -76,34 +76,46 @@
   z-index: 15;
 
   border-radius: 50%;
-  margin: 10px;
+  margin: 1px;
   width: 145px;
   min-height: 145px;
   background-color: rgba(255,255,255,1);
-  mix-blend-mode: multiply;
-  transform: scale(1.3);
-  border: 1px solid var(--oldGold);
 }
 
-.positionFlavorTitle {
-  position: absolute;
-  bottom: 145px;
+.title {
+  position: relative;
+  z-index: 16;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  height: 100%;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--caneRed);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 1);
+  text-transform: lowercase;
+  letter-spacing: 0.1rem;
   text-align: center;
-  z-index: 2;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
   }
+
 }
 
 .flavorTitle {
+  position: absolute;
+  z-index: 16;
+  top: 33%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
   font-size: 1.3rem;
   font-weight: 300;
   color: var(--caneWhite);
@@ -111,14 +123,6 @@
   text-transform: lowercase;
   letter-spacing: 0.1rem;
   text-align: center;
-  display: grid;
-  grid-template-rows: 3fr 1fr;
-  grid-template-columns: 3fr 1fr;
-  width: 0;
-  height: 0;
-  border-radius: 30px;
-  margin: 115px 50% 0 0;
-  padding: 0;
   transition: all 0.2s ease-in-out;
   &:hover {
     cursor: pointer;
