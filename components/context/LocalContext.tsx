@@ -58,6 +58,9 @@ type LocalContextScope = {
   setIsCartOverlay: (isCartOverlay: boolean) => void
   customer: Customer
   setCustomer: (customer: Customer) => void
+  DuplicatesInCart: (uniqueCart: StripeProduct[]) => number[]
+  UniqueCart: (cart: StripeProduct[]) => StripeProduct[]
+  MakeCart: (cart: StripeProduct[]) => StripeCart[]
 }
 interface Props {
   children: React.ReactNode
@@ -98,7 +101,7 @@ export const LocalContextProvider = (props: Props) => {
     zip: '',
   })
 
-  const UniqueCart = () => {
+  const UniqueCart = (cart: StripeProduct[]) => {
     return [...new Set(cart)]
   }
 
@@ -109,8 +112,8 @@ export const LocalContextProvider = (props: Props) => {
     return duplicates
   }
 
-  const MakeCart = () => {
-    const newCart = UniqueCart()
+  const MakeCart = (cart: StripeProduct[]) => {
+    const newCart = UniqueCart(cart)
     const duplicates = DuplicatesInCart(newCart)
     const stripeCart: StripeCart[] = []
     newCart.forEach((item, index) => {
@@ -122,7 +125,7 @@ export const LocalContextProvider = (props: Props) => {
     return stripeCart
   }
 
-  const [stripeCart, setStripeCart] = useState<StripeCart[]>(MakeCart())
+  const [stripeCart, setStripeCart] = useState<StripeCart[]>(MakeCart(cart))
 
   useEffect(() => {
     if (!activeProduct) return
@@ -199,7 +202,7 @@ export const LocalContextProvider = (props: Props) => {
   }, [cart, isCartOverlay, checkingOut])
 
   useEffect(() => {
-    setStripeCart(MakeCart())
+    setStripeCart(MakeCart(cart))
   }, [checkingOut, cart])
 
   const AddButton = (quantity: number) => {
@@ -253,6 +256,8 @@ export const LocalContextProvider = (props: Props) => {
       setIsCartOverlay,
       customer,
       setCustomer,
+      DuplicatesInCart,
+      UniqueCart,
     }),
     [
       activeFlavors,

@@ -14,14 +14,8 @@ export interface CartProps {
 
 const Cart = (props: CartProps) => {
   const { CheckoutFn } = props
-  const { cart, setCheckingOut, checkingOut } = useLocalContext()
-
-  const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
-    const duplicates = uniqueCart.map((item) => {
-      return cart.filter((cartItem) => cartItem === item).length
-    })
-    return duplicates
-  }
+  const { cart, setCheckingOut, checkingOut, DuplicatesInCart, UniqueCart } =
+    useLocalContext()
 
   if (cart.length === 0) return <>Cart: Empty</>
 
@@ -37,7 +31,7 @@ const Cart = (props: CartProps) => {
                 item={item}
                 key={index}
                 quantity={
-                  DuplicatesInCart([...new Set(cart)])[index] === undefined
+                  DuplicatesInCart(UniqueCart(cart))[index] === undefined
                     ? 0
                     : DuplicatesInCart([...new Set(cart)])[index]
                 }

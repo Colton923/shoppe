@@ -9,7 +9,6 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const stripeCart: StripeCart[] = req.body.stripeCart
-  console.log('stripeCart', stripeCart)
   // stripeCart [
   //   {
   //     item: {

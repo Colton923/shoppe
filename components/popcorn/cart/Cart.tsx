@@ -1,8 +1,11 @@
+'use client'
+
 import styles from './Cart.module.scss'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 import * as subCart from '@components/cart/Cart'
-import Checkout from '../Checkout'
+import Checkout, { CheckoutProps } from '../Checkout'
 import { useLocalContext } from '@components/context/LocalContext'
+import { useState } from 'react'
 
 export type StripeCart = {
   item: StripeProduct
