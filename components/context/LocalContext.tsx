@@ -61,6 +61,10 @@ type LocalContextScope = {
   DuplicatesInCart: (uniqueCart: StripeProduct[]) => number[]
   UniqueCart: (cart: StripeProduct[]) => StripeProduct[]
   MakeCart: (cart: StripeProduct[]) => StripeCart[]
+  isRegisterOverlay: boolean
+  setIsRegisterOverlay: (isRegisterOverlay: boolean) => void
+  isLoginOverlay: boolean
+  setIsLoginOverlay: (isLoginOverlay: boolean) => void
 }
 interface Props {
   children: React.ReactNode
@@ -100,6 +104,8 @@ export const LocalContextProvider = (props: Props) => {
     state: '',
     zip: '',
   })
+  const [isRegisterOverlay, setIsRegisterOverlay] = useState<boolean>(false)
+  const [isLoginOverlay, setIsLoginOverlay] = useState<boolean>(false)
 
   const UniqueCart = (cart: StripeProduct[]) => {
     return [...new Set(cart)]
@@ -258,6 +264,11 @@ export const LocalContextProvider = (props: Props) => {
       setCustomer,
       DuplicatesInCart,
       UniqueCart,
+      MakeCart,
+      isRegisterOverlay,
+      setIsRegisterOverlay,
+      isLoginOverlay,
+      setIsLoginOverlay,
     }),
     [
       activeFlavors,
@@ -290,6 +301,11 @@ export const LocalContextProvider = (props: Props) => {
       isCartOverlay,
       setIsCartOverlay,
       customer,
+      setCustomer,
+      isRegisterOverlay,
+      setIsRegisterOverlay,
+      isLoginOverlay,
+      setIsLoginOverlay,
     ]
   )
 

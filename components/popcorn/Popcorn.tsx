@@ -6,6 +6,8 @@ import Static from './static/Static'
 import Cart from './cart/Cart'
 import Category from './category/Category'
 import Footer from '@components/footer/Footer'
+import Login from '@components/login/Login'
+import Register from '@components/register/Register'
 
 const PopcornComponent = () => {
   const {
@@ -21,12 +23,16 @@ const PopcornComponent = () => {
     checkingOut,
     setCheckingOut,
     setLocalSizes,
+    isRegisterOverlay,
+    isLoginOverlay,
   } = useLocalContext()
   Static()
 
   if (!products || flavors.length === 0 || sizes.length === 0) return null
   return (
     <div className={styles.wrapper} id="wrapper">
+      {isRegisterOverlay && <Register />}
+      {isLoginOverlay && <Login />}
       {checkingOut ? (
         <>
           <div

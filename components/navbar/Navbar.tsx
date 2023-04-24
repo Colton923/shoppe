@@ -3,9 +3,17 @@ import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
 import { useLocalContext } from '@components/context/LocalContext'
+import Login from '@components/login/Login'
+import Register from '@components/register/Register'
 
 const Navbar = () => {
-  const { isCartOverlay, setIsCartOverlay } = useLocalContext()
+  const {
+    isCartOverlay,
+    setIsCartOverlay,
+    isRegisterOverlay,
+    setIsRegisterOverlay,
+    isLoginOverlay,
+  } = useLocalContext()
 
   return (
     <>
@@ -49,6 +57,9 @@ const Navbar = () => {
           strokeLinecap="round"
           strokeLinejoin="round"
           className={styles.hamburger}
+          onClick={() => {
+            setIsRegisterOverlay(!isRegisterOverlay)
+          }}
         >
           <line
             className={styles.hamburgerLine}

@@ -1,7 +1,9 @@
 'use client'
+
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
-import styles from '../../styles/register.module.scss'
+import styles from './Register.module.scss'
+import { useLocalContext } from '@components/context/LocalContext'
 
 interface FormData {
   businessName: string
@@ -12,8 +14,10 @@ interface FormData {
   confirmPassword: string
 }
 
-const Register: any = () => {
+const Register = () => {
   const { register, handleSubmit } = useForm<FormData>()
+  const { isLoginOverlay, setIsLoginOverlay, setIsRegisterOverlay } =
+    useLocalContext()
 
   const onSubmit = (data: FormData) => {
     console.log(data)
@@ -62,7 +66,14 @@ const Register: any = () => {
           />
           <p className={styles.authLink}>
             Already have an account?&nbsp;
-            <Link href="/login">Login</Link>
+            <input
+              type="button"
+              value="Login"
+              onClick={() => {
+                setIsLoginOverlay(!isLoginOverlay)
+                setIsRegisterOverlay(false)
+              }}
+            />
           </p>
           <button type="submit" className={styles.btn}>
             Register

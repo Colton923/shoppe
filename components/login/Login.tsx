@@ -1,14 +1,15 @@
 'use client'
+
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
-import styles from '../../styles/login.module.scss'
+import styles from './Login.module.scss'
 
 interface FormData {
   email: string
   password: string
 }
 
-const Login: React.FC = () => {
+const Login = () => {
   const { register, handleSubmit } = useForm<FormData>()
 
   const onSubmit = (data: FormData) => {
