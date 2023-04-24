@@ -6,15 +6,24 @@ import intToCash from '@utils/intToCash'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
 
 type CartContextScope = {
-  activeItems: boolean[]
+  /*
+   *  State
+   */
+
   setActiveItems: (activeItems: boolean[]) => void
-  GetSubTotal: () => string
-  uniqueCart: StripeProduct[]
-  duplicatesInCart: number[]
+  activeItems: boolean[]
   setUniqueCart: (uniqueCart: StripeProduct[]) => void
+  uniqueCart: StripeProduct[]
   setDuplicatesInCart: (duplicatesInCart: number[]) => void
+  duplicatesInCart: number[]
+
+  /*
+   *  Functions
+   */
+  GetSubTotal: () => string
   CheckItemInCart: (index: number) => void
 }
+
 interface Props {
   children: React.ReactNode
 }
@@ -23,10 +32,12 @@ export const CartContext = createContext<CartContextScope | null>(null)
 
 export const CartContextProvider = (props: Props) => {
   const { children } = props
-  const [activeItems, setActiveItems] = useState<boolean[]>([])
   const { cart, setCart } = useLocalContext()
+
+  const [activeItems, setActiveItems] = useState<boolean[]>([])
   const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
   const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
+
   const UniqueCart = () => {
     return [...new Set(cart)]
   }
@@ -37,18 +48,6 @@ export const CartContextProvider = (props: Props) => {
     })
     return duplicates
   }
-
-  useEffect(() => {
-    const newUnique = UniqueCart()
-    setUniqueCart(newUnique)
-
-    const newActiveItems = newUnique.map(() => {
-      return true
-    })
-    setActiveItems(newActiveItems)
-
-    setDuplicatesInCart(DuplicatesInCart(newUnique))
-  }, [cart, setCart, setActiveItems])
 
   const GetSubTotal = () => {
     const subTotal: number[] = []
@@ -78,6 +77,18 @@ export const CartContextProvider = (props: Props) => {
     // newActiveItems[index] = !newActiveItems[index]
     // setActiveItems(newActiveItems)
   }
+
+  useEffect(() => {
+    const newUnique = UniqueCart()
+    setUniqueCart(newUnique)
+
+    const newActiveItems = newUnique.map(() => {
+      return true
+    })
+    setActiveItems(newActiveItems)
+
+    setDuplicatesInCart(DuplicatesInCart(newUnique))
+  }, [cart, setCart, setActiveItems])
 
   const contextValue: CartContextScope = useMemo(
     () => ({
