@@ -1,6 +1,8 @@
 'use client'
 import { useForm } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
 import styles from '../../styles/register.module.scss'
 
 interface FormData {
@@ -14,10 +16,45 @@ interface FormData {
 
 const Register: any = () => {
   const { register, handleSubmit } = useForm<FormData>()
+  const [authData, setAuthData] = useState({
+    authRequests: 0,
+    formData: {
+      email: '',
+    },
+  })
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (formData: any) => {
+    if (authData.authRequests < 20) {
+      setAuthData({
+        formData: formData,
+        authRequests: authData.authRequests + 1,
+      })
+    } else {
+      console.log('Error: Too many requests.')
+    }
   }
+
+  useEffect(() => {
+    const email = authData.formData.email
+
+    const actionCodeSettings = {
+      url: 'https://www.example.com/finishSignUp?cartId=1234',
+      handleCodeInApp: true,
+      iOS: {
+        bundleId: 'com.example.ios',
+      },
+      android: {
+        packageName: 'com.example.android',
+        installApp: true,
+        minimumVersion: '12',
+      },
+      dynamicLinkDomain: 'example.page.link',
+    }
+
+    sendSignInLinkToEmail(auth, 'email', actionCodeSettings).then(() => {
+      window.localStorage.setItem('emailForSignIn', email)
+    })
+  }, [authData.authRequests])
 
   return (
     <div className={styles.wrapper}>
