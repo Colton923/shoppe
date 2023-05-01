@@ -5,7 +5,7 @@ import Link from 'next/link'
 import styles from './Register.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
 
-interface FormData {
+export interface FormData {
   businessName: string
   address: string
   email: string
@@ -19,8 +19,22 @@ const Register = () => {
   const { isLoginOverlay, setIsLoginOverlay, setIsRegisterOverlay } =
     useLocalContext()
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (data: FormData) => {
+    if (!data || !data.businessName || !data.email)
+      return alert('Missing Required Fields')
+    await fetch('/api/post/firebase/newRegistration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (res.status === 200) {
+        alert('Registration Successful')
+      } else {
+        alert('Registration Failed')
+      }
+    })
   }
 
   return (
