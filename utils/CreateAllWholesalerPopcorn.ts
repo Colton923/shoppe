@@ -11,12 +11,11 @@ type StripePopcorn = {
   metadata: {
     flavor: string
     size: string
-    retailPrice: number
-    wholesalePrice?: number
+    wholesalePrice: number
   }
 }
 
-export default function CreateAllPopcorns() {
+export default function CreateAllWholesalePopcorns() {
   const sizes: string[] = [
     'Small Box',
     'Medium Box',
@@ -91,92 +90,92 @@ export default function CreateAllPopcorns() {
 
   const flavorTypes = Object.keys(flavors) as (keyof typeof flavors)[]
 
-  const RetailBoxPrices = {
+  const WholesaleBoxPrices = {
     regular: {
+      small: 200,
+      medium: 225,
+      large: 275,
+    },
+    savory: {
+      small: 250,
+      medium: 300,
+      large: 350,
+    },
+    candy: {
       small: 300,
       medium: 350,
+      large: 400,
+    },
+    deluxe: {
+      small: 350,
+      medium: 400,
       large: 450,
     },
-    savory: {
+    premium: {
       small: 400,
-      medium: 500,
-      large: 600,
+      medium: 450,
+      large: 500,
+    },
+  }
+
+  const WholesaleGalPrices = {
+    regular: {
+      1: 700,
+      2: 1500,
+      3: 2100,
+    },
+    savory: {
+      1: 900,
+      2: 1800,
+      3: 2600,
     },
     candy: {
+      1: 1100,
+      2: 2200,
+      3: 3100,
+    },
+    deluxe: {
+      1: 1300,
+      2: 2500,
+      3: 3600,
+    },
+    premium: {
+      1: 2100,
+      2: 3800,
+      3: 5800,
+    },
+  }
+
+  const WholesaleClearBagPrices = {
+    regular: {
+      small: 225,
+      medium: 275,
+      large: 325,
+      x: 450,
+    },
+    savory: {
+      small: 250,
+      medium: 350,
+      large: 450,
+      x: 625,
+    },
+    candy: {
+      small: 350,
+      medium: 400,
+      large: 525,
+      x: 750,
+    },
+    deluxe: {
+      small: 450,
+      medium: 525,
+      large: 675,
+      x: 825,
+    },
+    premium: {
       small: 500,
       medium: 600,
-      large: 700,
-    },
-    deluxe: {
-      small: 600,
-      medium: 700,
-      large: 800,
-    },
-    premium: {
-      small: 700,
-      medium: 800,
-      large: 900,
-    },
-  }
-
-  const RetailGalPrices = {
-    regular: {
-      1: 900,
-      2: 1700,
-      3: 2300,
-    },
-    savory: {
-      1: 1100,
-      2: 2000,
-      3: 2800,
-    },
-    candy: {
-      1: 1300,
-      2: 2400,
-      3: 3300,
-    },
-    deluxe: {
-      1: 1500,
-      2: 2700,
-      3: 3800,
-    },
-    premium: {
-      1: 2200,
-      2: 4000,
-      3: 6000,
-    },
-  }
-
-  const RetailClearBagPrices = {
-    regular: {
-      small: 350,
-      medium: 450,
-      large: 550,
-      x: 800,
-    },
-    savory: {
-      small: 450,
-      medium: 600,
-      large: 800,
-      x: 1150,
-    },
-    candy: {
-      small: 600,
-      medium: 700,
-      large: 950,
-      x: 1400,
-    },
-    deluxe: {
-      small: 800,
-      medium: 950,
-      large: 1250,
-      x: 1550,
-    },
-    premium: {
-      small: 900,
-      medium: 1100,
-      large: 1400,
-      x: 1700,
+      large: 750,
+      x: 900,
     },
   }
 
@@ -191,9 +190,9 @@ export default function CreateAllPopcorns() {
             metadata: {
               flavor,
               size,
-              retailPrice:
+              wholesalePrice:
                 //@ts-ignore
-                RetailBoxPrices[flavorType][size.split(' ')[0].toLowerCase()],
+                WholesaleBoxPrices[flavorType][size.split(' ')[0].toLowerCase()],
             },
           })
         } else if (size.includes('Gal.')) {
@@ -203,7 +202,7 @@ export default function CreateAllPopcorns() {
               flavor,
               size,
               //@ts-ignore
-              retailPrice: RetailGalPrices[flavorType][size.split(' ')[0]],
+              wholesalePrice: WholesaleGalPrices[flavorType][size.split(' ')[0]],
             },
           })
         } else if (size.includes('Clear Bag')) {
@@ -212,9 +211,11 @@ export default function CreateAllPopcorns() {
             metadata: {
               flavor,
               size,
-              retailPrice:
+              wholesalePrice:
                 //@ts-ignore
-                RetailClearBagPrices[flavorType][size.split(' ')[0].toLowerCase()],
+                WholesaleClearBagPrices[flavorType][
+                  size.split(' ')[0].toLowerCase()
+                ],
             },
           })
         }
@@ -233,14 +234,14 @@ export default function CreateAllPopcorns() {
             metadata: {
               flavor: popcorn.metadata.flavor,
               size: popcorn.metadata.size,
-              retailPrice: popcorn.metadata.retailPrice,
+              wholesalePrice: popcorn.metadata.wholesalePrice,
             },
           })
           .then(async (response) => {
             await stripe.prices
               .create({
                 product: response.id,
-                unit_amount: popcorn.metadata.retailPrice,
+                unit_amount: popcorn.metadata.wholesalePrice,
                 currency: 'usd',
               })
               .catch((error) => {

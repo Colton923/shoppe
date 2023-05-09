@@ -9,24 +9,26 @@ if (!admin.apps.length) {
   })
 }
 
-export type isPhoneInDB = {
+export type isApproved = {
   body: {
-    phone: string
+    email: string
   }
 }
 
-const handler = async (req: isPhoneInDB, res: any) => {
+const handler = async (req: isApproved, res: any) => {
   await admin
     .firestore()
-    .collection('users')
-    .where('phone', '==', req.body.phone)
+    .collection('wholesaleRegistration')
+    .where('email', '==', req.body.email)
     .limit(1)
     .get()
     .then((querySnapshot) => {
       if (querySnapshot.empty) {
-        return res.status(200).json({ phoneInDB: false })
+        return res.status(300).json({ isApproved: false })
       } else {
-        return res.status(200).json({ phoneInDB: true })
+        if (querySnapshot.docs[0].data().approved !== 'approved')
+          return res.status(201).json({ isApproved: false })
+        return res.status(200).json({ isApproved: true })
       }
     })
     .catch((error) => {

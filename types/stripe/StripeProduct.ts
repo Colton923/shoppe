@@ -14,6 +14,7 @@ export type StripeProduct = {
     flavor?: FlavorNames
     size?: SizeNames
     retailPrice?: string
+    wholesalePrice?: string
   }
   name: string
   package_dimensions?: null
