@@ -17,34 +17,34 @@ const Navbar = () => {
 
   return (
     <>
-      <div className={styles.navBackground}>
+      {/* <div className={styles.navBackground}>
         <div className={styles.bg} />
+      </div> */}
+      {/* <div className={styles.gridLayout}> */}
+      {/* <span></span> */}
+      <div className={styles.title}>
+        <h2
+          className={styles.titleText}
+          onClick={() => {
+            window.location.href = '/'
+          }}
+        >
+          Main St. <br />
+          Shoppe
+        </h2>
+        <h2 className={styles.fancyText}>
+          <Link
+            className={styles.textLink}
+            href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}}`}
+          ></Link>
+          <Link
+            className={styles.textLink}
+            href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
+          ></Link>
+        </h2>
       </div>
-      <div className={styles.gridLayout}>
-        <span></span>
-        <div className={styles.title}>
-          <h2
-            className={styles.titleText}
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          >
-            Main St. <br />
-            Shoppe
-          </h2>
-          <h2 className={styles.fancyText}>
-            <Link
-              className={styles.textLink}
-              href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}}`}
-            ></Link>
-            <Link
-              className={styles.textLink}
-              href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
-            ></Link>
-          </h2>
-        </div>
-        <span></span>
-      </div>
+      <span></span>
+      {/* </div> */}
       <div className={styles.stickyNav}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

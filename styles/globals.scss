@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arima:wght@400;700&family=Poppins:wght@400;700&display=swap');
 
 :root {
   --candyPink: #ffc9c9;
@@ -26,12 +27,52 @@
   --brown: #ffbf00cd;
 }
 
-body {
-  font-weight: 400;
-  font-size: 16px;
-  color: var(--caneBlack);
-  cursor: url('/images/singlePopcorn.png'), auto;
+html {
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: var(--candyPurple);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
   margin: 0;
   padding: 0;
-  font-family: 'Caveat Brush', cursive;
+  font-weight: normal;
+}
+
+body {
+  color: var(--caneBlack);
+  background-color: var(--creamGrey);
+  cursor: url('/images/singlePopcorn.png'), auto;
+  // font-family: 'Caveat Brush', cursive;
+  font-family: 'Poppins', sans-serif;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Arima', cursive;
+}
+
+ol,
+ul {
+  list-style: none;
 }

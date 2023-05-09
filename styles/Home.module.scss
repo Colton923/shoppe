@@ -1,16 +1,18 @@
 .pageContent {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: flex-start;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+  // justify-content: center;
+  // align-items: center;
+  // align-content: flex-start;
 
   min-height: 100vh;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 
-  position: relative;
+  // position: relative;
 
+  //added
+  margin: 0 auto;
 }
 
 .imageContainer {
