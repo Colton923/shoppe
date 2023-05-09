@@ -34,7 +34,7 @@ const handler = async (req: newRegistration, res: any) => {
     Email: ${formData.email}
     Phone: ${formData.phoneNumber}
     TIN: ${formData.tin}</p>
-    <a href='https://us-central1-shoppe-386214.cloudfunctions.net/wholesaleApprove?email=${formData.email}'>Approve</a>`,
+    <a href='https://us-central1-main-st-shoppe.cloudfunctions.net/emailHook?email=${formData.email}'>Approve</a>`,
   }
   mailService.send(msg)
 

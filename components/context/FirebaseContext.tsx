@@ -24,8 +24,23 @@ export const FirebaseContextProvider = (props: Props) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      const email = window.localStorage.getItem('emailForSignIn')
+      if (email) {
+        signInWithEmailLink(auth, email, window.location.href)
+          .then(() => {
+            window.localStorage.removeItem('emailForSignIn')
+
+            setLoggedIn(true)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
+    }
     if (auth.currentUser) setLoggedIn(true)
   }, [auth])
+
   const handleSignIn = async (email: string) => {
     await fetch('/api/post/firebase/isApproved', {
       method: 'POST',
@@ -49,17 +64,6 @@ export const FirebaseContextProvider = (props: Props) => {
           .catch((error) => {
             console.log(error)
           })
-        if (isSignInWithEmailLink(auth, window.location.href)) {
-          signInWithEmailLink(auth, email, window.location.href)
-            .then(() => {
-              window.localStorage.removeItem('emailForSignIn')
-
-              setLoggedIn(true)
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-        }
       } else {
         alert('You are not an approved wholesaler. Please wait for approval.')
       }
