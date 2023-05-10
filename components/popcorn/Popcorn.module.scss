@@ -23,6 +23,8 @@
 
   // added
   width: 100%;
+  padding: 2rem;
+  margin-top: 10%;
 }
 
 .back {
@@ -48,4 +50,6 @@
     transform: translate(-1px, 2px) scaleY(0.96);
   }
   background-color: #fff;
+
+  // ** ADDED **
 }
