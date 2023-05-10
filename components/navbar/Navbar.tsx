@@ -28,8 +28,7 @@ const Navbar = () => {
             window.location.href = '/'
           }}
         >
-          Main St. <br />
-          Shoppe
+          Main St. Shoppe
         </h2>
         <h2 className={styles.fancyText}>
           <Link
