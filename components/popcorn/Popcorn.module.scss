@@ -23,33 +23,35 @@
 
   // added
   width: 100%;
-  padding: 2rem;
-  margin-top: 10%;
+  padding: 0 1rem;
 }
 
 .back {
   display: flex;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--caneRed);
+  // align-content: center;
+  // text-align: center;
+  // font-size: 1.5rem;
+  // font-weight: 700;
+  // color: var(--caneRed);
   cursor: pointer;
   width: 100px;
-  border-top: 1px solid var(--caneRed);
-  border-right: 1px solid var(--caneRed);
-  border-bottom: 3px solid var(--caneRed);
-  border-left: 1px solid var(--caneRed);
+  // border-top: 1px solid var(--caneRed);
+  // border-right: 1px solid var(--caneRed);
+  // border-bottom: 3px solid var(--caneRed);
+  // border-left: 1px solid var(--caneRed);
   border-radius: 20px;
-  height: 40px;
-  margin: 10px;
-  backdrop-filter: blur(75px);
+  // height: 40px;
+  // margin: 10px;
+  // backdrop-filter: blur(75px);
   &:hover {
     transform: translate(-1px, 2px) scaleY(0.96);
   }
-  background-color: #fff;
+  // background-color: #fff;
 
   // ** ADDED **
+  color: var(--caneRed);
+  font-size: 1.2rem;
+  margin-top: 2rem;
 }

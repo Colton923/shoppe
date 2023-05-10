@@ -47,7 +47,7 @@ const PopcornComponent = () => {
               setLocalSizes(activeSizes)
             }}
           >
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Cart />
         </>
@@ -56,7 +56,7 @@ const PopcornComponent = () => {
       ) : activeFlavors.length === 0 ? (
         <>
           <div className={styles.back} onClick={() => setActiveSizes([])}>
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Flavors />
         </>
@@ -70,7 +70,7 @@ const PopcornComponent = () => {
               setLocalSizes(activeSizes)
             }}
           >
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Category />
         </>
