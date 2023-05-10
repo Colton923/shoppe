@@ -8,6 +8,7 @@ import Category from './category/Category'
 import Footer from '@components/footer/Footer'
 import Login from '@components/login/Login'
 import Register from '@components/register/Register'
+import { useFirebaseContext } from '@components/context/FirebaseContext'
 
 const PopcornComponent = () => {
   const {
@@ -26,13 +27,15 @@ const PopcornComponent = () => {
     isRegisterOverlay,
     isLoginOverlay,
   } = useLocalContext()
+  const { loggedIn } = useFirebaseContext()
+
   Static()
 
   if (!products || flavors.length === 0 || sizes.length === 0) return null
   return (
     <div className={styles.wrapper} id="wrapper">
-      {isRegisterOverlay && <Register />}
-      {isLoginOverlay && <Login />}
+      {!loggedIn && isRegisterOverlay && <Register />}
+      {!loggedIn && isLoginOverlay && <Login />}
       {checkingOut ? (
         <>
           <div

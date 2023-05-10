@@ -1,17 +1,16 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import Link from 'next/link'
 import styles from './Register.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
+import { useEffect } from 'react'
 
 export interface FormData {
   businessName: string
   address: string
   email: string
   phoneNumber: string
-  password: string
-  confirmPassword: string
+  tin: string
 }
 
 const Register = () => {
@@ -19,18 +18,39 @@ const Register = () => {
   const { isLoginOverlay, setIsLoginOverlay, setIsRegisterOverlay } =
     useLocalContext()
 
+  useEffect(() => {
+    const handleClick = (e: any) => {
+      if (e.target.className === styles.wrapper) {
+        setIsRegisterOverlay(false)
+      }
+    }
+    window.addEventListener('click', handleClick)
+    return () => window.removeEventListener('click', handleClick)
+  }, [])
+
   const onSubmit = async (data: FormData) => {
-    if (!data || !data.businessName || !data.email)
+    if (
+      !data ||
+      !data.businessName ||
+      !data.email ||
+      !data.phoneNumber ||
+      !data.address ||
+      !data.tin
+    )
       return alert('Missing Required Fields')
     await fetch('/api/post/firebase/newRegistration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ formData: data }),
     }).then((res) => {
       if (res.status === 200) {
-        alert('Registration Successful')
+        alert(
+          'Registration Successful. Please come back and login after you have been approved.'
+        )
+        setIsRegisterOverlay(false)
+        setIsLoginOverlay(true)
       } else {
         alert('Registration Failed')
       }
@@ -39,9 +59,9 @@ const Register = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>Create an Account</h1>
       <div className={styles.formWrapper}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <h1 className={styles.title}>Create an Account</h1>
           <input
             type="text"
             placeholder="Business Name"
@@ -67,22 +87,18 @@ const Register = () => {
             className={styles.input}
           />
           <input
-            type="password"
-            placeholder="Password"
-            {...register('password')}
+            type="text"
+            placeholder="TIN"
+            {...register('tin')}
             className={styles.input}
           />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            {...register('confirmPassword')}
-            className={styles.input}
-          />
+
           <p className={styles.authLink}>
             Already have an account?&nbsp;
             <input
               type="button"
               value="Login"
+              className={styles.loginBtn}
               onClick={() => {
                 setIsLoginOverlay(!isLoginOverlay)
                 setIsRegisterOverlay(false)

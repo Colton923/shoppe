@@ -1,5 +1,4 @@
 import PopcornNamer from './PopcornNamer'
-import type { StripeProduct } from 'types/stripe/StripeProduct'
 import Stripe from 'stripe'
 
 //@ts-ignore

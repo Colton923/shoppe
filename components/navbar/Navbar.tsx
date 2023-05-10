@@ -3,8 +3,7 @@ import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
 import { useLocalContext } from '@components/context/LocalContext'
-import Login from '@components/login/Login'
-import Register from '@components/register/Register'
+import { useFirebaseContext } from '@components/context/FirebaseContext'
 
 const Navbar = () => {
   const {
@@ -12,8 +11,8 @@ const Navbar = () => {
     setIsCartOverlay,
     isRegisterOverlay,
     setIsRegisterOverlay,
-    isLoginOverlay,
   } = useLocalContext()
+  const { loggedIn } = useFirebaseContext()
 
   return (
     <>
@@ -58,7 +57,11 @@ const Navbar = () => {
           strokeLinejoin="round"
           className={styles.hamburger}
           onClick={() => {
-            setIsRegisterOverlay(!isRegisterOverlay)
+            if (!loggedIn) {
+              setIsRegisterOverlay(!isRegisterOverlay)
+            } else {
+              alert('You are already logged in.')
+            }
           }}
         >
           <line
