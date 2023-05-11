@@ -195,7 +195,7 @@
   //   column-span: all;
   font-size: 2rem;
   // color: var(--oldGold);
-  text-shadow: 1px 1px 5px var(--caneBlack);
+  text-shadow: 1px 1px 3px var(--caneBlack);
   //   cursor: pointer;
   //   margin: 1px 0 50px 3px;
   //   width: 70%;
@@ -205,10 +205,12 @@
   //   z-index: 10;
 
   // ** ADDED **
-  color: var(--candyYellow);
+  color: var(--creamGrey);
+  font-weight: 700;
+  text-align: center;
 
   &:hover {
-    color: var(--brown);
+    // color: var(--brown);
     cursor: pointer;
   }
   //   @media (max-width: 600px) {

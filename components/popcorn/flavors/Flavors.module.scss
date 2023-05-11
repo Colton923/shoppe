@@ -43,7 +43,7 @@
   // display: flex;
   // border-radius: 10px;
   color: var(--oldGold);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 2px var(--caneRed);
   font-family: 'Arima', cursive;
   // padding: 2px;
   // margin: 0 40% 0 40%;
@@ -83,7 +83,7 @@
 
 .inactive {
   display: flex;
-  // flex-direction: column;
+  flex-direction: column;
   // justify-content: space-between;
   // align-items: flex-end;
   // align-content: flex-end;
@@ -93,7 +93,7 @@
   overflow: hidden;
   // z-index: 15;
 
-  border-radius: 50%;
+  // border-radius: 50%;
   // margin: 1px;
   width: 145px;
   min-height: 145px;
@@ -103,6 +103,7 @@
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
+  border-radius: 5px;
 }
 
 .flavorsHeading {
@@ -144,6 +145,19 @@
   }
 }
 
+.flavorTitleWrapper {
+  position: absolute;
+  bottom: 0;
+  z-index: 16;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+  height: 50px;
+  background-color: var(--caneRed);
+}
+
 .flavorTitle {
   // position: absolute;
   z-index: 16;
@@ -156,8 +170,8 @@
   transition: all 0.2s ease-in-out;
   font-size: 1.2rem;
   // font-weight: 300;
-  color: var(--caneWhite);
-  text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  // color: #f2f2f2;
+  // text-shadow: 1px 1px 3px var(--caneBlack);
   text-transform: lowercase;
   // letter-spacing: 0.1rem;
   text-align: center;
@@ -169,6 +183,7 @@
   // ** ADDED **
   font-family: 'Poppins';
   line-height: 1.4rem;
+  color: var(--oldGold);
 }
 
 .input {

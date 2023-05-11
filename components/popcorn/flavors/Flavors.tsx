@@ -54,7 +54,7 @@ const Flavors = () => {
                   }
                 >
                   {Images.Images({ name: flavor })}
-                  <h2 className={styles.flavorTitle}>{flavor}</h2>
+
                   <input
                     type="button"
                     onClick={() => {
@@ -62,6 +62,9 @@ const Flavors = () => {
                     }}
                     className={styles.input}
                   />
+                  <div className={styles.flavorTitleWrapper}>
+                    <h2 className={styles.flavorTitle}>{flavor}</h2>
+                  </div>
                 </div>
               ))}
             </div>

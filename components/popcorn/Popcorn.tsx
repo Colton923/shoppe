@@ -5,7 +5,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 import Static from './static/Static'
 import Cart from './cart/Cart'
 import Category from './category/Category'
-import Footer from '@components/footer/Footer'
+// import Footer from '@components/footer/Footer'
 import Login from '@components/login/Login'
 import Register from '@components/register/Register'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
@@ -75,7 +75,7 @@ const PopcornComponent = () => {
           <Category />
         </>
       ) : null}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

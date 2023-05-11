@@ -8,6 +8,8 @@ import FirebaseContextProvider from '@components/context/FirebaseContext'
 import Navbar from '@components/navbar/Navbar'
 import Cart from '@components/cart/Cart'
 
+import Footer from '@components/footer/Footer'
+
 export default function Index() {
   return (
     <LocalContextProvider>
@@ -17,6 +19,7 @@ export default function Index() {
         <div className={styles.cartOverlay} id={'cartOverlay'}>
           <Cart />
         </div>
+        <Footer />
       </FirebaseContextProvider>
     </LocalContextProvider>
   )
