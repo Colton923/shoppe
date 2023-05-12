@@ -38,7 +38,6 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 body {
@@ -47,10 +46,12 @@ body {
   cursor: url('/images/singlePopcorn.png'), auto;
   font-family: 'Poppins', sans-serif;
   max-width: 1400px;
-  // display: flex;
-  // justify-content: center;
   margin: 0 auto;
 }
+
+// main {
+//   height: 100vh;
+// }
 
 h1,
 h2,
