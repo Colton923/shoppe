@@ -6,6 +6,7 @@
   align-items: center;
   gap: 3rem;
   margin-top: 2rem;
+  min-height: 80vh;
 }
 
 .itemsWrapper {
@@ -91,7 +92,7 @@
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
-  // z-index: 15;
+  z-index: 15;
 
   // border-radius: 50%;
   // margin: 1px;
@@ -115,7 +116,7 @@
 
 .title {
   // position: relative;
-  // z-index: 16;
+  z-index: 16;
   // top: 0;
   // left: 0;
   // width: 100%;
@@ -166,7 +167,7 @@
   // width: 100%;
   // height: 100%;
   // border-radius: 50%;
-  // background-color: transparent;
+  background-color: transparent;
   transition: all 0.2s ease-in-out;
   font-size: 1.2rem;
   // font-weight: 300;
@@ -191,13 +192,13 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  // border-radius: 50%;
 
   border: none;
   cursor: pointer;
   z-index: 5;
   background-color: transparent;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  // box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .ExpandedVisible {
