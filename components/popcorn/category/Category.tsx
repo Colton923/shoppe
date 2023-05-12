@@ -9,7 +9,7 @@ const Category = () => {
   if (!selectedSize) setSelectedSize(localSizes[0])
 
   return (
-    <div className={styles.category}>
+    <div className={styles.category} id="selectSize">
       <h2>Please Select a Size</h2>
       <select
         name="category"
