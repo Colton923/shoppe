@@ -16,8 +16,8 @@ const Navbar = () => {
 
   return (
     <>
-      <div>
-        <div className={styles.title}>
+      {/* <div> */}
+      {/* <div className={styles.title}>
           <h2
             className={styles.titleText}
             onClick={() => {
@@ -36,9 +36,9 @@ const Navbar = () => {
               href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
             ></Link>
           </h2>
-        </div>
-        <span></span>
-      </div>
+        </div> */}
+      {/* <span></span>
+      </div> */}
 
       <div className={styles.stickyNav}>
         <svg
@@ -46,8 +46,8 @@ const Navbar = () => {
           width="30"
           height="30"
           viewBox="0 0 30 30"
-          fill="none"
-          stroke="currentColor"
+          fill="#8b0000"
+          stroke="#8b0000"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -83,6 +83,26 @@ const Navbar = () => {
             y2="24"
           ></line>
         </svg>
+        <div className={styles.title}>
+          <h2
+            className={styles.titleText}
+            onClick={() => {
+              window.location.href = '/'
+            }}
+          >
+            Main St. Shoppe
+          </h2>
+          <h2 className={styles.fancyText}>
+            <Link
+              className={styles.textLink}
+              href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}}`}
+            ></Link>
+            <Link
+              className={styles.textLink}
+              href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
+            ></Link>
+          </h2>
+        </div>
         <div className={styles.hamburger} id="cart">
           <Image
             src={CartIcon}
