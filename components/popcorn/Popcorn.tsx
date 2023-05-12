@@ -5,7 +5,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 import Static from './static/Static'
 import Cart from './cart/Cart'
 import Category from './category/Category'
-import Footer from '@components/footer/Footer'
+// import Footer from '@components/footer/Footer'
 import Login from '@components/login/Login'
 import Register from '@components/register/Register'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
@@ -47,7 +47,7 @@ const PopcornComponent = () => {
               setLocalSizes(activeSizes)
             }}
           >
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Cart />
         </>
@@ -56,7 +56,7 @@ const PopcornComponent = () => {
       ) : activeFlavors.length === 0 ? (
         <>
           <div className={styles.back} onClick={() => setActiveSizes([])}>
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Flavors />
         </>
@@ -70,12 +70,12 @@ const PopcornComponent = () => {
               setLocalSizes(activeSizes)
             }}
           >
-            <span>Back</span>
+            <span>{'< Back'}</span>
           </div>
           <Category />
         </>
       ) : null}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

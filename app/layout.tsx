@@ -1,5 +1,5 @@
 import '../styles/globals.scss'
-import Diamonds from '../components/svgs/Diamonds'
+// import Diamonds from '../components/svgs/Diamonds'
 import styles from '@styles/Home.module.scss'
 
 interface Props {
@@ -20,7 +20,7 @@ export default async function RootLayout({ children }: Props) {
       </head>
       <body>
         <main>
-          <Diamonds />
+          {/* <Diamonds /> */}
           <div className={styles.pageContent} id={'pageContent'}>
             {children}
           </div>

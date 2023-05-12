@@ -14,9 +14,11 @@
   padding: 10px;
 
   color: var(--caneBlack);
-  background-color: rgba(255, 255, 255, 1);
+  // background-color: rgba(255, 255, 255, 1);
 
-  border: 1px solid rgba(255, 255, 255, 1);
+  // border: 1px solid rgba(255, 255, 255, 1);
+  border-top: 1px solid var(--caneBlack);
+  border-bottom: 1px solid var(--caneBlack);
 }
 .shoppingCartItem__image {
   margin-right: 10px;
@@ -24,21 +26,27 @@
 }
 .shoppingCartItem__info {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-  margin-right: 10px;
+  // flex-direction: row;
+  // justify-content: space-between;
+  // align-items: center;
+  // align-content: center;
+  // flex-wrap: wrap;
+  // margin-right: 10px;
   z-index: inherit;
   max-height: 90%;
+
+  // ** ADDED **
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .shoppingCartItem__info__divider {
   display: flex;
   justify-content: space-between;
   text-align: center;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   align-items: center;
   align-content: center;
   margin: 10px;
@@ -47,28 +55,30 @@
 
 .shoppingCartItem__info__name {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 3px;
 
   width: 100%;
   z-index: inherit;
+
+  // ** ADDED **
+  font-family: 'Poppins', sans-serif;
+  color: var(--caneRed);
 }
 .shoppingCartItem__info__flavor {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 400;
   margin-bottom: 3px;
   width: 40%;
   z-index: inherit;
-
 }
 .shoppingCartItem__info__size {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 400;
   margin-bottom: 3px;
   width: 40%;
 
   z-index: inherit;
-
 }
 .shoppingCartItem__info__quantity {
   font-size: 1rem;
@@ -77,19 +87,15 @@
   width: 40%;
 
   z-index: inherit;
-
 }
 .shoppingCartItem__info__price {
-
   font-size: 1rem;
   font-weight: 300;
   margin-bottom: 3px;
   width: 40%;
 
   z-index: inherit;
-
 }
-
 
 .quantityButton {
   // turn off all the default iphone button styles
@@ -110,7 +116,8 @@
   height: 30px;
   margin: 0 5px;
   padding: 0;
-  z-index: 9999;  display: flex;
+  z-index: 9999;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;

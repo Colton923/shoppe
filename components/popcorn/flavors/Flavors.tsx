@@ -31,37 +31,46 @@ const Flavors = () => {
 
   return (
     <>
-      <h1 className={styles.title}>
-        Pick any of the flavors below. Tins can hold up to 4 flavors.
-      </h1>
+      <div className={styles.flavorsHeading}>
+        <h1 className={styles.title}>Flavors</h1>
+        <p>Pick any of the flavors below.</p>
+        <p>Tins can hold up to 4 flavors.</p>
+      </div>
       {activeSizes.find((size) => size.includes('Gal')) && (
         <Tin localFlavors={localFlavors} />
       )}
-      {Object.entries(filteredFlavors).map(([category]) => (
-        <div className={styles.itemsWrapper} key={category}>
-          <h2 className={styles.subHeader}>{category}</h2>
-          {/* @ts-ignore */}
-          {filteredFlavors[category].map((flavor: FlavorNames) => (
-            <div
-              key={flavor}
-              id={flavor + '_toggle'}
-              className={
-                activeFlavors.includes(flavor) ? styles.active : styles.inactive
-              }
-            >
-              {Images.Images({ name: flavor })}
-              <h2 className={styles.flavorTitle}>{flavor}</h2>
-              <input
-                type="button"
-                onClick={() => {
-                  HandleSelectFlavor(flavor)
-                }}
-                className={styles.input}
-              />
+      <div className={styles.allFlavorsWrapper}>
+        {Object.entries(filteredFlavors).map(([category]) => (
+          <div className={styles.itemsWrapper} key={category}>
+            <h2 className={styles.subHeader}>{category}</h2>
+            <div className={styles.items}>
+              {/* @ts-ignore */}
+              {filteredFlavors[category].map((flavor: FlavorNames) => (
+                <div
+                  key={flavor}
+                  id={flavor + '_toggle'}
+                  className={
+                    activeFlavors.includes(flavor) ? styles.active : styles.inactive
+                  }
+                >
+                  {Images.Images({ name: flavor })}
+
+                  <input
+                    type="button"
+                    onClick={() => {
+                      HandleSelectFlavor(flavor)
+                    }}
+                    className={styles.input}
+                  />
+                  <div className={styles.flavorTitleWrapper}>
+                    <h2 className={styles.flavorTitle}>{flavor}</h2>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </>
   )
 }

@@ -1,10 +1,15 @@
-$localButtonLightOne: white;
+$localButtonLightOne: var(--caneWhite);
 $localButtonLightTwo: var(--caneRed);
 $localButtonDarkOne: rgba(139, 0, 0, 1);
-$localButtonDarkTwo: rgba(139, 0, 0, .5);
+$localButtonDarkTwo: rgba(139, 0, 0, 0.5);
 
-
-@mixin BorderAndShadow($lightColorOne, $lightColorTwo, $darkColorOne, $darkColorTwo, $includeEffects) {
+@mixin BorderAndShadow(
+  $lightColorOne,
+  $lightColorTwo,
+  $darkColorOne,
+  $darkColorTwo,
+  $includeEffects
+) {
   background-color: $lightColorOne;
   border-top: 1px solid $darkColorOne;
   border-left: 2px solid $darkColorOne;
@@ -16,7 +21,6 @@ $localButtonDarkTwo: rgba(139, 0, 0, .5);
       border-top: 1px solid $lightColorTwo;
       border-left: 3px solid $lightColorTwo;
       box-shadow: inset 1px 1px 2px 1px $lightColorOne;
-
     }
     &:active {
       border-top: 1px solid $lightColorTwo;
@@ -26,14 +30,20 @@ $localButtonDarkTwo: rgba(139, 0, 0, .5);
   }
 }
 
-.button{
+.button {
   display: flex;
 }
 
-.button__button{
-  @include BorderAndShadow($localButtonLightOne, $localButtonLightTwo, $localButtonDarkOne, $localButtonDarkTwo, true);
-  font-family: 'Caveat Brush', cursive;
-  font-size: 1.8rem;
+.button__button {
+  @include BorderAndShadow(
+    $localButtonLightOne,
+    $localButtonLightTwo,
+    $localButtonDarkOne,
+    $localButtonDarkTwo,
+    true
+  );
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--caneRed);
   cursor: pointer;
