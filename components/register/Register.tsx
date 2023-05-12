@@ -38,6 +38,8 @@ const Register = () => {
       !data.tin
     )
       return alert('Missing Required Fields')
+
+    data.email = data.email.toLowerCase()
     await fetch('/api/post/firebase/newRegistration', {
       method: 'POST',
       headers: {

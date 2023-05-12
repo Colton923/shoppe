@@ -17,6 +17,7 @@ const Login = () => {
   const { handleSignIn } = useFirebaseContext()
 
   const onSubmit = (data: FormData) => {
+    data.email = data.email.toLowerCase()
     handleSignIn(data.email)
     setIsLoginOverlay(false)
   }
