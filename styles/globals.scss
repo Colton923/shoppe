@@ -42,16 +42,16 @@ body {
 
 body {
   color: var(--caneBlack);
-  background-color: var(--creamGrey);
+  background-color: var(--caneWhite);
   cursor: url('/images/singlePopcorn.png'), auto;
   font-family: 'Poppins', sans-serif;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-// main {
-//   height: 100vh;
-// }
+main {
+  background-color: var(--creamGrey);
+}
 
 h1,
 h2,

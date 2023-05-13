@@ -33,22 +33,22 @@ const Login = () => {
   }, [])
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.formWrapper}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <h1 className={styles.title}>Login</h1>
-          <input
-            type="text"
-            placeholder="Email"
-            {...register('email')}
-            className={styles.input}
-          />
-          <button type="submit" className={styles.btn}>
-            Login
-          </button>
-        </form>
-      </div>
+    // <div className={styles.wrapper}>
+    <div className={styles.formWrapper}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <h1 className={styles.title}>Login</h1>
+        <input
+          type="text"
+          placeholder="Email"
+          {...register('email')}
+          className={styles.input}
+        />
+        <button type="submit" className={styles.btn}>
+          Login
+        </button>
+      </form>
     </div>
+    // </div>
   )
 }
 

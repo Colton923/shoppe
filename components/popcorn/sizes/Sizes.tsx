@@ -43,9 +43,7 @@ const Sizes = () => {
         />
         <div className={styles.header}>
           <h2 className={styles.headerText}>SHOP</h2>
-          {/* <p className={styles.headerText}>SHOP</p> */}
           <h2 className={styles.headerCaps}>BOXES</h2>
-          {/* <p className={styles.headerCaps}>BOXES</p> */}
         </div>
         <input
           type="button"
@@ -55,7 +53,6 @@ const Sizes = () => {
             setLocalSizes(boxSizes)
           }}
         />
-        {/* <Arrow /> */}
       </div>
       <div className={styles.category}>
         <Image
@@ -67,10 +64,7 @@ const Sizes = () => {
         />
         <div className={styles.header}>
           <h2 className={styles.headerText}>SHOP</h2>
-          {/* <p className={styles.headerText}>SHOP</p> */}
-
           <h2 className={styles.headerCaps}>BAGS</h2>
-          {/* <p className={styles.headerCaps}>BAGS</p> */}
         </div>
         <input
           type="button"
@@ -92,9 +86,7 @@ const Sizes = () => {
         />
         <div className={styles.header}>
           <h2 className={styles.headerText}>SHOP</h2>
-          {/* <p className={styles.headerText}>SHOP</p> */}
           <h2 className={styles.headerCaps}>TINS</h2>
-          {/* <p className={styles.headerCaps}>TINS</p> */}
         </div>
         <input
           type="button"
@@ -104,7 +96,6 @@ const Sizes = () => {
             setLocalSizes(tinSizes)
           }}
         />
-        {/* <Arrow /> */}
       </div>
     </div>
   )
