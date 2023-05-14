@@ -7,7 +7,7 @@ import ShippingCalculator from '@utils/ShippingCalculator'
 interface CheckoutButtonProps extends CartProps {
   setCheckingOut: (checkingOut: boolean) => void
   checkingOut: boolean
-  zip: string
+  zip?: string
 }
 
 const CheckoutButton = (props: CheckoutButtonProps) => {
