@@ -14,7 +14,6 @@ export interface CheckoutProps {
 
 const Checkout = async (props: CheckoutProps) => {
   const { stripeCart, customer } = { ...props }
-  console.log('customer', customer)
   const PriceIDs = async () => {
     const res = await fetch('/api/post/stripe/product_ID_to_price_ID', {
       method: 'POST',
@@ -48,20 +47,27 @@ const Checkout = async (props: CheckoutProps) => {
         })
       })
       .then((data) => {
-        return {
-          line_items: data,
+        const lines = data
+        const shippingLineItem = customer.shippingCost
+          ? (customer.shippingCost * 100).toFixed(0)
+          : '0'
+        const dataObj = {
+          shipping: shippingLineItem,
+          lines: lines,
         }
+        return dataObj
       })
       .then((data) => {
-        return JSON.stringify(data)
-      })
-      .then((data) => {
+        const dataString = JSON.stringify({
+          line_items: data.lines,
+          shipping: data.shipping,
+        })
         return {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: data,
+          body: dataString,
         }
       })
       .then((data) => {

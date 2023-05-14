@@ -22,6 +22,7 @@ export type Customer = {
   zip: string
   email?: string
   phone?: string
+  shippingCost?: number
 }
 
 type LocalContextScope = {

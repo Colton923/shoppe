@@ -6,6 +6,7 @@ import * as subCart from '@components/cart/Cart'
 import Checkout, { CheckoutProps } from '../Checkout'
 import { useLocalContext } from '@components/context/LocalContext'
 import { useState } from 'react'
+import CheckoutButton from '@components/cart/CheckoutButton'
 
 export type StripeCart = {
   item: StripeProduct
@@ -13,7 +14,7 @@ export type StripeCart = {
 }
 
 const Cart = () => {
-  const { customer, setCustomer } = useLocalContext()
+  const { customer, setCustomer, checkingOut, setCheckingOut } = useLocalContext()
 
   return (
     <div className={styles.wrapper}>
@@ -70,7 +71,12 @@ const Cart = () => {
           />
         </div>
       </div>
-      <subCart.default CheckoutFn={Checkout} />
+      <CheckoutButton
+        setCheckingOut={setCheckingOut}
+        checkingOut={checkingOut}
+        CheckoutFn={Checkout}
+        zip={customer.zip}
+      />
     </div>
   )
 }
