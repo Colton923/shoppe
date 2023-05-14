@@ -1,18 +1,10 @@
 .pageContent {
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: wrap;
-  // justify-content: center;
-  // align-items: center;
-  // align-content: flex-start;
-
-  min-height: 100vh;
-  // overflow-x: hidden;
-
-  // position: relative;
-
-  //added
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 1400px;
+  min-height: 100vh;
 }
 
 .imageContainer {
@@ -129,15 +121,24 @@
 }
 
 .cartOverlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: fixed;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: column;
+  // position: fixed;
   width: 0;
-  height: 0;
+  // height: 0;
   cursor: pointer;
   box-shadow: inset 0 0 2px 0px var(--caneBlack);
-  border-radius: 30px;
+  border-radius: 20px;
   overflow: hidden;
+
+  // ** ADDED **
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // width: 80%;
+  // max-width: 400px;
+  max-height: 500px;
 }

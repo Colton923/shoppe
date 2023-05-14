@@ -64,39 +64,44 @@ const Register = () => {
       <div className={styles.formWrapper}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <h1 className={styles.title}>Create an Account</h1>
-          <input
-            type="text"
-            placeholder="Business Name"
-            {...register('businessName')}
-            className={styles.input}
-          />
-          <input
-            type="text"
-            placeholder="Address"
-            {...register('address')}
-            className={styles.input}
-          />
-          <input
-            type="text"
-            placeholder="Email"
-            {...register('email')}
-            className={styles.input}
-          />
-          <input
-            type="text"
-            placeholder="Phone Number"
-            {...register('phoneNumber')}
-            className={styles.input}
-          />
-          <input
-            type="text"
-            placeholder="TIN"
-            {...register('tin')}
-            className={styles.input}
-          />
+          <div className={styles.formInputsWrapper}>
+            <input
+              type="text"
+              placeholder="Business Name"
+              {...register('businessName')}
+              className={styles.input}
+            />
+            <input
+              type="text"
+              placeholder="Address"
+              {...register('address')}
+              className={styles.input}
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              {...register('email')}
+              className={styles.input}
+            />
+            <input
+              type="text"
+              placeholder="Phone Number"
+              {...register('phoneNumber')}
+              className={styles.input}
+            />
+            <input
+              type="text"
+              placeholder="TIN"
+              {...register('tin')}
+              className={styles.input}
+            />
+          </div>
 
-          <p className={styles.authLink}>
-            Already have an account?&nbsp;
+          <button type="submit" className={styles.btn}>
+            Register
+          </button>
+          <div className={styles.authWrapper}>
+            <p className={styles.authLink}>Already have an account? </p>
             <input
               type="button"
               value="Login"
@@ -106,10 +111,7 @@ const Register = () => {
                 setIsRegisterOverlay(false)
               }}
             />
-          </p>
-          <button type="submit" className={styles.btn}>
-            Register
-          </button>
+          </div>
         </form>
       </div>
     </div>
