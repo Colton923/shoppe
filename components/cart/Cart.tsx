@@ -23,6 +23,7 @@ const Cart = (props: CartProps) => {
     <div className={styles.cart} id="cartPopOut">
       <CartContextProvider>
         <h2 className={styles.cart__title}>{CheckoutFn ? '' : 'Cart'}</h2>
+
         <div className={styles.cartItemsScroller}>
           {[...new Set(cart)].map((item, index) => {
             return (

@@ -183,11 +183,12 @@ export const LocalContextProvider = (props: Props) => {
     const overlayDiv = document.getElementById('cartOverlay')
     const pageContentDiv = document.getElementById('pageContent')
     const cartLogoDiv = document.getElementById('cart')
+
     if (!cartLogoDiv) return
     if (!overlayDiv) return
     if (!pageContentDiv) return
+
     if (overlayDiv.classList.contains(styles.allowCartOverlay)) {
-      if (overlayDiv.contains(e.target as Node)) return
       if (cartLogoDiv.contains(e.target as Node)) {
         overlayDiv.classList.remove(styles.allowCartOverlay)
       } else {

@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 amount: parseInt(shipping),
                 currency: 'usd',
               },
-              display_name: 'Shipping',
+              display_name: 'Shipping & Handling',
               delivery_estimate: {
                 minimum: {
                   unit: 'day',
