@@ -5,6 +5,7 @@ import intToCash from '@utils/intToCash'
 import PopcornNamer from '@utils/PopcornNamer'
 import { useCartContext } from './CartContext'
 import type { CartProps } from './Cart'
+import { useLocalContext } from '@components/context/LocalContext'
 
 interface ShoppingCartItemProps extends CartProps {
   item: StripeProduct
@@ -15,26 +16,22 @@ interface ShoppingCartItemProps extends CartProps {
 const ShoppingCartItem = (props: ShoppingCartItemProps) => {
   const { item, index, quantity, CheckoutFn } = props
   const { activeItems, CheckItemInCart } = useCartContext()
+
+  const { cart, setCart } = useLocalContext()
+
   const { metadata } = { ...item }
   if (!metadata) return <></>
   const { images, name } = item
   const { flavor, size, retailPrice } = metadata
   if (!item) return <></>
 
+  const handleDeleteItem = (id: string | undefined) => {
+    const updatedCartItems = cart.filter((item) => item.id !== id)
+    setCart(updatedCartItems)
+  }
+
   return (
     <div className={styles.shoppingCartItem}>
-      {!CheckoutFn && (
-        <div className={styles.selectedActive}>
-          <input
-            type="checkbox"
-            className={styles.selectedActive__checkbox}
-            checked={activeItems[index]}
-            onChange={() => {
-              CheckItemInCart(index)
-            }}
-          />
-        </div>
-      )}
       <div className={styles.shoppingCartItem__image}>
         {images && images[0] && (
           <Image src={images[0]} alt={name} width={125} height={125} />
@@ -48,19 +45,28 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
           })}
         </h3>
         <div className={styles.shoppingCartItem__info__divider}>
-          <h4 className={styles.shoppingCartItem__info__flavor}>{flavor}</h4>
+          <h4 className={styles.shoppingCartItem__info__size}>Size: {size}</h4>
+          <div className={styles.shoppingCartItem_qtyAndPriceWrapper}>
+            <h4 className={styles.shoppingCartItem__info__quantity}>
+              Quantity: {quantity}
+            </h4>
 
-          <h4 className={styles.shoppingCartItem__info__size}>{size}</h4>
-
-          <h4 className={styles.shoppingCartItem__info__quantity}>
-            Quantity: {quantity}
-          </h4>
-
-          <h4 className={styles.shoppingCartItem__info__price}>
-            Price:
-            {intToCash(quantity * parseInt(retailPrice ? retailPrice : '0'))}
-          </h4>
+            <h4 className={styles.shoppingCartItem__info__price}>
+              Price:{' '}
+              {intToCash(quantity * parseInt(retailPrice ? retailPrice : '0'))}
+            </h4>
+          </div>
         </div>
+        {!CheckoutFn && (
+          <div className={styles.selectedActive}>
+            <button
+              onClick={() => handleDeleteItem(item.id)}
+              className={styles.removeFromCartBtn}
+            >
+              Remove Item
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
