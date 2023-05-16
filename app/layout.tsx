@@ -15,7 +15,8 @@ export default async function RootLayout({ children }: Props) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <meta name="description" content="Go-Events" />
+        <meta name="description" content="Main St. Shoppe" />
+        <meta name="author" content="Webdev Solutions LLC" />
         <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
       </head>
       <body>
