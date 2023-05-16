@@ -5,8 +5,8 @@ type PopcornName = {
 
 export default function PopcornNamer(item: PopcornName) {
   let name = ''
-  name += item.size
-  name += ' of '
+  // name += item.size
+  // name += ' of '
   if (item.flavor.length > 1) {
     item.flavor.forEach((flavor) => {
       name += flavor
