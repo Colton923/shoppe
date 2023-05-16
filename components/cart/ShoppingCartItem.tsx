@@ -5,7 +5,6 @@ import intToCash from '@utils/intToCash'
 import PopcornNamer from '@utils/PopcornNamer'
 import { useCartContext } from './CartContext'
 import type { CartProps } from './Cart'
-import { useLocalContext } from '@components/context/LocalContext'
 
 interface ShoppingCartItemProps extends CartProps {
   item: StripeProduct
@@ -14,7 +13,7 @@ interface ShoppingCartItemProps extends CartProps {
 
 const ShoppingCartItem = (props: ShoppingCartItemProps) => {
   const { item, quantity, CheckoutFn } = props
-  const { activeItems, CheckItemInCart, handleDeleteItem } = useCartContext()
+  const { handleDeleteItem } = useCartContext()
 
   const { metadata } = { ...item }
   if (!metadata) return <></>

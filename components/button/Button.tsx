@@ -6,10 +6,11 @@ export interface ButtonProps {
   title: string
   onClick: () => void
   size?: string
+  type?: string
 }
 
 const Button = (props: ButtonProps) => {
-  const { title, onClick } = props
+  const { title, onClick, type } = props
 
   return (
     <ButtonContextProvider key={title}>
@@ -17,6 +18,7 @@ const Button = (props: ButtonProps) => {
         {...{
           title,
           onClick,
+          type,
         }}
       />
     </ButtonContextProvider>

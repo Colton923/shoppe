@@ -29,6 +29,7 @@ type CartContextScope = {
 
 interface Props {
   children: React.ReactNode
+  setCart: (cart: StripeProduct[]) => void
 }
 
 export const CartContext = createContext<CartContextScope | null>(null)
