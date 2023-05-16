@@ -16,12 +16,15 @@ type CartContextScope = {
   uniqueCart: StripeProduct[]
   setDuplicatesInCart: (duplicatesInCart: number[]) => void
   duplicatesInCart: number[]
+  localCart: StripeProduct[]
+  setLocalCart: (localCart: StripeProduct[]) => void
 
   /*
    *  Functions
    */
   GetSubTotal: () => string
   CheckItemInCart: (index: number) => void
+  handleDeleteItem: (id: string | undefined) => void
 }
 
 interface Props {
@@ -33,18 +36,18 @@ export const CartContext = createContext<CartContextScope | null>(null)
 export const CartContextProvider = (props: Props) => {
   const { children } = props
   const { cart, setCart } = useLocalContext()
-
   const [activeItems, setActiveItems] = useState<boolean[]>([])
   const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
   const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
+  const [localCart, setLocalCart] = useState<StripeProduct[]>([])
 
   const UniqueCart = () => {
-    return [...new Set(cart)]
+    return [...new Set(localCart)]
   }
 
   const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
     const duplicates = uniqueCart.map((item) => {
-      return cart.filter((cartItem) => cartItem === item).length
+      return localCart.filter((cartItem) => cartItem === item).length
     })
     return duplicates
   }
@@ -52,7 +55,7 @@ export const CartContextProvider = (props: Props) => {
   const GetSubTotal = () => {
     const subTotal: number[] = []
     let itemTotal = 0
-    cart.forEach((item) => {
+    localCart.forEach((item) => {
       if (item.metadata?.retailPrice === undefined) return
       if (itemTotal === parseInt(item.metadata?.retailPrice)) return
       itemTotal = parseInt(item.metadata?.retailPrice)
@@ -78,6 +81,15 @@ export const CartContextProvider = (props: Props) => {
     // setActiveItems(newActiveItems)
   }
 
+  const handleDeleteItem = (id: string | undefined) => {
+    const updatedCartItems = localCart.filter((item) => item.id !== id)
+    setCart(updatedCartItems)
+  }
+
+  useEffect(() => {
+    setLocalCart(cart)
+  }, [cart])
+
   useEffect(() => {
     const newUnique = UniqueCart()
     setUniqueCart(newUnique)
@@ -88,7 +100,7 @@ export const CartContextProvider = (props: Props) => {
     setActiveItems(newActiveItems)
 
     setDuplicatesInCart(DuplicatesInCart(newUnique))
-  }, [cart, setCart, setActiveItems])
+  }, [localCart, setLocalCart, setActiveItems])
 
   const contextValue: CartContextScope = useMemo(
     () => ({
@@ -100,6 +112,9 @@ export const CartContextProvider = (props: Props) => {
       setUniqueCart,
       setDuplicatesInCart,
       CheckItemInCart,
+      handleDeleteItem,
+      localCart,
+      setLocalCart,
     }),
     [
       activeItems,
@@ -110,6 +125,9 @@ export const CartContextProvider = (props: Props) => {
       setUniqueCart,
       setDuplicatesInCart,
       CheckItemInCart,
+      handleDeleteItem,
+      localCart,
+      setLocalCart,
     ]
   )
 

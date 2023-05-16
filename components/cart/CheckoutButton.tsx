@@ -3,6 +3,7 @@ import { useLocalContext } from '@components/context/LocalContext'
 import Button from '@components/button/Button'
 import styles from '../context/Context.module.scss'
 import ShippingCalculator from '@utils/ShippingCalculator'
+import { useCartContext } from './CartContext'
 
 interface CheckoutButtonProps extends CartProps {
   setCheckingOut: (checkingOut: boolean) => void
@@ -12,7 +13,8 @@ interface CheckoutButtonProps extends CartProps {
 
 const CheckoutButton = (props: CheckoutButtonProps) => {
   const { setCheckingOut, checkingOut, CheckoutFn, zip } = props
-  const { stripeCart, customer, setIsCartOverlay } = useLocalContext()
+  const { stripeCart, customer, setIsCartOverlay, setCart } = useLocalContext()
+  const { localCart } = useCartContext()
 
   const RemoveDiv = () => {
     const overlayDiv = document.getElementById('cartOverlay')
@@ -42,6 +44,7 @@ const CheckoutButton = (props: CheckoutButtonProps) => {
     <Button
       title={CheckoutFn ? 'Pay' : 'Checkout'}
       onClick={() => {
+        setCart(localCart)
         setCheckingOut(!checkingOut)
         CheckoutFn ? CheckoutToStripe() : RemoveDiv()
       }}

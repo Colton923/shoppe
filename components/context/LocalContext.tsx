@@ -180,19 +180,18 @@ export const LocalContextProvider = (props: Props) => {
   }, [activeFlavors, selectedSize, products, activeFlavors, setActiveFlavors])
 
   const ClickOffOverlayHandler = (e: MouseEvent) => {
-    const overlayDiv = document.getElementById('cartOverlay')
-    const pageContentDiv = document.getElementById('pageContent')
+    const cartOverlayDiv = document.getElementById('cartOverlay')
     const cartLogoDiv = document.getElementById('cart')
 
-    if (!cartLogoDiv) return
-    if (!overlayDiv) return
-    if (!pageContentDiv) return
-
-    if (overlayDiv.classList.contains(styles.allowCartOverlay)) {
-      if (cartLogoDiv.contains(e.target as Node)) {
-        overlayDiv.classList.remove(styles.allowCartOverlay)
+    if (cartOverlayDiv?.classList.contains(styles.allowCartOverlay)) {
+      if (cartLogoDiv?.contains(e.target as Node)) {
+        cartOverlayDiv.classList.remove(styles.allowCartOverlay)
       } else {
-        overlayDiv.classList.remove(styles.allowCartOverlay)
+        if (cartOverlayDiv?.contains(e.target as Node)) return
+        cartOverlayDiv.classList.remove(styles.allowCartOverlay)
+
+        // IsCartOverlay boolean is referenced is CheckoutButton.tsx, and Navbar.tsx.
+        // We can likely remove all of that, and this state, and then make a class that toggles the overlay on and off rather.
         setIsCartOverlay(false)
       }
     }

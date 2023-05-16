@@ -9,26 +9,18 @@ import { useLocalContext } from '@components/context/LocalContext'
 
 interface ShoppingCartItemProps extends CartProps {
   item: StripeProduct
-  index: number
   quantity: number
 }
 
 const ShoppingCartItem = (props: ShoppingCartItemProps) => {
-  const { item, index, quantity, CheckoutFn } = props
-  const { activeItems, CheckItemInCart } = useCartContext()
-
-  const { cart, setCart } = useLocalContext()
+  const { item, quantity, CheckoutFn } = props
+  const { activeItems, CheckItemInCart, handleDeleteItem } = useCartContext()
 
   const { metadata } = { ...item }
   if (!metadata) return <></>
   const { images, name } = item
   const { flavor, size, retailPrice } = metadata
   if (!item) return <></>
-
-  const handleDeleteItem = (id: string | undefined) => {
-    const updatedCartItems = cart.filter((item) => item.id !== id)
-    setCart(updatedCartItems)
-  }
 
   return (
     <div className={styles.shoppingCartItem}>

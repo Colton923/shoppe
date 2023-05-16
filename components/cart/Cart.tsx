@@ -2,10 +2,8 @@ import styles from './Cart.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
 import ShoppingCartItem from './ShoppingCartItem'
 import SubTotal from './SubTotal'
-import type { StripeProduct } from 'types/stripe/StripeProduct'
-import CartContextProvider from './CartContext'
+import CartContextProvider, { useCartContext } from './CartContext'
 import CheckoutButton from './CheckoutButton'
-import type { StripeCart } from '@components/popcorn/cart/Cart'
 import type { CheckoutProps } from '@components/popcorn/Checkout'
 
 export interface CartProps {
@@ -28,7 +26,6 @@ const Cart = (props: CartProps) => {
           {[...new Set(cart)].map((item, index) => {
             return (
               <ShoppingCartItem
-                index={index}
                 item={item}
                 key={index}
                 quantity={
