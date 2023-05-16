@@ -1,6 +1,3 @@
-'use client'
-// REMOVE WHEN DONE TESTING
-
 import Image from 'next/image'
 import styles from './Cart.module.scss'
 import type { StripeProduct } from 'types/stripe/StripeProduct'
@@ -18,7 +15,7 @@ interface ShoppingCartItemProps extends CartProps {
 
 const ShoppingCartItem = (props: ShoppingCartItemProps) => {
   const { item, index, quantity, CheckoutFn } = props
-  const { activeItems, setActiveItems, CheckItemInCart } = useCartContext()
+  const { activeItems, CheckItemInCart } = useCartContext()
 
   const { cart, setCart } = useLocalContext()
 
@@ -29,10 +26,7 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
   if (!item) return <></>
 
   const handleDeleteItem = (id: string | undefined) => {
-    console.log(item)
-    console.log(cart)
     const updatedCartItems = cart.filter((item) => item.id !== id)
-    console.log(updatedCartItems)
     setCart(updatedCartItems)
   }
 
@@ -51,8 +45,6 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
           })}
         </h3>
         <div className={styles.shoppingCartItem__info__divider}>
-          {/* <h4 className={styles.shoppingCartItem__info__flavor}>{flavor}</h4> */}
-
           <h4 className={styles.shoppingCartItem__info__size}>Size: {size}</h4>
           <div className={styles.shoppingCartItem_qtyAndPriceWrapper}>
             <h4 className={styles.shoppingCartItem__info__quantity}>
@@ -71,7 +63,7 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
               onClick={() => handleDeleteItem(item.id)}
               className={styles.removeFromCartBtn}
             >
-              Remove from Cart
+              Remove Item
             </button>
           </div>
         )}
