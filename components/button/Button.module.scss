@@ -42,6 +42,8 @@ $localButtonDarkTwo: rgba(139, 0, 0, 0.5);
     $localButtonDarkTwo,
     true
   );
+  display: flex;
+  width: 100%;
   font-family: 'Poppins', sans-serif;
   font-size: 1.2rem;
   font-weight: 700;

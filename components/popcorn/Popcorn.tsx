@@ -9,7 +9,6 @@ import Category from './category/Category'
 import Login from '@components/login/Login'
 import Register from '@components/register/Register'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
-
 const PopcornComponent = () => {
   const {
     setActiveSizes,
@@ -52,7 +51,10 @@ const PopcornComponent = () => {
           <Cart />
         </>
       ) : activeSizes.length === 0 ? (
-        <Sizes />
+        <>
+          <h2 className={styles.title}>Kettle Corn</h2>
+          <Sizes />
+        </>
       ) : activeFlavors.length === 0 ? (
         <>
           <div className={styles.back} onClick={() => setActiveSizes([])}>
@@ -72,10 +74,10 @@ const PopcornComponent = () => {
           >
             <span>{'< Back'}</span>
           </div>
+
           <Category />
         </>
       ) : null}
-      {/* <Footer /> */}
     </div>
   )
 }

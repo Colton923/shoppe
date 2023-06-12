@@ -4,6 +4,7 @@ import styles from '@styles/Home.module.scss'
 
 interface Props {
   children: React.ReactNode
+  products: any
 }
 
 export default async function RootLayout({ children }: Props) {

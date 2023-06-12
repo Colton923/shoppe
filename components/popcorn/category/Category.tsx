@@ -9,31 +9,34 @@ const Category = () => {
   if (!selectedSize) setSelectedSize(localSizes[0])
 
   return (
-    <div className={styles.category} id="selectSize">
-      <h2>Please Select a Size</h2>
-      <select
-        name="category"
-        id="category"
-        className={styles.select}
-        onChange={(e) => {
-          setSelectedSize(e.target.value as SizeNames)
-        }}
-        value={selectedSize}
-        defaultValue={selectedSize}
-      >
-        {localSizes.map((size: SizeNames) => (
-          <option key={size} value={size}>
-            {size}
-          </option>
-        ))}
-      </select>
-      <ActiveProduct
-        activeSize={selectedSize ? selectedSize : localSizes[0]}
-        activePrice={localPrice}
-        activeFlavors={activeFlavors}
-        key={selectedSize}
-      />
-    </div>
+    <>
+      <div className={styles.backdrop}></div>
+      <div className={styles.category} id="selectSize">
+        <h2>Please Select a Size</h2>
+        <select
+          name="category"
+          id="category"
+          className={styles.select}
+          onChange={(e) => {
+            setSelectedSize(e.target.value as SizeNames)
+          }}
+          value={selectedSize}
+          defaultValue={selectedSize}
+        >
+          {localSizes.map((size: SizeNames) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </select>
+        <ActiveProduct
+          activeSize={selectedSize ? selectedSize : localSizes[0]}
+          activePrice={localPrice}
+          activeFlavors={activeFlavors}
+          key={selectedSize}
+        />
+      </div>
+    </>
   )
 }
 

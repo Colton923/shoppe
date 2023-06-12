@@ -33,12 +33,12 @@
     overflow-x: hidden;
 }
 .flavorCounter__title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 400;
     color: #000;
 }
 .flavorCounter__count {
-    font-size: 1rem;
+    font-size: .8rem;
     font-weight: 400;
     color: #000;
     text-align: center;
@@ -54,8 +54,8 @@
     border-radius: 10px;
     position: relative;
     overflow: hidden;
-    transform: scale(1);
     padding: 10px;
+    width: 175px;
 }
 .availableSizes {
     display: flex;
@@ -68,7 +68,7 @@
     overflow: hidden;
 }
 .availableSizes__title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 400;
     color: #000;
     margin-bottom: 10px;
@@ -100,7 +100,7 @@
     margin: 5px;
 }
 .availableSizes__size__title {
-    font-size: 1.3rem;
+    font-size: .8rem;
     font-weight: 400;
     color: #000;
     margin-bottom: 10px;
