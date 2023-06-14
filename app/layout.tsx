@@ -1,13 +1,15 @@
 import '../styles/globals.scss'
-// import Diamonds from '../components/svgs/Diamonds'
 import styles from '@styles/Home.module.scss'
+import LocalContextProvider from '@components/context/LocalContext'
+import FirebaseContextProvider from '@components/context/FirebaseContext'
 
-interface Props {
+import Clientize from '@components/clientize/Clientize'
+
+export default async function RootLayout(props: {
   children: React.ReactNode
-  products: any
-}
-
-export default async function RootLayout({ children }: Props) {
+  modal: React.ReactNode
+}) {
+  const { children, modal } = props
   return (
     <html>
       <head>
@@ -22,10 +24,16 @@ export default async function RootLayout({ children }: Props) {
       </head>
       <body>
         <main>
-          {/* <Diamonds /> */}
-          <div className={styles.pageContent} id={'pageContent'}>
-            {children}
-          </div>
+          <LocalContextProvider>
+            <FirebaseContextProvider>
+              <Clientize>
+                <div className={styles.pageContent} id={'pageContent'}>
+                  {children}
+                  {modal}
+                </div>
+              </Clientize>
+            </FirebaseContextProvider>
+          </LocalContextProvider>
         </main>
       </body>
     </html>

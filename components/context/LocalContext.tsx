@@ -6,6 +6,16 @@ import { SizeNames } from '../../types/PopcornSizes'
 import { StripeProduct } from '../../types/stripe/StripeProduct'
 import styles from './Context.module.scss'
 import type { StripeCart } from '@components/popcorn/cart/Cart'
+import imageUrlBuilder from '@sanity/image-url'
+import { createClient } from 'next-sanity'
+import { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder'
+
+const client = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: '2022-03-25',
+  useCdn: true,
+})
 
 export type FilteredFlavors = {
   Regular: FlavorNames[]
@@ -66,6 +76,9 @@ type LocalContextScope = {
   setIsRegisterOverlay: (isRegisterOverlay: boolean) => void
   isLoginOverlay: boolean
   setIsLoginOverlay: (isLoginOverlay: boolean) => void
+  sanityProducts: any
+  setSanityProducts: (sanityProducts: any) => void
+  urlFor: (source: any) => ImageUrlBuilder
 }
 interface Props {
   children: React.ReactNode
@@ -107,6 +120,34 @@ export const LocalContextProvider = (props: Props) => {
   })
   const [isRegisterOverlay, setIsRegisterOverlay] = useState<boolean>(false)
   const [isLoginOverlay, setIsLoginOverlay] = useState<boolean>(false)
+  const [sanityProducts, setSanityProducts] = useState<any[] | null>(null)
+
+  const urlFor = (source: string) => {
+    const builder = imageUrlBuilder(client)
+
+    return builder.image(source)
+  }
+
+  useEffect(() => {
+    // this needs to be called inside the ssr for making page intercept
+    const getData = async () => {
+      await client
+        .fetch(
+          `*[_type == "candy"]{
+            _id,
+            name,
+            description,
+            price,
+            image
+          }`
+        )
+        .then((data: any) => setSanityProducts(data))
+        .catch(console.error)
+
+      return
+    }
+    getData()
+  }, [])
 
   const UniqueCart = (cart: StripeProduct[]) => {
     return [...new Set(cart)]
@@ -270,6 +311,9 @@ export const LocalContextProvider = (props: Props) => {
       setIsRegisterOverlay,
       isLoginOverlay,
       setIsLoginOverlay,
+      sanityProducts,
+      setSanityProducts,
+      urlFor,
     }),
     [
       activeFlavors,
@@ -307,6 +351,9 @@ export const LocalContextProvider = (props: Props) => {
       setIsRegisterOverlay,
       isLoginOverlay,
       setIsLoginOverlay,
+      sanityProducts,
+      setSanityProducts,
+      urlFor,
     ]
   )
 

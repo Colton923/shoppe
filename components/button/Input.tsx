@@ -13,6 +13,10 @@ const Input = (props: ButtonProps) => {
         type={type}
         value={title}
         onClick={onClick}
+        defaultValue={''}
+        onChange={() => {
+          null
+        }}
       />
     </div>
   )

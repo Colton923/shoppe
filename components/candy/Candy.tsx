@@ -1,57 +1,22 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import imageUrlBuilder from '@sanity/image-url'
-import { createClient } from 'next-sanity'
 import styles from './Candy.module.scss'
-
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  apiVersion: '2022-03-25',
-  useCdn: true,
-})
+import { useLocalContext } from '@components/context/LocalContext'
+import Link from 'next/link'
 
 const Candy = () => {
-  const [products, setProducts] = useState<any[] | null>(null)
+  const { urlFor, sanityProducts } = useLocalContext()
 
-  const urlFor = (source: string) => {
-    const builder = imageUrlBuilder(client)
-
-    return builder.image(source)
-  }
-
-  useEffect(() => {
-    const getData = async () => {
-      await client
-        .fetch(
-          `*[_type == "candy"]{
-            _id,
-            name,
-            description,
-            price,
-            image
-          }`
-        )
-        .then((data: any) => setProducts(data))
-        .catch(console.error)
-
-      return
-    }
-    getData()
-  }, [])
-
-  console.log(products)
-
-  if (!products) return <div>Loading...</div>
-  if (products.length === 0) return <div>No products</div>
-
+  if (!sanityProducts) return <div>Loading...</div>
+  if (sanityProducts.length === 0) return <div>No products</div>
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>Candy</h2>
       <div className={styles.candyComponent}>
-        {products.map((product: any) => (
-          <li key={product._id} className={styles.item}>
+        {sanityProducts.map((product: any) => (
+          <Link
+            href={`/item/${product._id}`}
+            key={product._id}
+            className={styles.item}
+          >
             {product.image && (
               <img
                 className={styles.image}
@@ -66,14 +31,26 @@ const Candy = () => {
                 alt={product.name}
               />
             )}
-            <h3 className={styles.name}>{product.name}</h3>
+            <h3 className={styles.name}>
+              {window.innerWidth < 768
+                ? product.name.length > 13
+                  ? product.name.substring(0, 13) + '...'
+                  : product.name
+                : product.name.length > 26
+                ? product.name.substring(0, 26) + '...'
+                : product.name}
+            </h3>
             <p className={styles.description}>
-              {product.description.length > 13
-                ? product.description.substring(0, 13) + '...'
+              {window.innerWidth < 768
+                ? product.description.length > 13
+                  ? product.description.substring(0, 13) + '...'
+                  : product.description
+                : product.description.length > 26
+                ? product.description.substring(0, 26) + '...'
                 : product.description}
             </p>
             <p className={styles.price}>${product.price}</p>
-          </li>
+          </Link>
         ))}
       </div>
     </div>
