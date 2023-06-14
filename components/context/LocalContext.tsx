@@ -9,6 +9,7 @@ import type { StripeCart } from '@components/popcorn/cart/Cart'
 import imageUrlBuilder from '@sanity/image-url'
 import { createClient } from 'next-sanity'
 import { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder'
+import { useRouter } from 'next/navigation'
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -33,6 +34,15 @@ export type Customer = {
   email?: string
   phone?: string
   shippingCost?: number
+}
+
+type Product = {
+  name: string
+  metadata: {
+    flavor: string
+    size: string
+    retailPrice: number
+  }
 }
 
 type LocalContextScope = {
@@ -60,7 +70,7 @@ type LocalContextScope = {
   setActiveSizes: (sizes: SizeNames[]) => void
   setCart: (cart: StripeProduct[]) => void
   setSelectedSize: (size: SizeNames | undefined) => void
-  setProductFound: (product: StripeProduct | undefined) => void
+  setActiveProduct: (product: StripeProduct | undefined) => void
   setQuantity: (quantity: number) => void
   setCheckingOut: (checkingOut: boolean) => void
   localSizes: SizeNames[]
@@ -88,7 +98,7 @@ export const LocalContext = createContext<LocalContextScope | null>(null)
 
 export const LocalContextProvider = (props: Props) => {
   const { children } = props
-  const [activeProduct, setProductFound] = useState<StripeProduct | undefined>(
+  const [activeProduct, setActiveProduct] = useState<StripeProduct | undefined>(
     undefined
   )
   const [activeSizes, setActiveSizes] = useState<SizeNames[]>([])
@@ -121,6 +131,9 @@ export const LocalContextProvider = (props: Props) => {
   const [isRegisterOverlay, setIsRegisterOverlay] = useState<boolean>(false)
   const [isLoginOverlay, setIsLoginOverlay] = useState<boolean>(false)
   const [sanityProducts, setSanityProducts] = useState<any[] | null>(null)
+  const [checkNewProducts, setCheckNewProducts] = useState<boolean>(true)
+
+  const router = useRouter()
 
   const urlFor = (source: string) => {
     const builder = imageUrlBuilder(client)
@@ -141,12 +154,14 @@ export const LocalContextProvider = (props: Props) => {
             image
           }`
         )
-        .then((data: any) => setSanityProducts(data))
+        .then(async (data: any) => {
+          setSanityProducts(data)
+        })
         .catch(console.error)
-
-      return
     }
-    getData()
+    if (sanityProducts?.length === 0 || sanityProducts === null) {
+      getData()
+    }
   }, [])
 
   const UniqueCart = (cart: StripeProduct[]) => {
@@ -184,7 +199,7 @@ export const LocalContextProvider = (props: Props) => {
 
   useEffect(() => {
     if (!products) return
-
+    if (activeProduct) return
     const effectiveSize = selectedSize
       ? localSizes.includes(selectedSize)
         ? selectedSize
@@ -217,8 +232,51 @@ export const LocalContextProvider = (props: Props) => {
 
       return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
     })
-    setProductFound(foundProduct)
+    setActiveProduct(foundProduct)
   }, [activeFlavors, selectedSize, products, activeFlavors, setActiveFlavors])
+
+  useEffect(() => {
+    const makeStripeProducts = async () => {
+      await fetch('/api/post/stripe/makeStripeProduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sanityProducts,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data: any) => {
+          const newProds: Product[] = data.productsCreated
+          if (newProds.length === 0) {
+            return
+          }
+          const stripeProductArr: StripeProduct[] = []
+
+          newProds.forEach((item: Product) => {
+            if (item.metadata?.retailPrice === undefined) return
+            if (item.name === undefined) return
+            stripeProductArr.push({
+              name: item.name,
+              metadata: {
+                retailPrice: item.metadata.retailPrice.toString(),
+              },
+            })
+          })
+          const newProducts = products.concat(stripeProductArr)
+          setProducts(newProducts)
+        })
+
+        .catch(console.error)
+    }
+    if (sanityProducts ? sanityProducts?.length > 0 : false) {
+      if (checkNewProducts) {
+        makeStripeProducts()
+        setCheckNewProducts(false)
+      }
+    }
+  }, [sanityProducts])
 
   const ClickOffOverlayHandler = (e: MouseEvent) => {
     const cartOverlayDiv = document.getElementById('cartOverlay')
@@ -260,9 +318,14 @@ export const LocalContextProvider = (props: Props) => {
     for (let i = 0; i < quantity; i++) {
       newCart.push(activeProduct)
     }
+    router.push('/')
+    document.body.scrollTo({
+      top: document.getElementById(activeProduct.name)?.offsetTop,
+      behavior: 'smooth',
+    })
     setCart(newCart)
     setQuantity(1)
-    setProductFound(undefined)
+    setActiveProduct(undefined)
     setSelectedSize(undefined)
     setActiveSizes([])
     setActiveFlavors([])
@@ -294,7 +357,7 @@ export const LocalContextProvider = (props: Props) => {
       setActiveSizes,
       setCart,
       setSelectedSize,
-      setProductFound,
+      setActiveProduct,
       setQuantity,
       stripeCart,
       setStripeCart,
@@ -332,7 +395,7 @@ export const LocalContextProvider = (props: Props) => {
       setActiveSizes,
       setCart,
       setSelectedSize,
-      setProductFound,
+      setActiveProduct,
       setQuantity,
       filteredFlavors,
       setFilteredFlavors,

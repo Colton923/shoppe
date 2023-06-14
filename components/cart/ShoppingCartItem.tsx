@@ -36,7 +36,7 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
           })}
         </h3>
         <div className={styles.shoppingCartItem__info__divider}>
-          <h4 className={styles.shoppingCartItem__info__size}>Size: {size}</h4>
+          {<h4 className={styles.shoppingCartItem__info__size}>{size}</h4>}
           <div className={styles.shoppingCartItem_qtyAndPriceWrapper}>
             <h4 className={styles.shoppingCartItem__info__quantity}>
               Quantity: {quantity}

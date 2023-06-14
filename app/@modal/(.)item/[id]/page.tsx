@@ -3,6 +3,7 @@
 import styles from './Modal.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
 import { useRouter } from 'next/navigation'
+import ActiveProduct from '@components/popcorn/activeProduct/ActiveProduct'
 
 const PageModal = ({ params }: any) => {
   const { sanityProducts, urlFor } = useLocalContext()
@@ -17,19 +18,13 @@ const PageModal = ({ params }: any) => {
         <button className={styles.button} onClick={() => router.back()}>
           Close
         </button>
-        <h2 className={styles.title}>{item.name}</h2>
         <div className={styles.candyComponent}>
-          <li key={item._id} className={styles.item}>
-            {item.image && (
-              <img
-                className={styles.image}
-                src={item.image ? urlFor(item.image).url() : ''}
-                alt={item.name}
-              />
-            )}
-            <p className={styles.description}></p>
-            <p className={styles.price}>${item.price}</p>
-          </li>
+          <ActiveProduct
+            image={item.image ? urlFor(item.image).url() : ''}
+            activeFlavors={[item.name]}
+            activePrice={item.price * 100}
+          />
+          <p className={styles.description}>{item.description}</p>
         </div>
       </div>
     </div>

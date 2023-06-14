@@ -2,7 +2,6 @@ import '../styles/globals.scss'
 import styles from '@styles/Home.module.scss'
 import LocalContextProvider from '@components/context/LocalContext'
 import FirebaseContextProvider from '@components/context/FirebaseContext'
-
 import Clientize from '@components/clientize/Clientize'
 
 export default async function RootLayout(props: {
@@ -23,14 +22,12 @@ export default async function RootLayout(props: {
         <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
       </head>
       <body>
-        <main>
+        <main id={'pageContent'}>
           <LocalContextProvider>
             <FirebaseContextProvider>
               <Clientize>
-                <div className={styles.pageContent} id={'pageContent'}>
-                  {children}
-                  {modal}
-                </div>
+                {children}
+                {modal}
               </Clientize>
             </FirebaseContextProvider>
           </LocalContextProvider>

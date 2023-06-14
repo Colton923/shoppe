@@ -1,6 +1,11 @@
-.shoppingCartItem {
+.wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.shoppingCartItem {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
   position: relative;
 
@@ -71,7 +76,7 @@
 }
 .shoppingCartItem__info__quantity {
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 3px;
   width: 40%;
 
@@ -79,7 +84,7 @@
 }
 .shoppingCartItem__info__price {
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 3px;
   width: 40%;
 
@@ -99,7 +104,7 @@
 
   // custom styles
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--caneBlack);
   width: 30px;
   height: 30px;

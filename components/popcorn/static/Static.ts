@@ -12,10 +12,7 @@ import { useFirebaseContext } from '@components/context/FirebaseContext'
 const Static = () => {
   const { setProducts, setFlavors, setSizes, setFilteredFlavors } = useLocalContext()
   const { loggedIn } = useFirebaseContext()
-
   useEffect(() => {
-    console.log('rendering static data')
-
     try {
       if (!loggedIn) {
         fetch('/api/get/products', {

@@ -1,4 +1,5 @@
 'use client'
+
 import Navbar from '@components/navbar/Navbar'
 import Footer from '@components/footer/Footer'
 import Cart from '@components/cart/Cart'
@@ -8,9 +9,7 @@ const Clientize = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Navbar />
-      <div className={styles.cartOverlay} id={'cartOverlay'}>
-        <Cart />
-      </div>
+      <Cart />
       {children}
 
       <Footer />

@@ -22,7 +22,6 @@ const Login = () => {
     setIsLoginOverlay(false)
   }
 
-  console.log('localVisible', localVisible)
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const loginOverlay = document.getElementById('loginOverlay')

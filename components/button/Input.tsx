@@ -11,9 +11,8 @@ const Input = (props: ButtonProps) => {
       <input
         className={styles.button__button}
         type={type}
-        value={title}
+        value={title || 'input-value'}
         onClick={onClick}
-        defaultValue={''}
         onChange={() => {
           null
         }}

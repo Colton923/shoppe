@@ -3,9 +3,12 @@
 import { useLocalContext } from '@components/context/LocalContext'
 import { usePathname } from 'next/navigation'
 import styles from './Item.module.scss'
+import { useRouter } from 'next/navigation'
+import ActiveProduct from '@components/popcorn/activeProduct/ActiveProduct'
 
 export default function Page() {
   const { sanityProducts, urlFor } = useLocalContext()
+  const router = useRouter()
   const params = usePathname()
   if (!sanityProducts) return <div>Loading...</div>
 
@@ -16,19 +19,17 @@ export default function Page() {
   return (
     <div>
       <div className={styles.wrapper}>
+        <button className={styles.button} onClick={() => router.back()}>
+          Close
+        </button>
         <h2 className={styles.title}>{item.name}</h2>
         <div className={styles.candyComponent}>
-          <li key={item._id} className={styles.item}>
-            {item.image && (
-              <img
-                className={styles.image}
-                src={item.image ? urlFor(item.image).url() : ''}
-                alt={item.name}
-              />
-            )}
-            <p className={styles.description}></p>
-            <p className={styles.price}>${item.price}</p>
-          </li>
+          <ActiveProduct
+            image={item.image ? urlFor(item.image).url() : ''}
+            activeFlavors={[item.name]}
+            activePrice={item.price * 100}
+          />
+          <p className={styles.description}></p>
         </div>
       </div>
     </div>

@@ -1,9 +1,11 @@
 import styles from './Candy.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
 import Link from 'next/link'
+import { StripeProduct } from 'types/stripe/StripeProduct'
 
 const Candy = () => {
-  const { urlFor, sanityProducts } = useLocalContext()
+  const { urlFor, sanityProducts, setActiveProduct, products, activeProduct } =
+    useLocalContext()
 
   if (!sanityProducts) return <div>Loading...</div>
   if (sanityProducts.length === 0) return <div>No products</div>
@@ -16,6 +18,19 @@ const Candy = () => {
             href={`/item/${product._id}`}
             key={product._id}
             className={styles.item}
+            id={product.name}
+            onClick={() => {
+              const thisProduct: StripeProduct | undefined = products.find((p) => {
+                if (p.name === product.name) {
+                  return p
+                } else {
+                  return null
+                }
+              })
+              if (thisProduct) {
+                setActiveProduct(thisProduct)
+              }
+            }}
           >
             {product.image && (
               <img
@@ -29,6 +44,14 @@ const Candy = () => {
                     .url() || ''
                 }
                 alt={product.name}
+              />
+            )}
+            {!product.image && (
+              <div
+                className={styles.image}
+                style={{
+                  backgroundImage: `url(https://main-st-shoppe.com/icons/favicon.ico)`,
+                }}
               />
             )}
             <h3 className={styles.name}>
