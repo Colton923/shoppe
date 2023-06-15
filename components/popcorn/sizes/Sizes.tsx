@@ -1,7 +1,7 @@
 import styles from './Sizes.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
-import BagImage from '@public/images/caramel1.png'
-import TinImage from '@public/images/Tin.png'
+import BagImage from '@public/images/caramel1.webp'
+import TinImage from '@public/images/Tin.webp'
 import Image from 'next/image'
 
 const Sizes = () => {

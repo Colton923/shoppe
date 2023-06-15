@@ -3,6 +3,36 @@
   flex-direction: column;
   padding: 1rem 2rem;
   text-decoration: none;
+  min-height: 50vh;
+
+  position: relative;
+  transform: translate3d(
+    0,
+    0,
+    0
+  );
+  animation: BackgroundActive 2s ease-in-out forwards;
+
+  @keyframes BackgroundActive {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+
+    }
+    70% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+
+    }
+    80% {
+      opacity: 0.5;
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
 }
 
 .title{
@@ -68,7 +98,6 @@
     .price {
       font-size: 1rem;
       font-weight: 700;
-      margin-top: 1rem;
       text-indent: 3px;
     }
   }

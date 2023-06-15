@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { StripeProduct } from 'types/stripe/StripeProduct'
 
 const Candy = () => {
-  const { urlFor, sanityProducts, setActiveProduct, products, activeProduct } =
-    useLocalContext()
+  const { urlFor, sanityProducts, setActiveProduct, products } = useLocalContext()
 
-  if (!sanityProducts) return <div>Loading...</div>
+  if (!sanityProducts) return null
   if (sanityProducts.length === 0) return <div>No products</div>
   return (
     <div className={styles.wrapper}>

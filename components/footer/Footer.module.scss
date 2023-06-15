@@ -116,6 +116,8 @@
 
   color: rgba(139, 0, 0, 1);
   text-decoration: none;
+
+
   @media (min-width: 768px) {
     align-items: flex-end;
     text-align: right;
@@ -148,10 +150,11 @@
   text-decoration: none;
   margin: 0 0.5rem;
   font-weight: 400;
-
+  padding: .5rem;
   &:hover {
     cursor: pointer;
     color: #000;
   }
   z-index: 1002;
+  min-height: 20px;
 }

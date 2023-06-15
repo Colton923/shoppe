@@ -1,3 +1,5 @@
+
+
 .wrapper {
   width: 100%;
   padding: 1rem 2rem;
@@ -11,7 +13,40 @@
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+
+  position: relative;
+  overflow: hidden;
+  opacity: 0.3;
+  transform: translate3d(
+    0,
+    0,
+    0
+  );
+  animation: BackgroundActive 0.7s ease-in-out forwards;
+
+  @keyframes BackgroundActive {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+
+    }
+    50% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+
+    }
+    70% {
+      opacity: 0.5;
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
 }
+
+
 
 .back {
   display: flex;

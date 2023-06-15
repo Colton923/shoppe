@@ -56,7 +56,7 @@
   z-index: inherit;
 
   // ** ADDED **
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-poppins);
   color: var(--caneRed);
 }
 .shoppingCartItem__info__flavor {

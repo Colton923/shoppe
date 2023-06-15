@@ -10,9 +10,9 @@ export default function Page() {
   const { sanityProducts, urlFor } = useLocalContext()
   const router = useRouter()
   const params = usePathname()
-  if (!sanityProducts) return <div>Loading...</div>
+  if (!sanityProducts) return null
 
-  if (!params) return <div>Loading...</div>
+  if (!params) return null
   const itemId = params.split('/')[2]
   const item = sanityProducts.find((item: any) => item._id === itemId)
 

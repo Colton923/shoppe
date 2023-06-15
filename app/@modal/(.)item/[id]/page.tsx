@@ -8,8 +8,8 @@ import ActiveProduct from '@components/popcorn/activeProduct/ActiveProduct'
 const PageModal = ({ params }: any) => {
   const { sanityProducts, urlFor } = useLocalContext()
   const router = useRouter()
-  if (!params) return <div>Loading...</div>
-  if (!sanityProducts) return <div>Loading...</div>
+  if (!params) return null
+  if (!sanityProducts) return null
   const item = sanityProducts.find((item: any) => item._id === params.id)
 
   return (

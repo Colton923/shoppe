@@ -1,3 +1,23 @@
+.defaultContainer {
+
+  animation: ExpandForComponents 1s ease-in-out forwards;
+
+  @keyframes ExpandForComponents {
+    0% {
+      height: 0;
+    }
+    50% {
+      height: 0;
+    }
+    70% {
+      height: 100%;
+    }
+    100% {
+      height: 100%;
+    }
+  }
+}
+
 .pageContent {
   margin: 0 auto;
   display: flex;
