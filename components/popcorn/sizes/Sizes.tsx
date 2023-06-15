@@ -1,7 +1,7 @@
 import styles from './Sizes.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
-import BagImage from '@public/images/caramel1.webp'
-import TinImage from '@public/images/caramel1.webp'
+import BagImage from '@public/images/Bag.png'
+import TinImage from '@public/images/Box.jpeg'
 import Image from 'next/image'
 
 const Sizes = () => {
@@ -16,13 +16,7 @@ const Sizes = () => {
   return (
     <div className={styles.itemsWrapper}>
       <div className={styles.category}>
-        <Image
-          src={BagImage}
-          alt="Bag"
-          width={2048}
-          height={2048}
-          className={styles.bagImage}
-        />
+        <Image src={BagImage} alt="Bag" className={styles.bagImage} />
         <div className={styles.header}>
           <h2 className={styles.headerText}>SHOP</h2>
           <h2 className={styles.headerCaps}>BAGS</h2>
@@ -38,13 +32,7 @@ const Sizes = () => {
         {/* <Arrow /> */}
       </div>
       <div className={styles.category}>
-        <Image
-          src={TinImage}
-          alt="Tin"
-          width={2048}
-          height={2048}
-          className={styles.tinImage}
-        />
+        <Image src={TinImage} alt="Tin" className={styles.tinImage} />
         <div className={styles.header}>
           <h2 className={styles.headerText}>SHOP</h2>
           <h2 className={styles.headerCaps}>TINS</h2>
