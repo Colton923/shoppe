@@ -326,7 +326,7 @@ export const LocalContextProvider = (props: Props) => {
       activeProduct.name = `${activeProduct.name} - ${activeFlavors.join(' & ')}`
       for (let i = 0; i < activeFlavors.length - 1; i++) {
         additionalFlavorProduct.description = activeFlavors[i].toString()
-        additionalFlavorProduct.name = `${activeFlavors[i]}`
+        additionalFlavorProduct.name = `${activeFlavors[i + 1]}`
         newCart.push(additionalFlavorProduct)
       }
     }
