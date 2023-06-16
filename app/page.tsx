@@ -5,11 +5,11 @@ import styles from '@styles/Home.module.scss'
 import Candy from '@components/candy/Candy'
 import { useLocalContext } from '@components/context/LocalContext'
 export default function Index() {
-  const { checkingOut } = useLocalContext()
+  const { checkingOut, activeSizes } = useLocalContext()
   return (
     <div className={styles.defaultContainer}>
       <Popcorn />
-      {!checkingOut && <Candy />}
+      {!checkingOut && activeSizes.length === 0 && <Candy />}
     </div>
   )
 }

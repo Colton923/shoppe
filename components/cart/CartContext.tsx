@@ -23,7 +23,6 @@ type CartContextScope = {
    *  Functions
    */
   GetSubTotal: () => string
-  CheckItemInCart: (index: number) => void
   handleDeleteItem: (id: string | undefined) => void
 }
 
@@ -75,13 +74,6 @@ export const CartContextProvider = (props: Props) => {
     return intToCash(sotal)
   }
 
-  const CheckItemInCart = (index: number) => {
-    //Did not get this going for version 1
-    // const newActiveItems = [...activeItems]
-    // newActiveItems[index] = !newActiveItems[index]
-    // setActiveItems(newActiveItems)
-  }
-
   const handleDeleteItem = (id: string | undefined) => {
     const updatedCartItems = localCart.filter((item) => item.id !== id)
     setCart(updatedCartItems)
@@ -112,7 +104,6 @@ export const CartContextProvider = (props: Props) => {
       duplicatesInCart,
       setUniqueCart,
       setDuplicatesInCart,
-      CheckItemInCart,
       handleDeleteItem,
       localCart,
       setLocalCart,
@@ -125,7 +116,6 @@ export const CartContextProvider = (props: Props) => {
       duplicatesInCart,
       setUniqueCart,
       setDuplicatesInCart,
-      CheckItemInCart,
       handleDeleteItem,
       localCart,
       setLocalCart,

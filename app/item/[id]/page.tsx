@@ -27,7 +27,6 @@ export default function Page() {
           <ActiveProduct
             image={item.image ? urlFor(item.image).url() : ''}
             activeFlavors={[item.name]}
-            activePrice={item.price * 100}
           />
           <p className={styles.description}></p>
         </div>

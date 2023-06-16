@@ -27,36 +27,17 @@
   margin-top: 10px;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--oldGold);
-  text-shadow: 1px 1px 2px var(--caneRed);
+  color: var(--caneWhite);
+  text-shadow: 0px 0px 2px var(--caneBlack);
   font-family: var(--font-arima);
   text-align: center;
+  transform: scale(1.2) skewX(-20deg);
 }
 
 // Flavor By Name
 
 .active {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-  align-content: flex-end;
-  text-align: flex-end;
-  position: absolute;
-  overflow: hidden;
-  z-index: 15;
-  width: 350px;
-  height: 500px;
-  position: absolute;
-  margin: 30px;
-  padding: 5px;
-  border-radius: 10px;
-  backdrop-filter: brightness(3) blur(15px);
-  transition: all 0.2s ease-in-out;
-  background-color: transparent;
-  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+  transform: scale(1.1);
 }
 
 .inactive {
@@ -65,14 +46,15 @@
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
-  border-radius: 5px;
-  backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
   z-index: 15;
   width: 145px;
-  min-height: 145px;
-  background-color: rgba(255, 255, 255, 1);
+  min-height: 190px;
+  border: 1px solid var(--caneBlack);
+  box-shadow: 1px 1px 1px solid black;
+  background-color: white;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .flavorsHeading {
@@ -107,21 +89,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
   width: 100%;
-  height: 50px;
-  background-color: var(--caneRed);
+  background-color: var(--caneWhite);
+  box-shadow: 1px -1px 0px var(--caneBlack);
 }
 
 .flavorTitle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 400;
   text-transform: lowercase;
   text-align: center;
-  font-family: var(--font-poppins);
-  line-height: 1.4rem;
-  color: var(--oldGold);
+  line-height: 1.5rem;
+  color: var(--caneBlack);
   width: 100%;
+  padding: 0.1rem;
 
   &:hover {
     cursor: pointer;

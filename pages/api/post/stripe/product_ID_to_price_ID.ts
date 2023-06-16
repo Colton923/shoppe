@@ -9,25 +9,6 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const stripeCart: StripeCart[] = req.body.stripeCart
-  // stripeCart [
-  //   {
-  //     item: {
-  //       role: null,
-  //       stripe_metadata_size: 'X Large Clear Bag',
-  //       active: true,
-  //       name: 'X Large Clear Bag of Butter Popcorn',
-  //       description: null,
-  //       stripe_metadata_flavor: 'Butter',
-  //       images: [],
-  //       stripe_metadata_retailPrice: '800',
-  //       metadata: [Object],
-  //       tax_code: null,
-  //       id: 'prod_NTm8cewkh7rZgt'
-  //     },
-  //     quantity: 2
-  //   }
-  // ]
-
   try {
     if (!stripeCart[0].item.id) return
     const GetPriceIDFromProductID = async (
@@ -51,7 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } else return
       })
     )
-
     res.status(200).json(priceIDs)
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : 'Internal server error'

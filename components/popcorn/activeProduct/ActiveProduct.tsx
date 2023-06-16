@@ -11,17 +11,15 @@ import { SizeNames } from 'types/PopcornSizes'
 
 interface ActiveProductProps {
   activeSize?: SizeNames
-  activePrice: number
   activeFlavors: string[]
   image?: string
 }
 
 const ActiveProduct = (props: ActiveProductProps) => {
-  const { activeSize, activeFlavors, activePrice, image } = props
-  const { activeProduct, AddButton, localSizes } = useLocalContext()
+  const { activeSize, activeFlavors, image } = props
+  const { activeProduct, AddButton, localSizes, localPrice } = useLocalContext()
   const [localQuantity, setLocalQuantity] = useState<number>(1)
   const { name, images } = activeProduct ?? {}
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.shoppingCartItem}>
@@ -89,7 +87,7 @@ const ActiveProduct = (props: ActiveProductProps) => {
             </div>
             <h4 className={styles.shoppingCartItem__info__price}>
               Price:
-              {intToCash(localQuantity * activePrice)}
+              {intToCash(localQuantity * localPrice)}
             </h4>
           </div>
         </div>

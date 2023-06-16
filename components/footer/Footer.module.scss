@@ -10,12 +10,10 @@
   font-weight: 400;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
-  // margin-top: 150px;
   width: 100%;
-
-  // ** ADDED **
+  z-index: 900;
   padding: 1rem;
-
+  position: relative;
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-evenly;
@@ -24,13 +22,6 @@
   }
 
   width: 100%;
-  // z-index: 1002;
-
-  // position: relative;
-  // bottom: 0;
-  // left: 0;
-  // right: 0;
-
   border-top: 3px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

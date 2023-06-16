@@ -4,13 +4,21 @@ import styles from './Modal.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
 import { useRouter } from 'next/navigation'
 import ActiveProduct from '@components/popcorn/activeProduct/ActiveProduct'
-
+import { useEffect, useState } from 'react'
 const PageModal = ({ params }: any) => {
-  const { sanityProducts, urlFor } = useLocalContext()
+  const { sanityProducts, urlFor, setLocalPrice } = useLocalContext()
   const router = useRouter()
-  if (!params) return null
-  if (!sanityProducts) return null
-  const item = sanityProducts.find((item: any) => item._id === params.id)
+  const [item, setItem] = useState<any>(null)
+
+  useEffect(() => {
+    if (!sanityProducts || !params) return
+    const test = sanityProducts.find((item: any) => item._id === params.id)
+    if (!test) return
+    setItem(test)
+    setLocalPrice(test.price * 100)
+  }, [sanityProducts])
+
+  if (!item) return null
 
   return (
     <div className={styles.modal}>
@@ -22,7 +30,6 @@ const PageModal = ({ params }: any) => {
           <ActiveProduct
             image={item.image ? urlFor(item.image).url() : ''}
             activeFlavors={[item.name]}
-            activePrice={item.price * 100}
           />
           <p className={styles.description}>{item.description}</p>
         </div>

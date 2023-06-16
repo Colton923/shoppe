@@ -29,7 +29,6 @@ const Sizes = () => {
             setLocalSizes(bagSizes)
           }}
         />
-        {/* <Arrow /> */}
       </div>
       <div className={styles.category}>
         <Image src={TinImage} alt="Tin" className={styles.tinImage} />

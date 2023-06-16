@@ -1,4 +1,4 @@
-import { Arima, Poppins } from 'next/font/google'
+import { Arima, Poppins, Pacifico } from 'next/font/google'
 
 const arima = Arima({
   weight: ['400', '700'],
@@ -14,4 +14,11 @@ const poppins = Poppins({
   variable: '--font-poppins',
 })
 
-export { arima, poppins }
+const cursive = Pacifico({
+  weight: ['400'],
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-cursive',
+})
+
+export { arima, poppins, cursive }

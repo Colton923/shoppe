@@ -4,13 +4,16 @@ import styles from './Flavors.module.scss'
 import type { FlavorNames } from 'types/PopcornFlavors'
 import { useLocalContext } from '@components/context/LocalContext'
 import * as Images from './Images'
-import Tin from './tin/Tin'
-import { useState } from 'react'
 
 const Flavors = () => {
-  const { activeFlavors, filteredFlavors, activeSizes, setActiveFlavors } =
-    useLocalContext()
-  const [localFlavors, setLocalFlavors] = useState<FlavorNames[]>([])
+  const {
+    activeFlavors,
+    filteredFlavors,
+    activeSizes,
+    setActiveFlavors,
+    localFlavors,
+    setLocalFlavors,
+  } = useLocalContext()
 
   const HandleSelectFlavor = (flavor: FlavorNames) => {
     if (localFlavors.includes(flavor)) {
@@ -36,9 +39,6 @@ const Flavors = () => {
         <p>Pick any of the flavors below.</p>
         <p>Tins can hold up to 4 flavors.</p>
       </div>
-      {activeSizes.find((size) => size.includes('Gal')) && (
-        <Tin localFlavors={localFlavors} />
-      )}
       <div className={styles.allFlavorsWrapper}>
         {Object.entries(filteredFlavors).map(([category]) => (
           <div className={styles.itemsWrapper} key={category}>
@@ -49,12 +49,14 @@ const Flavors = () => {
                 <div
                   key={flavor}
                   id={flavor + '_toggle'}
-                  className={
-                    activeFlavors.includes(flavor) ? styles.active : styles.inactive
-                  }
+                  className={styles.inactive}
+                  onClick={() => {
+                    document
+                      .getElementById(flavor + '_toggle')
+                      ?.classList.toggle(styles.active)
+                  }}
                 >
                   {Images.Images({ name: flavor })}
-
                   <input
                     type="button"
                     onClick={() => {

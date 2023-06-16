@@ -89,6 +89,9 @@ type LocalContextScope = {
   sanityProducts: any
   setSanityProducts: (sanityProducts: any) => void
   urlFor: (source: any) => ImageUrlBuilder
+  localFlavors: FlavorNames[]
+  setLocalFlavors: (flavors: FlavorNames[]) => void
+  HandleSizeSelect: (size: SizeNames) => void
 }
 interface Props {
   children: React.ReactNode
@@ -132,6 +135,7 @@ export const LocalContextProvider = (props: Props) => {
   const [isLoginOverlay, setIsLoginOverlay] = useState<boolean>(false)
   const [sanityProducts, setSanityProducts] = useState<any[] | null>(null)
   const [checkNewProducts, setCheckNewProducts] = useState<boolean>(true)
+  const [localFlavors, setLocalFlavors] = useState<FlavorNames[]>([])
 
   const router = useRouter()
 
@@ -143,6 +147,10 @@ export const LocalContextProvider = (props: Props) => {
 
   useEffect(() => {
     // this needs to be called inside the ssr for making page intercept
+    document.body.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     const getData = async () => {
       await client
         .fetch(
@@ -189,17 +197,12 @@ export const LocalContextProvider = (props: Props) => {
   }
 
   const [stripeCart, setStripeCart] = useState<StripeCart[]>(MakeCart(cart))
-
-  useEffect(() => {
-    if (!activeProduct) return
-    if (!activeProduct.metadata) return
-    if (!activeProduct.metadata.retailPrice) return
-    setLocalPrice(parseInt(activeProduct.metadata.retailPrice) * quantity)
-  }, [activeProduct, quantity, selectedSize, activeFlavors])
+  const HandleSizeSelect = (size: SizeNames) => {
+    setSelectedSize(size)
+  }
 
   useEffect(() => {
     if (!products) return
-    if (activeProduct) return
     const effectiveSize = selectedSize
       ? localSizes.includes(selectedSize)
         ? selectedSize
@@ -232,8 +235,12 @@ export const LocalContextProvider = (props: Props) => {
 
       return activeFlavors.includes(product.metadata?.flavor as FlavorNames)
     })
+    if (!foundProduct) return
+    if (!foundProduct.metadata) return
+    if (!foundProduct.metadata.retailPrice) return
     setActiveProduct(foundProduct)
-  }, [activeFlavors, selectedSize, products, activeFlavors, setActiveFlavors])
+    setLocalPrice(parseInt(foundProduct.metadata.retailPrice) * quantity)
+  }, [activeFlavors, selectedSize, products])
 
   useEffect(() => {
     const makeStripeProducts = async () => {
@@ -278,47 +285,55 @@ export const LocalContextProvider = (props: Props) => {
     }
   }, [sanityProducts])
 
-  const ClickOffOverlayHandler = (e: MouseEvent) => {
-    const cartOverlayDiv = document.getElementById('cartOverlay')
-    const cartLogoDiv = document.getElementById('cart')
-
-    if (cartOverlayDiv?.classList.contains(styles.allowCartOverlay)) {
-      if (cartLogoDiv?.contains(e.target as Node)) {
-        cartOverlayDiv.classList.remove(styles.allowCartOverlay)
-      } else {
-        if (cartOverlayDiv?.contains(e.target as Node)) return
-        cartOverlayDiv.classList.remove(styles.allowCartOverlay)
-
-        // IsCartOverlay boolean is referenced is CheckoutButton.tsx, and Navbar.tsx.
-        // We can likely remove all of that, and this state, and then make a class that toggles the overlay on and off rather.
-        setIsCartOverlay(false)
-      }
-    }
-  }
-
-  useEffect(() => {
-    const overlayDiv = document.getElementById('cartOverlay')
-    if (!overlayDiv) return
-    if (isCartOverlay) {
-      document.body.addEventListener('click', ClickOffOverlayHandler)
-      overlayDiv.classList.add(styles.allowCartOverlay)
-    } else {
-      document.body.removeEventListener('click', ClickOffOverlayHandler)
-    }
-  }, [cart, isCartOverlay, checkingOut])
-
   useEffect(() => {
     setStripeCart(MakeCart(cart))
   }, [checkingOut, cart])
 
+  useEffect(() => {
+    if (activeSizes.length !== 3) return
+    if (localFlavors.length >= 0) {
+      setLocalSizes(activeSizes)
+    }
+    if (localFlavors.length > 1) {
+      setLocalSizes(activeSizes.filter((size) => !size.includes('1 Gal.')))
+    }
+    if (localFlavors.length > 2) {
+      setLocalSizes(
+        activeSizes.filter(
+          (size) => !size.includes('2 Gal.') && !size.includes('1 Gal.')
+        )
+      )
+    }
+    if (localFlavors.length > 3) {
+      setActiveFlavors(localFlavors)
+      setSelectedSize('3 Gal.')
+    }
+  }, [localFlavors])
+  const additionalFlavorProduct: StripeProduct = {
+    name: `additional flavor`,
+    metadata: {
+      retailPrice: '100',
+    },
+    id: 'prod_O5dsPNSjFfytws',
+    active: true,
+  }
+
   const AddButton = (quantity: number) => {
     if (!activeProduct || quantity === 0) return
     const newCart = [...cart]
-
+    console.log(activeFlavors)
+    if (activeFlavors.length > 1) {
+      activeProduct.name = `${activeProduct.name} - ${activeFlavors.join(' & ')}`
+      for (let i = 0; i < activeFlavors.length - 1; i++) {
+        additionalFlavorProduct.description = activeFlavors[i].toString()
+        additionalFlavorProduct.name = `${activeFlavors[i]}`
+        newCart.push(additionalFlavorProduct)
+      }
+    }
     for (let i = 0; i < quantity; i++) {
       newCart.push(activeProduct)
     }
-    router.push('/')
+    router.replace('/')
     document.body.scrollTo({
       top: document.getElementById(activeProduct.name)?.offsetTop,
       behavior: 'smooth',
@@ -377,6 +392,9 @@ export const LocalContextProvider = (props: Props) => {
       sanityProducts,
       setSanityProducts,
       urlFor,
+      localFlavors,
+      setLocalFlavors,
+      HandleSizeSelect,
     }),
     [
       activeFlavors,
@@ -417,6 +435,9 @@ export const LocalContextProvider = (props: Props) => {
       sanityProducts,
       setSanityProducts,
       urlFor,
+      localFlavors,
+      setLocalFlavors,
+      HandleSizeSelect,
     ]
   )
 

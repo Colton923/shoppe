@@ -55,20 +55,20 @@ const Candy = () => {
             )}
             <h3 className={styles.name}>
               {window.innerWidth < 768
-                ? product.name.length > 13
-                  ? product.name.substring(0, 13) + '...'
+                ? product.name.length > 25
+                  ? product.name.substring(0, 25) + '...'
                   : product.name
-                : product.name.length > 26
-                ? product.name.substring(0, 26) + '...'
+                : product.name.length > 35
+                ? product.name.substring(0, 35) + '...'
                 : product.name}
             </h3>
             <p className={styles.description}>
               {window.innerWidth < 768
-                ? product.description.length > 13
-                  ? product.description.substring(0, 13) + '...'
+                ? product.description.length > 25
+                  ? product.description.substring(0, 25) + '...'
                   : product.description
-                : product.description.length > 26
-                ? product.description.substring(0, 26) + '...'
+                : product.description.length > 35
+                ? product.description.substring(0, 35) + '...'
                 : product.description}
             </p>
             <p className={styles.price}>${product.price}</p>

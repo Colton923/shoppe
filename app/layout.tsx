@@ -2,7 +2,7 @@ import '../styles/globals.scss'
 import LocalContextProvider from '@components/context/LocalContext'
 import FirebaseContextProvider from '@components/context/FirebaseContext'
 import Clientize from '@components/clientize/Clientize'
-import { arima, poppins } from '@styles/fonts'
+import { poppins } from '@styles/fonts'
 
 export default async function RootLayout(props: {
   children: React.ReactNode

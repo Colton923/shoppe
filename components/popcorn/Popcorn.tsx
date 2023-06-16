@@ -9,6 +9,7 @@ import Category from './category/Category'
 import Login from '@components/login/Login'
 import Register from '@components/register/Register'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
+
 const PopcornComponent = () => {
   const {
     setActiveSizes,

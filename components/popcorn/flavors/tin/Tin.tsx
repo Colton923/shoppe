@@ -1,44 +1,10 @@
-'use client'
-
 import styles from './Tin.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
-import { FlavorNames } from 'types/PopcornFlavors'
-import { useEffect, useState } from 'react'
 import Button from '@components/button/Button'
 
-interface TinProps {
-  localFlavors: FlavorNames[]
-}
-
-const Tin = (props: TinProps) => {
-  const { localFlavors } = props
-  const {
-    activeSizes,
-    setSelectedSize,
-    setActiveFlavors,
-    localSizes,
-    setLocalSizes,
-  } = useLocalContext()
-
-  useEffect(() => {
-    if (localFlavors.length >= 0) {
-      setLocalSizes(activeSizes)
-    }
-    if (localFlavors.length > 1) {
-      setLocalSizes(activeSizes.filter((size) => !size.includes('1 Gal.')))
-    }
-    if (localFlavors.length > 2) {
-      setLocalSizes(
-        activeSizes.filter(
-          (size) => !size.includes('2 Gal.') && !size.includes('1 Gal.')
-        )
-      )
-    }
-    if (localFlavors.length > 3) {
-      setActiveFlavors(localFlavors)
-      setSelectedSize('3 Gal.')
-    }
-  }, [localFlavors, localSizes])
+const Tin = () => {
+  const { setActiveFlavors, localSizes, localFlavors, setLocalFlavors } =
+    useLocalContext()
 
   return (
     <div className={styles.tin}>
@@ -58,6 +24,7 @@ const Tin = (props: TinProps) => {
           title="Continue"
           onClick={() => {
             setActiveFlavors(localFlavors)
+            setLocalFlavors([])
           }}
         />
       </div>
