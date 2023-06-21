@@ -1,14 +1,15 @@
 import '../styles/globals.scss'
 import LocalContextProvider from '@components/context/LocalContext'
 import FirebaseContextProvider from '@components/context/FirebaseContext'
-import Clientize from '@components/clientize/Clientize'
 import { poppins } from '@styles/fonts'
+import Clientize from '@components/clientize/Clientize'
 
 export default async function RootLayout(props: {
   children: React.ReactNode
   modal: React.ReactNode
+  authModal: React.ReactNode
 }) {
-  const { children, modal } = props
+  const { children, modal, authModal } = props
 
   return (
     <html lang="en-US">
@@ -27,6 +28,7 @@ export default async function RootLayout(props: {
               <Clientize>
                 {children}
                 {modal}
+                {authModal}
               </Clientize>
             </FirebaseContextProvider>
           </LocalContextProvider>

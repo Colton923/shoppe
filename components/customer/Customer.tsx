@@ -1,16 +1,9 @@
 import styles from './Cart.module.scss'
-import type { StripeProduct } from 'types/stripe/StripeProduct'
-import Checkout from '../Checkout'
 import { useLocalContext } from '@components/context/LocalContext'
 import CheckoutButton from '@components/cart/CheckoutButton'
 
-export type StripeCart = {
-  item: StripeProduct
-  quantity: number
-}
-
-const Cart = () => {
-  const { customer, setCustomer, checkingOut, setCheckingOut } = useLocalContext()
+const Customer = () => {
+  const { customer, setCustomer, status, HandleCheckout } = useLocalContext()
 
   return (
     <div className={styles.wrapper}>
@@ -67,14 +60,9 @@ const Cart = () => {
           />
         </div>
       </div>
-      <CheckoutButton
-        setCheckingOut={setCheckingOut}
-        checkingOut={checkingOut}
-        CheckoutFn={Checkout}
-        zip={customer.zip}
-      />
+      <CheckoutButton CheckoutFn={HandleCheckout} status={status} />
     </div>
   )
 }
 
-export default Cart
+export default Customer

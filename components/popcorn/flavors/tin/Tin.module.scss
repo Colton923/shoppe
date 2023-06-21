@@ -12,9 +12,9 @@
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.1), -5px -5px 10px 0 rgba(0,0,0,0.3);
     overflow: hidden;
-    position: fixed;
+    position: sticky;
 
-    bottom: 0;
+    top: 0;
     left: 0;
     z-index: 1000;
     transition: all 0.3s ease-in-out;

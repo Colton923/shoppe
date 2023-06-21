@@ -24,6 +24,7 @@ export const FirebaseContextProvider = (props: Props) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
+    if (!auth) return
     if (isSignInWithEmailLink(auth, window.location.href)) {
       const email = window.localStorage.getItem('emailForSignIn')
       if (email) {

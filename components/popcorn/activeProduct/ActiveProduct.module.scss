@@ -82,6 +82,25 @@
 
   z-index: inherit;
 }
+
+.quantity {
+  // prevent textarea defaults
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  padding: 0;
+  z-index: 999999;
+  text-align: center;
+}
+
 .shoppingCartItem__info__price {
   font-size: 1rem;
   font-weight: 400;

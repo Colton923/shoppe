@@ -1,66 +1,53 @@
 'use client'
 
-import { useState } from 'react'
-import styles from './ActiveProduct.module.scss'
 import { useLocalContext } from '@components/context/LocalContext'
-import Image from 'next/image'
+import styles from './ActiveProduct.module.scss'
 import PopcornNamer from '@utils/PopcornNamer'
 import intToCash from '@utils/intToCash'
 import Button from '@components/button/Button'
-import { SizeNames } from 'types/PopcornSizes'
+import * as SanityTypes from 'types/SanityItem'
+import urlFor from '@lib/sanity/urlFor'
 
-interface ActiveProductProps {
-  activeSize?: SizeNames
-  activeFlavors: string[]
-  image?: string
-}
+const ActiveProduct = () => {
+  const {
+    activePopcorn,
+    activeQuantity,
+    HandleAddToCart,
+    HandleSetQuantity,
+    activePrice,
+  } = useLocalContext()
+  console.log(activePopcorn)
 
-const ActiveProduct = (props: ActiveProductProps) => {
-  const { activeSize, activeFlavors, image } = props
-  const { activeProduct, AddButton, localSizes, localPrice } = useLocalContext()
-  const [localQuantity, setLocalQuantity] = useState<number>(1)
-  const { name, images } = activeProduct ?? {}
+  if (!activePopcorn.flavor) return null
   return (
     <div className={styles.wrapper}>
       <div className={styles.shoppingCartItem}>
         <div className={styles.shoppingCartItem__image}>
-          {images && images[0] && (
-            <Image
-              src={images[0]}
-              alt={name ? name : styles.shoppingCartItem}
-              width={125}
-              height={125}
-            />
-          )}
-          {image && (
-            <img
-              src={image}
-              alt={name ? name : styles.shoppingCartItem}
-              width={125}
-              height={125}
-            />
-          )}
-          {!image && !images && (
+          {activePopcorn.flavor[0].image && (
             <div
               className={styles.shoppingCartItem__image}
               style={{
-                backgroundImage: `url(https://main-st-shoppe.com/icons/favicon.ico)`,
+                backgroundImage: `url(${urlFor(
+                  activePopcorn.flavor[0].image
+                ).url()})`,
               }}
             />
           )}
         </div>
         <div className={styles.shoppingCartItem__info}>
           <h3 className={styles.shoppingCartItem__info__name}>
-            {activeSize
-              ? PopcornNamer({
-                  flavor: activeFlavors,
-                  size: localSizes.includes(activeSize) ? activeSize : localSizes[0],
-                })
-              : activeFlavors[0]}
+            {PopcornNamer(activePopcorn)}
           </h3>
           <div className={styles.shoppingCartItem__info__divider}>
             <h4 className={styles.shoppingCartItem__info__quantity}>
-              Quantity: {localQuantity}
+              Quantity:
+              <input
+                type="number"
+                value={activeQuantity}
+                id="quantity"
+                className={styles.quantity}
+                disabled={true}
+              />
             </h4>
             <div
               className={styles.upDownWrapper}
@@ -70,8 +57,7 @@ const ActiveProduct = (props: ActiveProductProps) => {
                 type="button"
                 value={'+'}
                 onClick={() => {
-                  if (localQuantity >= 99) return
-                  setLocalQuantity(localQuantity + 1)
+                  HandleSetQuantity(activeQuantity + 1)
                 }}
                 className={styles.quantityButton}
               />
@@ -79,15 +65,14 @@ const ActiveProduct = (props: ActiveProductProps) => {
                 type="button"
                 value={'-'}
                 onClick={() => {
-                  if (localQuantity <= 1) return
-                  setLocalQuantity(localQuantity - 1)
+                  HandleSetQuantity(activeQuantity - 1)
                 }}
                 className={styles.quantityButton}
               />
             </div>
             <h4 className={styles.shoppingCartItem__info__price}>
               Price:
-              {intToCash(localQuantity * localPrice)}
+              {intToCash(activeQuantity * activePrice)}
             </h4>
           </div>
         </div>
@@ -95,7 +80,7 @@ const ActiveProduct = (props: ActiveProductProps) => {
       <Button
         title={'Add to Cart'}
         onClick={() => {
-          AddButton(localQuantity)
+          HandleAddToCart()
         }}
       />
     </div>

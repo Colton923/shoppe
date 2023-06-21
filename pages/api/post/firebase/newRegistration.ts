@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import type { FormData } from 'components/register/Register'
+import type { FormData } from 'app/@authModal/register/page'
 import { MailService } from '@sendgrid/mail'
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -34,35 +34,58 @@ const handler = async (req: newRegistration, res: any) => {
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: #f2f2f2;
-                margin: 0;
                 padding: 20px;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                font-weight: bold;
             }
-
             .container {
+                display: flex;
+                flex-direction: column;
                 background-color: #ffffff;
                 padding: 20px;
                 border-radius: 5px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                background-color: #f2f2f2;
+                padding: 20px;
+                justify-content: flex-start;
+                max-height: 600px;
+                min-width: 365px;
             }
-
             .header {
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 20px;
+                font-size: 30px;
+                text-align: center;
+                padding: 20px 0 0 0;
+                transform: skewX(-10deg);
+                text-decoration: underline white;
             }
-
             .details {
-                margin-bottom: 10px;
+                margin: 75px;
+                display: grid;
+                grid-template-columns: 100px 1fr;
+                align-self: center;
+                border: 1px solid white;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0px 0px 10px white;
             }
-
             .approve-button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #4CAF50;
+                background-color: #000;
                 color: #ffffff;
+                text-align: center;
                 text-decoration: none;
                 border-radius: 5px;
+                width: 150px;
+                margin: auto 0 auto auto;
+            }
+            p {
+                text-align: center;
+                padding: 5px;
+                font-size: 1.2rem;
+                border-bottom: 1px solid white;
             }
         </style>
     </head>
@@ -70,16 +93,22 @@ const handler = async (req: newRegistration, res: any) => {
         <div class="container">
             <div class="header">New Wholesale Registration</div>
             <div class="details">
-                <p>Company Name: ${formData.businessName}</p>
-                <p>Address: ${formData.address}</p>
-                <p>Email: ${formData.email}</p>
-                <p>Phone: ${formData.phoneNumber}</p>
-                <p>TIN: ${formData.tin}</p>
+                <p>Company Name: </p>
+                <p>${formData.businessName}</p>
+                <p>Address: </p>
+                <p>${formData.address}</p>
+                <p>Email: </p>
+                <p>${formData.email}</p>
+                <p>Phone: </p>
+                <p>${formData.phoneNumber}</p>
+                <p>TIN: </p>
+                <p>${formData.tin}</p>
             </div>
             <a class="approve-button" href="https://us-central1-main-st-shoppe.cloudfunctions.net/emailHook?email=${formData.email}">Approve</a>
         </div>
     </body>
     </html>
+
     `,
   }
   mailService.send(msg)

@@ -1,34 +1,12 @@
-'use client'
-
 import { useForm } from 'react-hook-form'
 import styles from './Register.module.scss'
-import { useLocalContext } from '@components/context/LocalContext'
-import { useEffect } from 'react'
-
-export interface FormData {
-  businessName: string
-  address: string
-  email: string
-  phoneNumber: string
-  tin: string
-}
+import { RegisterForm } from '../../../types/RegisterForm'
+import Link from 'next/link'
 
 const Register = () => {
-  const { register, handleSubmit } = useForm<FormData>()
-  const { isLoginOverlay, setIsLoginOverlay, setIsRegisterOverlay } =
-    useLocalContext()
+  const { register, handleSubmit } = useForm<RegisterForm>()
 
-  useEffect(() => {
-    const handleClick = (e: any) => {
-      if (e.target.className === styles.wrapper) {
-        setIsRegisterOverlay(false)
-      }
-    }
-    window.addEventListener('click', handleClick)
-    return () => window.removeEventListener('click', handleClick)
-  }, [])
-
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: RegisterForm) => {
     if (
       !data ||
       !data.businessName ||
@@ -51,8 +29,7 @@ const Register = () => {
         alert(
           'Registration Successful. Please come back and login after you have been approved.'
         )
-        setIsRegisterOverlay(false)
-        setIsLoginOverlay(true)
+        console.log('close modal')
       } else {
         alert('Registration Failed')
       }
@@ -100,18 +77,9 @@ const Register = () => {
           <button type="submit" className={styles.btn}>
             Register
           </button>
-          <div className={styles.authWrapper}>
+          <Link className={styles.authWrapper} href={'/login'}>
             <p className={styles.authLink}>Already have an account? </p>
-            <input
-              type="button"
-              value="Login"
-              className={styles.loginBtn}
-              onClick={() => {
-                setIsLoginOverlay(!isLoginOverlay)
-                setIsRegisterOverlay(false)
-              }}
-            />
-          </div>
+          </Link>
         </form>
       </div>
     </div>

@@ -1,52 +1,33 @@
 import styles from './Sizes.module.scss'
-import { useLocalContext } from '@components/context/LocalContext'
-import BagImage from '@public/images/Bag.png'
-import TinImage from '@public/images/Box.jpeg'
-import Image from 'next/image'
+import * as SanityTypes from 'types/SanityItem'
 
-const Sizes = () => {
-  const { setActiveSizes, sizes, setLocalSizes } = useLocalContext()
-  const bagSizes: (typeof sizes)[number][] = sizes.filter((size) =>
-    size.includes('Clear Bag')
-  ) as (typeof sizes)[number][]
-  const tinSizes: (typeof sizes)[number][] = sizes.filter((size) =>
-    size.includes('Gal')
-  ) as (typeof sizes)[number][]
+interface SizesProps {
+  HandleSizeSelect: (size: SanityTypes.Size) => void
+  sizes: SanityTypes.Size[]
+}
+
+export default async function Sizes(props: SizesProps) {
+  const { HandleSizeSelect, sizes } = { ...props }
 
   return (
-    <div className={styles.itemsWrapper}>
-      <div className={styles.category}>
-        <Image src={BagImage} alt="Bag" className={styles.bagImage} />
-        <div className={styles.header}>
-          <h2 className={styles.headerText}>SHOP</h2>
-          <h2 className={styles.headerCaps}>BAGS</h2>
-        </div>
-        <input
-          type="button"
-          className={styles.button}
-          onClick={() => {
-            setActiveSizes(bagSizes)
-            setLocalSizes(bagSizes)
-          }}
-        />
-      </div>
-      <div className={styles.category}>
-        <Image src={TinImage} alt="Tin" className={styles.tinImage} />
-        <div className={styles.header}>
-          <h2 className={styles.headerText}>SHOP</h2>
-          <h2 className={styles.headerCaps}>TINS</h2>
-        </div>
-        <input
-          type="button"
-          className={styles.button}
-          onClick={() => {
-            setActiveSizes(tinSizes)
-            setLocalSizes(tinSizes)
-          }}
-        />
-      </div>
+    <div className={styles.category} id="selectSize">
+      <h2>Please Select a Size</h2>
+      <select
+        name="category"
+        id="category"
+        className={styles.select}
+        onChange={(e) => {
+          const size = sizes.find((size: any) => size.name === e.target.value)
+          if (!size) return
+          HandleSizeSelect(size)
+        }}
+      >
+        {sizes.map((size: SanityTypes.Size) => (
+          <option key={size._id} value={size.name}>
+            {size.name}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }
-
-export default Sizes

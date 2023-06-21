@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js'
-import type { StripeCart } from './cart/Cart'
+import type { StripeCart } from 'types/StripeCart'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

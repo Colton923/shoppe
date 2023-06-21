@@ -3,17 +3,12 @@ import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
 import personIcon from '@public/icons/svg/account.svg'
-import { useLocalContext } from '@components/context/LocalContext'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
+import { useLocalContext } from '@components/context/LocalContext'
 
 const Navbar = () => {
-  const {
-    isCartOverlay,
-    setIsCartOverlay,
-    isRegisterOverlay,
-    setIsRegisterOverlay,
-  } = useLocalContext()
   const { loggedIn } = useFirebaseContext()
+  const { setShowCart, showCart } = useLocalContext()
 
   return (
     <>
@@ -29,7 +24,7 @@ const Navbar = () => {
           ></Link>
         </div>
         <div className={styles.bottomRow}>
-          <div className={styles.hamburger}>
+          <Link href={'/login'} className={styles.hamburger}>
             <Image
               src={personIcon}
               alt="Account Icon"
@@ -37,13 +32,12 @@ const Navbar = () => {
               height={32}
               onClick={() => {
                 if (!loggedIn) {
-                  setIsRegisterOverlay(!isRegisterOverlay)
                 } else {
                   alert('You are already logged in.')
                 }
               }}
             />
-          </div>
+          </Link>
 
           <div className={styles.title}>
             <h2
@@ -63,7 +57,7 @@ const Navbar = () => {
               height={35}
               className={styles.cartIcon}
               onClick={() => {
-                setIsCartOverlay(!isCartOverlay)
+                setShowCart(!showCart)
               }}
             />
           </div>

@@ -3,32 +3,27 @@
 import { useMemo, memo, createContext, useContext, useState, useEffect } from 'react'
 import { useLocalContext } from '@components/context/LocalContext'
 import intToCash from '@utils/intToCash'
-import type { StripeProduct } from 'types/stripe/StripeProduct'
+import * as SanityTypes from '../../types/SanityItem'
 
 type CartContextScope = {
   /*
    *  State
    */
 
-  setActiveItems: (activeItems: boolean[]) => void
-  activeItems: boolean[]
-  setUniqueCart: (uniqueCart: StripeProduct[]) => void
-  uniqueCart: StripeProduct[]
-  setDuplicatesInCart: (duplicatesInCart: number[]) => void
-  duplicatesInCart: number[]
-  localCart: StripeProduct[]
-  setLocalCart: (localCart: StripeProduct[]) => void
+  localCart: SanityTypes.SanityItem[]
+  setLocalCart: (localCart: SanityTypes.SanityItem[]) => void
 
   /*
    *  Functions
    */
   GetSubTotal: () => string
   handleDeleteItem: (id: string | undefined) => void
+  handleCheckout: () => void
 }
 
 interface Props {
   children: React.ReactNode
-  setCart: (cart: StripeProduct[]) => void
+  setCart: (cart: SanityTypes.SanityItem[]) => void
 }
 
 export const CartContext = createContext<CartContextScope | null>(null)
@@ -36,90 +31,51 @@ export const CartContext = createContext<CartContextScope | null>(null)
 export const CartContextProvider = (props: Props) => {
   const { children } = props
   const { cart, setCart } = useLocalContext()
-  const [activeItems, setActiveItems] = useState<boolean[]>([])
-  const [uniqueCart, setUniqueCart] = useState<StripeProduct[]>([])
-  const [duplicatesInCart, setDuplicatesInCart] = useState<number[]>([])
-  const [localCart, setLocalCart] = useState<StripeProduct[]>([])
-
-  const UniqueCart = () => {
-    return [...new Set(localCart)]
-  }
-
-  const DuplicatesInCart = (uniqueCart: StripeProduct[]) => {
-    const duplicates = uniqueCart.map((item) => {
-      return localCart.filter((cartItem) => cartItem === item).length
-    })
-    return duplicates
-  }
-
-  const GetSubTotal = () => {
-    const subTotal: number[] = []
-    let itemTotal = 0
-    localCart.forEach((item) => {
-      if (item.metadata?.retailPrice === undefined) return
-      if (itemTotal === parseInt(item.metadata?.retailPrice)) return
-      itemTotal = parseInt(item.metadata?.retailPrice)
-      subTotal.push(itemTotal)
-    })
-
-    if (subTotal.length === 0) return intToCash(0)
-    let sotal = 0
-    subTotal.forEach((item) => {
-      const multiplier =
-        duplicatesInCart[subTotal.indexOf(item)] *
-        (activeItems[subTotal.indexOf(item)] ? 1 : 0)
-      sotal += item * multiplier
-    })
-
-    return intToCash(sotal)
-  }
+  const [localCart, setLocalCart] = useState<SanityTypes.SanityItem[]>(cart)
+  const [updateCart, setUpdateCart] = useState(false)
 
   const handleDeleteItem = (id: string | undefined) => {
-    const updatedCartItems = localCart.filter((item) => item.id !== id)
-    setCart(updatedCartItems)
+    if (!id) return
+    const newCart = localCart.filter((item) => item?.stripeProduct?.id !== id)
+
+    if (newCart.length === 0) {
+      setLocalCart([])
+      return
+    }
+    if (newCart.length === localCart.length) return
+
+    if (newCart.length > 0) setLocalCart(newCart)
   }
 
   useEffect(() => {
-    setLocalCart(cart)
-  }, [cart])
+    if (!updateCart) {
+      setCart(localCart)
+    }
+    setUpdateCart(true)
+  }, [localCart])
 
-  useEffect(() => {
-    const newUnique = UniqueCart()
-    setUniqueCart(newUnique)
-
-    const newActiveItems = newUnique.map(() => {
-      return true
+  const GetSubTotal = () => {
+    let subTotal = 0
+    if (!localCart) return intToCash(subTotal)
+    localCart.forEach((item) => {
+      subTotal += parseInt(item.stripeProduct?.metadata?.retailPrice || '0')
     })
-    setActiveItems(newActiveItems)
+    return intToCash(subTotal)
+  }
 
-    setDuplicatesInCart(DuplicatesInCart(newUnique))
-  }, [localCart, setLocalCart, setActiveItems])
+  const handleCheckout = () => {
+    setCart(localCart)
+  }
 
   const contextValue: CartContextScope = useMemo(
     () => ({
-      activeItems,
-      setActiveItems,
-      GetSubTotal,
-      uniqueCart,
-      duplicatesInCart,
-      setUniqueCart,
-      setDuplicatesInCart,
       handleDeleteItem,
       localCart,
       setLocalCart,
+      GetSubTotal,
+      handleCheckout,
     }),
-    [
-      activeItems,
-      setActiveItems,
-      GetSubTotal,
-      uniqueCart,
-      duplicatesInCart,
-      setUniqueCart,
-      setDuplicatesInCart,
-      handleDeleteItem,
-      localCart,
-      setLocalCart,
-    ]
+    [handleDeleteItem, localCart, setLocalCart, GetSubTotal, handleCheckout]
   )
 
   return (

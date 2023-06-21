@@ -1,21 +1,25 @@
-type PopcornName = {
-  size: string
-  flavor: string[]
-}
+import type { Popcorn } from 'types/SanityItem'
 
-export default function PopcornNamer(item: PopcornName) {
+export default function PopcornNamer(item: Popcorn) {
   let name = ''
-  // name += item.size
-  // name += ' of '
+  if (item.size) {
+    name += item.size.name as string
+    name += (' ' + item.size.container?.name) as string
+    name += ' of '
+  }
+
   if (item.flavor.length > 1) {
     item.flavor.forEach((flavor) => {
-      name += flavor
+      name += flavor.name as string
       name += ', '
     })
+    name += 'Popcorn'
+    return name
   } else {
-    name += item.flavor[0]
+    console.log('item.flavor[0]', item.flavor[0])
+    name += item.flavor[0].name as string
     name += ' '
+    name += 'Popcorn'
+    return name
   }
-  name += 'Popcorn'
-  return name
 }

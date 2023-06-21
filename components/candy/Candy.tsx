@@ -1,80 +1,107 @@
+'use client'
+
 import styles from './Candy.module.scss'
-import { useLocalContext } from '@components/context/LocalContext'
 import Link from 'next/link'
-import { StripeProduct } from 'types/stripe/StripeProduct'
+import * as SanityTypes from 'types/SanityItem'
+import { useLocalContext } from '@components/context/LocalContext'
+import urlFor from '@lib/sanity/urlFor'
 
-const Candy = () => {
-  const { urlFor, sanityProducts, setActiveProduct, products } = useLocalContext()
+interface ProductsProps {
+  products: SanityTypes.Product[]
+}
 
-  if (!sanityProducts) return null
-  if (sanityProducts.length === 0) return <div>No products</div>
-  return (
-    <div className={styles.wrapper}>
-      <h2 className={styles.title}>Candy</h2>
+const Candy = (props: ProductsProps) => {
+  const { setActiveProduct, popcornStoreActive, wholesaler } = useLocalContext()
+  const { products } = { ...props }
+  const SanityItemsInCategories = (category: SanityTypes.Category) => {
+    const items: SanityTypes.Product[] = []
+    products.map((product: SanityTypes.Product) => {
+      console.log(product)
+      console.log(category)
+      if (!product.category) return
+      if (product.category._id === category._id) {
+        items.push(product)
+      }
+    })
+    return (
       <div className={styles.candyComponent}>
-        {sanityProducts.map((product: any) => (
+        {items.map((item: SanityTypes.Product) => (
           <Link
-            href={`/item/${product._id}`}
-            key={product._id}
+            href={`/item/${item._id}`}
+            key={item._id}
             className={styles.item}
-            id={product.name}
+            id={item._id}
             onClick={() => {
-              const thisProduct: StripeProduct | undefined = products.find((p) => {
-                if (p.name === product.name) {
-                  return p
-                } else {
-                  return null
-                }
-              })
-              if (thisProduct) {
-                setActiveProduct(thisProduct)
-              }
+              setActiveProduct(item)
             }}
           >
-            {product.image && (
-              <img
-                className={styles.image}
-                src={
-                  urlFor(product.image)
-                    .width(300)
-                    .height(300)
-                    .fit('crop')
-                    .auto('format')
-                    .url() || ''
-                }
-                alt={product.name}
-              />
-            )}
-            {!product.image && (
-              <div
-                className={styles.image}
-                style={{
-                  backgroundImage: `url(https://main-st-shoppe.com/icons/favicon.ico)`,
-                }}
-              />
-            )}
-            <h3 className={styles.name}>
-              {window.innerWidth < 768
-                ? product.name.length > 25
-                  ? product.name.substring(0, 25) + '...'
-                  : product.name
-                : product.name.length > 35
-                ? product.name.substring(0, 35) + '...'
-                : product.name}
-            </h3>
-            <p className={styles.description}>
-              {window.innerWidth < 768
-                ? product.description.length > 25
-                  ? product.description.substring(0, 25) + '...'
-                  : product.description
-                : product.description.length > 35
-                ? product.description.substring(0, 35) + '...'
-                : product.description}
-            </p>
-            <p className={styles.price}>${product.price}</p>
+            <div className={styles.imageContainer}>
+              {item.image && (
+                <img
+                  className={styles.image}
+                  src={urlFor(item.image as string).url()}
+                  alt={item.name as string}
+                />
+              )}
+            </div>
+            <div className={styles.textContainer}>
+              <h3 className={styles.itemName}>{item.name as string}</h3>
+              <h4 className={styles.itemDescription}>{item.description}</h4>
+              {wholesaler ? (
+                <h4 className={styles.itemPrice}>{item.wholesalePrice}</h4>
+              ) : (
+                <h4 className={styles.itemPrice}>{item.retailPrice}</h4>
+              )}
+            </div>
           </Link>
         ))}
       </div>
+    )
+  }
+
+  const Sanity = () => {
+    const categories: { _id: string; name: string }[] = []
+    products.map((product: SanityTypes.Product) => {
+      if (!product.category) {
+        return
+      }
+      if (!product.category._id) {
+        return
+      }
+      if (!product.category.name) {
+        return
+      }
+      categories.filter((category: SanityTypes.Category) => {
+        if (category._id === product?.category?._id) {
+          return
+        }
+      })
+      categories.push({
+        _id: product.category._id,
+        name: product.category.name,
+      })
+    })
+    return (
+      <div className={styles.candyComponent}>
+        {categories.map((category: SanityTypes.Category) => (
+          <div key={category._id}>
+            <h2 className={styles.title}>{category.name as string}</h2>
+            <div className={styles.candyComponent}>
+              {SanityItemsInCategories(category)}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (popcornStoreActive) {
+    return null
+  }
+
+  return (
+    <div className={styles.wrapper}>
+      <Sanity />
     </div>
   )
 }

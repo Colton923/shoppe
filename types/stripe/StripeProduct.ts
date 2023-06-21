@@ -16,7 +16,7 @@ export type StripeProduct = {
     retailPrice?: string
     wholesalePrice?: string
   }
-  name: string
+  name?: string
   package_dimensions?: null
   shippable?: boolean
   statement_descriptor?: string
@@ -24,4 +24,4 @@ export type StripeProduct = {
   unit_label?: string
   updated?: number
   url?: string
-}
+} | null
