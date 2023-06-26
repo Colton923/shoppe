@@ -10,26 +10,26 @@ const SelectSize = (props: Props) => {
   const { sizenames } = { ...props }
   const { data, setActivePopcorn, activePopcorn } = useLocalContext()
 
+  if (!sizenames) return null
+  console.log(sizenames[0])
   return (
     <Container
-      size="lg"
       style={{
         display: 'flex',
         borderRadius: '0.2rem',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        justifyItems: 'space-between',
+        justifyItems: 'center',
         backgroundColor: 'transparent',
       }}
       w={'100%'}
-      m={'lg'}
-      p={'lg'}
+      m={0}
+      p={'xs'}
     >
       <Text fw={'bold'}> Please Select a Size</Text>
       <Select
         data={sizenames}
-        placeholder="Select a Size"
         onChange={(e: string) => {
           const size = data.sizes.find((size: any) => size.name === e)
           if (!size) return
@@ -38,7 +38,8 @@ const SelectSize = (props: Props) => {
             size: size,
           })
         }}
-        defaultValue={sizenames[0]}
+        required={true}
+        defaultValue={sizenames.length ? sizenames[0] : 'Select a Size'}
       ></Select>
     </Container>
   )

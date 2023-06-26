@@ -5,7 +5,7 @@ import styles from 'app/@modal/Modal.module.scss'
 import * as SanityTypes from 'types/SanityItem'
 import { usePathname } from 'next/navigation'
 import PopcornNamer from '@utils/PopcornNamer'
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState, Suspense, useCallback } from 'react'
 import urlFor from '@lib/sanity/urlFor'
 import SelectSize from '@components/selectSize/SelectSize'
 import {
@@ -39,6 +39,12 @@ export default function Page() {
   const [imagesrc, setImagesrc] = useState<string | null>(null)
   const [sizeData, setSizeData] = useState<string[] | null>(null)
   const pathname = usePathname()
+  const onDismiss = useCallback(() => {
+    router.back()
+    setTimeout(() => {
+      router.push('/')
+    }, 100)
+  }, [])
 
   useEffect(() => {
     if (!pathname) return
@@ -81,7 +87,7 @@ export default function Page() {
       <div className={styles.popcornModal}>
         <Card
           shadow="md"
-          padding='sm'
+          padding="sm"
           radius="lg"
           style={{
             justifyContent: 'center',
@@ -91,20 +97,19 @@ export default function Page() {
             flexWrap: 'wrap',
           }}
         >
-          <Button
-            onClick={() => {
-              router.back()
-            }}
-            variant={'light'}
-            color={'dark'}
-            radius={'xl'}
-            size={'sm'}
-            p={'sm'}
-            m={'sm'}
-            className={styles.addToCartButton}
-          >
-            Back
-          </Button>
+          <Group align="center" w={'100%'}>
+            <Button
+              onClick={() => {
+                router.back()
+              }}
+              variant={'light'}
+              color={'dark'}
+              radius={'xl'}
+              className={styles.addToCartButton}
+            >
+              Back
+            </Button>
+          </Group>
           <Group
             align="center"
             style={{ display: 'flex', justifyContent: 'center' }}
@@ -126,12 +131,12 @@ export default function Page() {
           >
             {PopcornNamer(activePopcorn)}
           </Title>
-          <Group w={'180px'} >
+          <Group w={'180px'}>
             <Flex direction="row" align={'center'}>
-              <Text p={'xs'}>
+              <Text p={'xs'} ta={'center'}>
                 Quantity:
               </Text>
-              <Text fw={'bold'} p={'xs'} size={'sm'} ta={'center'}>
+              <Text fw={'bold'} p={'xs'} ta={'center'}>
                 {activeQuantity}
               </Text>
             </Flex>
@@ -143,8 +148,7 @@ export default function Page() {
                 checked={false}
                 defaultChecked={false}
                 radius="xl"
-                size={'sm'}
-                m={'xs'}
+                p={'xs'}
               >
                 +
               </Chip>
@@ -156,46 +160,37 @@ export default function Page() {
                 defaultChecked={false}
                 radius="xl"
                 size={'sm'}
-                m={'xs'}
+                p={'xs'}
               >
                 -
               </Chip>
             </Flex>
           </Group>
-          <Group spacing="xs" w={'25%'} style={{ minWidth: '250px' }}>
+          <Group w={'25%'} style={{ minWidth: '250px' }}>
             <Suspense fallback={<p>Loading...</p>}>
               <SelectSize sizenames={sizeData !== null ? sizeData : ['']} />
             </Suspense>
           </Group>
-          <Group spacing="xs" w={'25%'} style={{ minWidth: '250px' }}>
+          <Group m={'xs'} w={'25%'} style={{ minWidth: '250px' }} align="center">
             <Text p={'xs'} m={0} classNames={styles.description}>
               Selected Flavors:
             </Text>
-
-            {activePopcorn.flavor.map((flavor) => {
-              return (
-                <Badge
-                  key={flavor._id + 'badgeName'}
-                  color="blue"
-                  radius="xl"
-                  size={'sm'}
-                >
-                  {flavor.name}
-                </Badge>
-              )
-            })}
+            <Group align="center">
+              {activePopcorn.flavor.map((flavor) => {
+                return (
+                  <Badge
+                    key={flavor._id + 'badgeName'}
+                    color="blue"
+                    radius="xl"
+                    size={'sm'}
+                    p={'xs'}
+                  >
+                    {flavor.name}
+                  </Badge>
+                )
+              })}
+            </Group>
           </Group>
-          <Text
-            p={'xs'}
-            size="xs"
-            weight={700}
-            className={styles.price}
-            ta={'right'}
-            w={'100%'}
-          >
-            {intToCash(activePrice * activeQuantity)}
-          </Text>
-
           <Button
             variant={'light'}
             color={'dark'}
@@ -205,9 +200,29 @@ export default function Page() {
             className={styles.addToCartButton}
             onClick={() => {
               HandleAddToCart()
+              onDismiss()
             }}
           >
-            Add to Cart
+            <Text
+              p={'xs'}
+              size="xs"
+              weight={700}
+              className={styles.price}
+              ta={'left'}
+              w={'100%'}
+            >
+              Add to Cart
+            </Text>
+            <Text
+              p={'xs'}
+              size="xs"
+              weight={700}
+              className={styles.price}
+              ta={'right'}
+              w={'100%'}
+            >
+              {intToCash(activePrice * activeQuantity)}
+            </Text>
           </Button>
         </Card>
       </div>
@@ -268,7 +283,7 @@ export default function Page() {
             mt={'xl'}
             onClick={() => {
               HandleProductSelect(item as SanityTypes.Product)
-              router.back()
+              onDismiss()
             }}
           >
             Add to Cart

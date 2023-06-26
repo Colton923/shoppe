@@ -78,12 +78,13 @@ const Candy = (props: ProductsProps) => {
         withIndicators={true}
         w={'100%'}
         slideSize={'33% 100%'}
-        p={'sm'}
+        p={0}
+        m={0}
         style={
           loading
             ? { visibility: 'hidden' }
             : {
-                width: '100vw',
+                width: '100%',
                 height: '400px',
                 visibility: 'visible',
                 margin: 'auto',
@@ -94,7 +95,7 @@ const Candy = (props: ProductsProps) => {
               }
         }
       >
-        <Carousel.Slide key={'item1'} w={'100vw'} style={{ alignSelf: 'center' }}>
+        <Carousel.Slide key={'item1'} w={'100%'} style={{ alignSelf: 'center' }}>
           <Card
             shadow="sm"
             withBorder
@@ -199,12 +200,12 @@ const Candy = (props: ProductsProps) => {
       <Space h="lg" />
       {categories.map((category: SanityTypes.Category, index: number) => (
         <Container
-          size="lg"
+          size="xl"
           key={category._id + 'category'}
           p={0}
           m={0}
           opacity={0.8}
-          w={'100vw'}
+          miw={'100vw'}
           bg={index % 2 === 0 ? 'rgba(139,0,0,0.8)' : 'var(--creamGrey)'}
         >
           {SanityItemsInCategories(category)}

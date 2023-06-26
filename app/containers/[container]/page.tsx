@@ -9,8 +9,15 @@ export default function Page() {
   const containerId = pathname.split('/')[2]
   const container = data.containers.filter((c) => c._id === containerId)
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <Flavors container={container} />
-    </>
+    </div>
   )
 }

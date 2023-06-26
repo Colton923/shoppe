@@ -1,6 +1,14 @@
 'use client'
 
-import { useMemo, memo, createContext, useContext, useState, useEffect } from 'react'
+import {
+  useMemo,
+  memo,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 import { StripeProduct } from '../../types/stripe/StripeProduct'
 import { useRouter } from 'next/navigation'
 import * as SanityTypes from '../../types/SanityItem'
@@ -337,7 +345,6 @@ export const LocalContextProvider = (props: Props) => {
         setPopcornStoreActive(false)
         setActiveProduct(null)
         setActivePrice(0)
-        router.push('/', { shallow: true })
       }
     } else {
       // This is a SanityTypes.Product type that we are adding to the cart

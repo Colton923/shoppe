@@ -43,19 +43,24 @@ export default function Flavors(props: FlavorsProps) {
     if (!flavor.name) return
 
     if (localActiveFlavors.includes(flavor)) {
-      const newFlavors = localActiveFlavors.filter(
-        (flavor: SanityTypes.Flavor) => flavor.name !== flavor.name
-      )
+      const newFlavors = localActiveFlavors.reduce((acc: any, curr: any) => {
+        {
+          if (curr.name !== flavor.name) {
+            acc.push(curr)
+          }
+        }
+        return acc
+      }, [])
+
       setLocalActiveFlavors(newFlavors)
       return
     }
     setLocalActiveFlavors([...localActiveFlavors, flavor])
-
     setActiveFlavor(flavor)
   }
 
   useEffect(() => {
-    if (localActiveFlavors.length === 0) return
+    if (!localActiveFlavors.length) return
     const sizes = data.sizes
     const sizesWithFlavors = sizes.filter((size: SanityTypes.Size) => {
       if (!size.maxFlavors) return false
@@ -73,11 +78,14 @@ export default function Flavors(props: FlavorsProps) {
       size: sizesWithFlavors[0],
       container: container[0],
     })
-    setLocalSizes(sizesWithFlavors)
     setPopcornStoreActive(true)
-    if (!activePopcorn.container?.name) return
-    if (activePopcorn.container.name !== 'Tin') {
-      router.push('/item/' + 'popcorn', { shallow: true })
+    if (localActiveFlavors.length === 4) {
+      router.push('/item/popcorn', { shallow: true })
+    }
+    setLocalSizes(sizesWithFlavors)
+    if (!container[0].name) return
+    if (container[0].name !== 'Tin') {
+      router.push('/item/popcorn', { shallow: true })
     }
   }, [localActiveFlavors])
 
@@ -158,89 +166,84 @@ export default function Flavors(props: FlavorsProps) {
     )
   }
   return (
-    <Container
-      size="xl"
-      p={0}
-      m={0}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        alignItems: 'space-between',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Title
-        m={'sm'}
+    <>
+      {isTin && (
+        <>
+          {localActiveFlavors.length > 0 && (
+            <Tin sizes={localSizes} localActiveFlavors={localActiveFlavors} />
+          )}
+        </>
+      )}
+      <Container
+        size="xl"
+        p={0}
+        m={0}
         style={{
-          fontWeight: 900,
-          fontSize: '3rem',
-          color: 'rgba(139, 0, 0, 1)',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          alignItems: 'space-between',
+          justifyContent: 'space-between',
         }}
       >
-        Flavors
-      </Title>
-      <Center>
-        <Text fz={'xs'} w={'40%'}>
-          {isTin
-            ? 'Select up to four flavors. 3 Gallon Tins can hold up to 4 flavors, 2 Gallon Tins can hold up to 3 flavors, 1 Gallon Tins can hold up to 2 flavors.'
-            : 'Select any of the flavors below'}
-        </Text>
-      </Center>
-      <Space h="md" />
-      <Group>
-        {isTin && (
-          <>
-            {localActiveFlavors.length > 0 && (
-              <Tin
-                sizes={localSizes}
-                localActiveFlavors={localActiveFlavors}
-                containerId={container[0]._id}
-              />
-            )}
-          </>
-        )}
-      </Group>
-      <Space h="md" />
-      {categories.map((category) => {
-        if (!category) return null
+        <Title
+          m={'sm'}
+          style={{
+            fontWeight: 900,
+            fontSize: '3rem',
+            color: 'rgba(139, 0, 0, 1)',
+          }}
+        >
+          Flavors
+        </Title>
+        <Center>
+          <Text fz={'xs'} w={'40%'}>
+            {isTin
+              ? 'Select up to four flavors. 3 Gallon Tins can hold up to 4 flavors, 2 Gallon Tins can hold up to 3 flavors, 1 Gallon Tins can hold up to 2 flavors.'
+              : 'Select any of the flavors below'}
+          </Text>
+        </Center>
+        <Space h="md" />
+        {categories.map((category) => {
+          if (!category) return null
 
-        return (
-          <Container key={category._id + 'category'}>
-            <Text
-              fz={'xl'}
-              fw={'bolder'}
-              c={'red'}
-              w={'50%'}
-              style={{
-                textIndent: '1rem',
-              }}
-            >
-              {category.name}
-            </Text>
-            <Container
-              size="xl"
-              m={'sm'}
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-              }}
-            >
-              {flavors.map((flavor) => {
-                if (
-                  !flavor ||
-                  !flavor.category ||
-                  flavor.category._ref !== category._id
-                )
-                  return null
-                return Flavor(flavor, category)
-              })}
+          return (
+            <Container key={category._id + 'category'}>
+              <Text
+                fz={'xl'}
+                fw={'bolder'}
+                c={'red'}
+                w={'50%'}
+                style={{
+                  textIndent: '1rem',
+                }}
+              >
+                {category.name}
+              </Text>
+              <Container
+                size="xl"
+                m={'sm'}
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                {flavors.map((flavor) => {
+                  if (
+                    !flavor ||
+                    !flavor.category ||
+                    flavor.category._ref !== category._id
+                  )
+                    return null
+                  return Flavor(flavor, category)
+                })}
+              </Container>
             </Container>
-          </Container>
-        )
-      })}
-    </Container>
+          )
+        })}
+      </Container>
+    </>
   )
 }
