@@ -5,8 +5,19 @@ import styles from './ActiveProduct.module.scss'
 import PopcornNamer from '@utils/PopcornNamer'
 import intToCash from '@utils/intToCash'
 import Button from '@components/button/Button'
-import * as SanityTypes from 'types/SanityItem'
 import urlFor from '@lib/sanity/urlFor'
+import { useEffect, useState } from 'react'
+import {
+  Grid,
+  Image,
+  Col,
+  Text,
+  Input,
+  Chip,
+  Title,
+  Space,
+  Container,
+} from '@mantine/core'
 
 const ActiveProduct = () => {
   const {
@@ -16,74 +27,140 @@ const ActiveProduct = () => {
     HandleSetQuantity,
     activePrice,
   } = useLocalContext()
-  console.log(activePopcorn)
+  const [checked, setChecked] = useState(false)
+
+  useEffect(() => {
+    if (!activePopcorn?.flavor) return
+    if (!activePopcorn?.flavor[0]) return
+    HandleSetQuantity(1)
+  }, [activePopcorn])
 
   if (!activePopcorn.flavor) return null
+  if (!activePopcorn.flavor[0]) return null
+
+  if (activePrice === 0) return null
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.shoppingCartItem}>
-        <div className={styles.shoppingCartItem__image}>
+    <Container
+      size="lg"
+      style={{
+        display: 'flex',
+        borderRadius: '0.2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        justifyItems: 'space-between',
+        boxShadow: '3px 3px 1px 0px rgba(139,0,0,0.75)',
+        backgroundColor: 'rgba(255,255,255,1',
+      }}
+      w={'50%'}
+      m={'lg'}
+    >
+      <Grid gutter="md" style={{ gap: '16px' }}>
+        <Col span={12}>
           {activePopcorn.flavor[0].image && (
-            <div
-              className={styles.shoppingCartItem__image}
-              style={{
-                backgroundImage: `url(${urlFor(
-                  activePopcorn.flavor[0].image
-                ).url()})`,
-              }}
+            <Image
+              radius={'sm'}
+              src={`${urlFor(activePopcorn.flavor[0].image).url()}`}
             />
           )}
-        </div>
-        <div className={styles.shoppingCartItem__info}>
-          <h3 className={styles.shoppingCartItem__info__name}>
+        </Col>
+        <Col
+          span={12}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <Title style={{ textAlign: 'center' }} fz={'lg'} fw={'bolder'}>
             {PopcornNamer(activePopcorn)}
-          </h3>
-          <div className={styles.shoppingCartItem__info__divider}>
-            <h4 className={styles.shoppingCartItem__info__quantity}>
-              Quantity:
-              <input
-                type="number"
-                value={activeQuantity}
-                id="quantity"
-                className={styles.quantity}
-                disabled={true}
-              />
-            </h4>
-            <div
-              className={styles.upDownWrapper}
-              style={{ display: 'flex', flexDirection: 'column' }}
+          </Title>
+          <Space h="md" />
+          <Grid
+            gutter="sm"
+            m={'sm'}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Col
+              span={6}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
-              <input
-                type="button"
-                value={'+'}
-                onClick={() => {
+              <Text m={'sm'} p={'sm'}>
+                Quantity:
+              </Text>
+              <Chip
+                onChange={(checked: boolean) => {
+                  return
+                }}
+                checked={false}
+                defaultChecked={false}
+                radius="xl"
+                size={'sm'}
+              >
+                {activeQuantity}
+              </Chip>
+            </Col>
+            <Col span={6} m={'sm'}>
+              <Chip
+                onChange={(checked: boolean) => {
                   HandleSetQuantity(activeQuantity + 1)
                 }}
-                className={styles.quantityButton}
-              />
-              <input
-                type="button"
-                value={'-'}
-                onClick={() => {
+                checked={false}
+                defaultChecked={false}
+                radius="xl"
+                size={'sm'}
+                m={'sm'}
+              >
+                +
+              </Chip>
+              <Chip
+                onChange={(checked: boolean) => {
                   HandleSetQuantity(activeQuantity - 1)
                 }}
-                className={styles.quantityButton}
-              />
-            </div>
-            <h4 className={styles.shoppingCartItem__info__price}>
-              Price:
-              {intToCash(activeQuantity * activePrice)}
-            </h4>
-          </div>
-        </div>
-      </div>
-      <Button
-        title={'Add to Cart'}
-        onClick={() => {
-          HandleAddToCart()
-        }}
-      />
-    </div>
+                checked={false}
+                defaultChecked={false}
+                radius="xl"
+                size={'sm'}
+                m={'sm'}
+              >
+                -
+              </Chip>
+            </Col>
+            <Col
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+              }}
+              span={12}
+            >
+              <Text fz={'md'}>
+                Price:{' '}
+                <Text fz={'md'} fw={'bold'}>
+                  {' '}
+                  {intToCash(activeQuantity * activePrice)}
+                </Text>
+              </Text>
+            </Col>
+          </Grid>
+        </Col>
+        <Col span={12}>
+          <Button title="Add to Cart" onClick={HandleAddToCart} />
+        </Col>
+      </Grid>
+    </Container>
   )
 }
 

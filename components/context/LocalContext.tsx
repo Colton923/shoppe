@@ -9,7 +9,8 @@ import { Customer } from 'types/Customer'
 import type { StripeCart } from 'types/StripeCart'
 import PopcornNamer from '@utils/PopcornNamer'
 import Checkout from '@components/popcorn/Checkout'
-import { useParams } from 'next/navigation'
+import { Data } from 'app/page'
+import { useDisclosure } from '@mantine/hooks'
 
 export type Markup = {
   _id: string
@@ -37,8 +38,8 @@ export type Markup = {
     container: {
       startingRetailPrice: number
       startingWholesalePrice: number
-    }[],
-  }[],
+    }[]
+  }[]
   size: {
     _id: string
     name: string
@@ -47,12 +48,11 @@ export type Markup = {
       name: string
       startingRetailPrice: number
       startingWholesalePrice: number
-    },
+    }
     markupRetail: number
     markupWholesale: number
-  }[],
+  }[]
 }
-
 
 type LocalContextScope = {
   cart: SanityTypes.SanityItem[]
@@ -65,11 +65,13 @@ type LocalContextScope = {
   status: string
   wholesaler: boolean
   showCart: boolean
-
+  data: Data
   activePopcorn: SanityTypes.Popcorn
   activePrice: number
   activeQuantity: number
   sizesForTin: SanityTypes.Size[] | null
+  subTotal: number
+  setSubTotal: (subTotal: number) => void
   setSizesForTin: (sizes: SanityTypes.Size[] | null) => void
   setWholesaler: (wholesaler: boolean) => void
   setPopcornStoreActive: (active: boolean) => void
@@ -92,18 +94,22 @@ type LocalContextScope = {
   HandleSetQuantity: (quantity: number) => void
   HandleAddToCart: () => Promise<void>
   HandleCheckout: () => void
-
+  HandleDeleteItem: (id: string) => void
+  opened: boolean
+  open: () => void
+  close: () => void
   router: AppRouterInstance
 }
 
 interface Props {
   children: React.ReactNode
+  data: Data
 }
 
 export const LocalContext = createContext<LocalContextScope | null>(null)
 
 export const LocalContextProvider = (props: Props) => {
-  const { children } = props
+  const { children, data } = props
   const [cart, setCart] = useState<SanityTypes.SanityItem[]>([])
   const [popcornStoreActive, setPopcornStoreActive] = useState<boolean | null>(null)
   const [activeContainer, setActiveContainer] =
@@ -132,6 +138,8 @@ export const LocalContextProvider = (props: Props) => {
   const [wholesaler, setWholesaler] = useState<boolean>(false)
   const [showCart, setShowCart] = useState<boolean>(false)
   const [sizesForTin, setSizesForTin] = useState<SanityTypes.Size[] | null>(null)
+  const [subTotal, setSubTotal] = useState<number | null>(null)
+  const [opened, { open, close }] = useDisclosure()
 
   const router = useRouter()
 
@@ -152,51 +160,67 @@ export const LocalContextProvider = (props: Props) => {
   const StripePopcornProduct = async (popcorn: SanityTypes.Popcorn) => {
     const body = {
       name: PopcornNamer(popcorn),
+      product: false,
     } as {
       name: string
       retailPrice: number | undefined
       wholesalePrice: number | undefined
+      product: boolean
     }
+    setSubTotal((prev) => {
+      if (prev) {
+        return prev + activePrice * activeQuantity
+      }
+      return activePrice * activeQuantity
+    })
     if (wholesaler) {
       body.wholesalePrice = activePrice
     } else {
       body.retailPrice = activePrice
     }
-    console.log('test fetch')
-    // const product = await fetch('/api/stripe/productCheck', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data)
-    //     return data
-    //   })
-    //   .catch((err) => console.log(err))
+    const Product = async () => {
+      const prod = await fetch('/api/post/stripe/productCheck', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          return data
+        })
+        .catch((err) => console.log(err))
 
-    return {
-      id: 'test',
+      return prod
     }
+    const product = await Product()
+    return product
   }
 
   const StripeProduct = async (product: SanityTypes.Product) => {
     const body = {
       name: product.name,
+      product: true,
     } as {
       name: string
       retailPrice: number | undefined
       wholesalePrice: number | undefined
+      product: boolean
     }
     if (wholesaler) {
-      body.wholesalePrice = product.wholesalePrice
+      body.wholesalePrice = (product.wholesalePrice as number) * 100
     } else {
-      body.retailPrice = product.retailPrice
+      body.retailPrice = (product.retailPrice as number) * 100
     }
+    setSubTotal((prev) => {
+      if (prev) {
+        return prev + activePrice * activeQuantity
+      }
+      return activePrice * activeQuantity
+    })
 
-    const stripeProduct = await fetch('/api/stripe/productCheck', {
+    const stripeProduct = await fetch('/api/post/stripe/productCheck', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -207,8 +231,38 @@ export const LocalContextProvider = (props: Props) => {
       .then((data) => {
         return data
       })
+    return stripeProduct as StripeProduct
+  }
 
-    return stripeProduct
+  const HandleDeleteItem = (id: string) => {
+    const newCart = cart.filter((item) => item.stripeProduct?.id !== id)
+    setCart(newCart)
+    if (newCart.length === 0) {
+      setSubTotal(0)
+    } else {
+      let total = 0
+      if (wholesaler) {
+        const newSubTotal = newCart.map((item) => {
+          return item.stripeProduct?.metadata?.wholesalePrice
+        })
+        newSubTotal.forEach((item) => {
+          if (item) {
+            total += parseInt(item)
+          }
+        })
+        setSubTotal(total)
+      } else {
+        const newSubTotal = newCart.map((item) => {
+          return item.stripeProduct?.metadata?.retailPrice
+        })
+        newSubTotal.forEach((item) => {
+          if (item) {
+            total += parseInt(item)
+          }
+        })
+        setSubTotal(total)
+      }
+    }
   }
 
   const HandleSizeSelect = (size: SanityTypes.Size) => {
@@ -217,20 +271,23 @@ export const LocalContextProvider = (props: Props) => {
   }
 
   const HandleContainerSelect = (container: SanityTypes.Container) => {
-    console.log('handlecontainerselect', container)
     setActiveContainer(container)
     setPopcornStoreActive(true)
     setActivePopcorn({
       ...activePopcorn,
       container: container,
     })
-    console.log('container', container)
     activePopcorn.container = container
-    router.push(`/containers/${container._id}`, {shallow: true})
+    router.push(`/containers/${container._id}`, { shallow: true })
   }
 
-  const HandleProductSelect = (product: SanityTypes.Product) => {
+  const HandleProductSelect = async (product: SanityTypes.Product) => {
     setActiveProduct(product)
+    if (wholesaler) {
+      setActivePrice((product.wholesalePrice as number) * 100)
+    } else {
+      setActivePrice((product.retailPrice as number) * 100)
+    }
   }
 
   const HandleSetQuantity = (quantity: number) => {
@@ -250,8 +307,6 @@ export const LocalContextProvider = (props: Props) => {
   }
 
   const HandleAddToCart = async () => {
-    console.log('handleaddtocart')
-    if (!wholesaler) return
     if (popcornStoreActive) {
       if (
         activePopcorn.container &&
@@ -266,19 +321,22 @@ export const LocalContextProvider = (props: Props) => {
         if (stripePopcorn === null) {
           return
         }
-        newCart.push({
-          item: activePopcorn,
-          stripeProduct: stripePopcorn,
-        })
+        for (let i = 0; i < activeQuantity; i++) {
+          newCart.push({
+            item: activePopcorn,
+            stripeProduct: stripePopcorn,
+          })
+        }
         setCart(newCart)
         setActivePopcorn({} as SanityTypes.Popcorn)
         setActiveContainer(null)
         setActiveFlavor(null)
         setActiveSize(null)
-        setActiveQuantity(0)
+        setActiveQuantity(1)
         setPopcornStoreActive(false)
         setActiveProduct(null)
         setActivePrice(0)
+        router.push('/', { shallow: true })
       }
     } else {
       // This is a SanityTypes.Product type that we are adding to the cart
@@ -299,23 +357,28 @@ export const LocalContextProvider = (props: Props) => {
           product: activeProduct,
           productCategory: prodCategory,
         }
-
-        newCart.push({
-          item: storeProd,
-          stripeProduct: stripeProduct,
-        })
+        for (let i = 0; i < activeQuantity; i++) {
+          newCart.push({
+            item: storeProd,
+            stripeProduct: stripeProduct,
+          })
+        }
         setCart(newCart)
         setActivePopcorn({} as SanityTypes.Popcorn)
         setActiveContainer(null)
         setActiveFlavor(null)
         setActiveSize(null)
-        setActiveQuantity(0)
+        setActiveQuantity(1)
         setPopcornStoreActive(false)
         setActiveProduct(null)
         setActivePrice(0)
+        setTimeout(() => {
+          router.push('/', { shallow: true })
+        }, 1000)
       }
     }
   }
+
   const HandleCheckout = () => {
     const stripeCart = CheckoutFormat(
       cart.map((item) => {
@@ -337,13 +400,12 @@ export const LocalContextProvider = (props: Props) => {
     setActiveContainer(null)
     setActiveFlavor(null)
     setActiveSize(null)
-    setActiveQuantity(0)
+    setActiveQuantity(1)
     setActiveProduct(null)
     setActivePrice(0)
   }
 
   const getPrice = async () => {
-
     const getPriceMarkup = async () => {
       const container = activePopcorn.container
       const flavors = activePopcorn.flavor
@@ -356,6 +418,7 @@ export const LocalContextProvider = (props: Props) => {
 
       const containerName = container.name
       if (!containerName) return null
+      if (flavors.length === 0) return null
       const markups = await Promise.all(
         flavors.map(async (flavor) => {
           if (!flavor) return null
@@ -379,7 +442,7 @@ export const LocalContextProvider = (props: Props) => {
             .then((markup: Markup[]) => {
               return markup[0]
             })
-            return markup
+          return markup
         })
       )
       return markups
@@ -387,7 +450,7 @@ export const LocalContextProvider = (props: Props) => {
 
     const markups = await getPriceMarkup()
     if (!markups) return null
-    if(!markups.length) return null
+    if (!markups.length) return null
     let value = 0
     if (!markups[0]) return null
     const totals = markups.map((markup) => {
@@ -396,8 +459,7 @@ export const LocalContextProvider = (props: Props) => {
         markup.category.map((category) => {
           category.markupWholesale.map((markup) => {
             value += markup.value
-          }
-          )
+          })
         })
         return value
       } else {
@@ -405,8 +467,7 @@ export const LocalContextProvider = (props: Props) => {
         markup.category.map((category) => {
           category.markupRetail.map((markup) => {
             value += markup.value
-          }
-          )
+          })
         })
         return value
       }
@@ -416,41 +477,38 @@ export const LocalContextProvider = (props: Props) => {
     const price = totals.reduce((a, b) => {
       if (!a) return b
       if (!b) return a
-      return (a + b)
-  })
-  console.log(markups)
-  console.log('price', price)
-  console.log('value', value)
-  if (wholesaler) {
-    value += markups[0]?.category[0]?.container[0]?.startingWholesalePrice
-    value += markups[0]?.size[0]?.markupWholesale
-  } else {
-    value += markups[0]?.category[0]?.container[0]?.startingRetailPrice
-    value += markups[0]?.size[0]?.markupRetail
-  }
-  if (price) {
-    value += price
-  }
-
-    console.log('value', value)
+      return a + b
+    })
+    if (wholesaler) {
+      value += markups[0]?.category[0]?.container[0]?.startingWholesalePrice
+      value += markups[0]?.size[0]?.markupWholesale
+    } else {
+      value += markups[0]?.category[0]?.container[0]?.startingRetailPrice
+      value += markups[0]?.size[0]?.markupRetail
+    }
+    if (price) {
+      value += price
+    }
     return value
   }
 
-
   useEffect(() => {
-    console.log('activePopcorn', activePopcorn)
-
     if (activePopcorn.container && activePopcorn.flavor && activePopcorn.size) {
-      console.log('verified activePopcorn, setting price')
       const PriceGetter = async () => {
         const price = await getPrice()
-        console.log('price', price)
-        if (price) setActivePrice(price * 100)
+        if (price) {
+          setActivePrice(price * 100)
+        } else {
+          setActivePrice(0)
+        }
       }
 
       PriceGetter()
     }
-  }, [activePopcorn])
+    if (activeProduct) {
+      HandleAddToCart()
+    }
+  }, [activePopcorn, activeProduct])
 
   const contextValue = useMemo(
     () => ({
@@ -489,6 +547,13 @@ export const LocalContextProvider = (props: Props) => {
       showCart,
       setShowCart,
       setWholesaler,
+      HandleDeleteItem,
+      subTotal,
+      setSubTotal,
+      data,
+      opened,
+      open,
+      close,
     }),
     [
       cart,
@@ -526,6 +591,13 @@ export const LocalContextProvider = (props: Props) => {
       showCart,
       setShowCart,
       setWholesaler,
+      HandleDeleteItem,
+      subTotal,
+      setSubTotal,
+      data,
+      opened,
+      open,
+      close,
     ]
   )
 

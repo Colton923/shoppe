@@ -1,3 +1,18 @@
+.clickable {
+  &:hover {
+    cursor: pointer;
+    box-shadow: 3px 3px 5px rgba(139,0,0,0.5);
+  }
+}
+
+.activeText {
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+  }
+}
+
+
 .wrapper{
   display: flex;
   flex-direction: column;

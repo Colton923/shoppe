@@ -60,7 +60,7 @@ const Customer = () => {
           />
         </div>
       </div>
-      <CheckoutButton CheckoutFn={HandleCheckout} status={status} />
+      <CheckoutButton HandleCheckout={HandleCheckout} status={status} />
     </div>
   )
 }

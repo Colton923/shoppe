@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import styles from './Register.module.scss'
 import { RegisterForm } from '../../../types/RegisterForm'

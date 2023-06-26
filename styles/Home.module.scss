@@ -1,6 +1,6 @@
 .defaultContainer {
   animation: ExpandForComponents 1s ease-in-out forwards;
-
+  width: 100%;
   @keyframes ExpandForComponents {
     0% {
       height: 0;
@@ -18,12 +18,9 @@
 }
 
 .pageContent {
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  max-width: 1400px;
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .imageContainer {

@@ -3,6 +3,33 @@ import LocalContextProvider from '@components/context/LocalContext'
 import FirebaseContextProvider from '@components/context/FirebaseContext'
 import { poppins } from '@styles/fonts'
 import Clientize from '@components/clientize/Clientize'
+import MantineContextProvider from '@components/context/MantineContext'
+import styles from '../styles/Home.module.scss'
+import client from '@lib/sanity/client'
+import queries from '@lib/sanity/queries'
+
+export async function getProducts() {
+  const products = await client.fetch(queries.products)
+  return products
+}
+
+export async function getContainers() {
+  const containers = await client.fetch(queries.containers)
+  return containers
+}
+
+export async function getFlavors() {
+  const flavors = await client.fetch(queries.flavors)
+  return flavors
+}
+export async function getSizes() {
+  const sizes = await client.fetch(queries.sizes)
+  return sizes
+}
+export async function getCategories() {
+  const categories = await client.fetch(queries.categories)
+  return categories
+}
 
 export default async function RootLayout(props: {
   children: React.ReactNode
@@ -10,6 +37,26 @@ export default async function RootLayout(props: {
   authModal: React.ReactNode
 }) {
   const { children, modal, authModal } = props
+
+  const products = await getProducts()
+  const containers = await getContainers()
+  const flavors = await getFlavors()
+  const sizes = await getSizes()
+  const categories = await getCategories()
+
+  if (!products) return null
+  if (!containers) return null
+  if (!flavors) return null
+  if (!sizes) return null
+  if (!categories) return null
+
+  const data = {
+    products: products,
+    containers: containers,
+    flavors: flavors,
+    sizes: sizes,
+    categories: categories,
+  }
 
   return (
     <html lang="en-US">
@@ -22,14 +69,20 @@ export default async function RootLayout(props: {
         <title>Main St. Shoppe</title>
       </head>
       <body>
-        <main id={'pageContent'} style={poppins.style}>
-          <LocalContextProvider>
+        <main
+          id={'pageContent'}
+          style={poppins.style}
+          className={styles.pageContent}
+        >
+          <LocalContextProvider data={data}>
             <FirebaseContextProvider>
-              <Clientize>
-                {children}
-                {modal}
-                {authModal}
-              </Clientize>
+              <MantineContextProvider>
+                <Clientize>
+                  {children}
+                  {modal}
+                  {authModal}
+                </Clientize>
+              </MantineContextProvider>
             </FirebaseContextProvider>
           </LocalContextProvider>
         </main>

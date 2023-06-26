@@ -1,16 +1,15 @@
 import Stripe from 'stripe'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { StripeCart } from '@components/popcorn/cart/Cart'
+import { StripeCart } from 'types/StripeCart'
 
-//@ts-ignore
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
-  apiVersion: '2020-08-27',
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
+  apiVersion: '2022-11-15',
 })
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const stripeCart: StripeCart[] = req.body.stripeCart
   try {
-    if (!stripeCart[0].item.id) return
+    if (!stripeCart[0].item?.id) return
     const GetPriceIDFromProductID = async (
       prodID: string,
       stripe: Stripe
@@ -27,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const priceIDs = await Promise.all(
       stripeCart.map(async (item) => {
-        if (item.item.id) {
+        if (item.item?.id) {
           return await GetPriceIDFromProductID(item.item.id, stripe)
         } else return
       })

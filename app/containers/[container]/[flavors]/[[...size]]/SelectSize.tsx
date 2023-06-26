@@ -1,40 +1,57 @@
 'use client'
 
-import * as SanityTypes from 'types/SanityItem'
 import { useLocalContext } from '@components/context/LocalContext'
 import styles from './Sizes.module.scss'
-interface SelectSizeProps {
-  sizes: SanityTypes.Size[]
+import * as SanityTypes from 'types/SanityItem'
+import { Select, Title, Container } from '@mantine/core'
+type Props = {
+  sizeIds: string[]
 }
 
-const SelectSize = (props: SelectSizeProps) => {
-  const { sizes } = { ...props }
-  const { setActivePopcorn, activePopcorn } = useLocalContext()
+const SelectSize = (props: Props) => {
+  const { sizeIds } = { ...props }
+  const { data, setActivePopcorn, activePopcorn } = useLocalContext()
+  const sizes = data.sizes.filter((size: SanityTypes.Size) => {
+    if (sizeIds.includes(size._id)) {
+      return true
+    }
+    return false
+  })
+
+  const sizeData = sizes.map((size: SanityTypes.Size) => size.name) as string[]
 
   return (
-    <div className={styles.category} id="selectSizes">
-      <h2>Please Select a Size</h2>
-      <select
-        name="category"
-        id="category"
-        className={styles.select}
-        onChange={(e) => {
-          console.log(e.target.value)
-          const size = sizes.find((size: any) => size.name === e.target.value)
+    <Container
+      size="lg"
+      style={{
+        display: 'flex',
+        borderRadius: '0.2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        justifyItems: 'space-between',
+        boxShadow: '3px 3px 1px 0px rgba(139,0,0,0.75)',
+        backgroundColor: 'rgba(255,255,255,1',
+      }}
+      w={'50%'}
+      m={'lg'}
+      p={'lg'}
+    >
+      <Title> Please Select a Size</Title>
+      <Select
+        data={sizeData}
+        placeholder="Select a Size"
+        onChange={(e: string) => {
+          const size = sizes.find((size: any) => size.name === e)
           if (!size) return
           setActivePopcorn({
             ...activePopcorn,
             size: size,
           })
         }}
-      >
-        {sizes.map((size: SanityTypes.Size) => (
-          <option key={size._id} value={size.name}>
-            {size.name}
-          </option>
-        ))}
-      </select>
-    </div>
+        defaultValue={sizeData[0]}
+      ></Select>
+    </Container>
   )
 }
 

@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import styles from './Navbar.module.scss'
 import Image from 'next/image'
@@ -5,11 +7,22 @@ import CartIcon from '@public/icons/svg/cart.svg'
 import personIcon from '@public/icons/svg/account.svg'
 import { useFirebaseContext } from '@components/context/FirebaseContext'
 import { useLocalContext } from '@components/context/LocalContext'
+// import { useMantineContext } from '@components/context/MantineContext'
+// import { Switch, Button } from '@mantine/core'
 
 const Navbar = () => {
   const { loggedIn } = useFirebaseContext()
-  const { setShowCart, showCart } = useLocalContext()
+  const { open, opened, close, setShowCart, showCart } = useLocalContext()
+  // const { toggleTheme, theme } = useMantineContext()
 
+  const HandleShoppingCartActive = () => {
+    setShowCart(!showCart)
+    if (opened) {
+      close()
+    } else {
+      open()
+    }
+  }
   return (
     <>
       <div className={styles.stickyNav}>
@@ -38,7 +51,6 @@ const Navbar = () => {
               }}
             />
           </Link>
-
           <div className={styles.title}>
             <h2
               className={styles.titleText}
@@ -57,12 +69,13 @@ const Navbar = () => {
               height={35}
               className={styles.cartIcon}
               onClick={() => {
-                setShowCart(!showCart)
+                HandleShoppingCartActive()
               }}
             />
           </div>
         </div>
       </div>
+      {/* <Switch onClick={toggleTheme} checked={theme === 'dark'} /><h2>Toggle Theme</h2> */}
     </>
   )
 }

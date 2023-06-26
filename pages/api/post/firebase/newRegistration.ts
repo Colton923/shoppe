@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import type { FormData } from 'app/@authModal/register/page'
+import { RegisterForm } from 'types/RegisterForm'
 import { MailService } from '@sendgrid/mail'
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -13,7 +13,7 @@ if (!admin.apps.length) {
 
 export type newRegistration = {
   body: {
-    formData: FormData
+    formData: RegisterForm
   }
 }
 

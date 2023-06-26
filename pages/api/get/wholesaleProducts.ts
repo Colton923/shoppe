@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const dat = doc.data() as StripeProduct
+        if (!dat) return
         dat.id = doc.id
         if (dat?.metadata?.wholesalePrice ?? false) {
           dat.metadata?.retailPrice === dat.metadata?.wholesalePrice

@@ -16,7 +16,6 @@ export default function PopcornNamer(item: Popcorn) {
     name += 'Popcorn'
     return name
   } else {
-    console.log('item.flavor[0]', item.flavor[0])
     name += item.flavor[0].name as string
     name += ' '
     name += 'Popcorn'

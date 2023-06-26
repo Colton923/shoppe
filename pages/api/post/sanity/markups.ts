@@ -9,7 +9,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const markups = await client.fetch(
         queries.flavorCategory(categoryId, flavorId, containerName, size)
       )
-      console.log('markups', markups)
       res.status(200).json(markups)
     } catch (err: any) {
       res.status(err.statusCode || 500).json(err.message)

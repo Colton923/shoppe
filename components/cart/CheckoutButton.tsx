@@ -1,20 +1,21 @@
-import Button from '@components/button/Button'
+import { Switch } from '@mantine/core'
 
 interface CheckoutProps {
-  CheckoutFn: () => void
+  HandleCheckout: any
   status: string
 }
 
 const CheckoutButton = (props: CheckoutProps) => {
-  const { CheckoutFn, status } = props
+  const { HandleCheckout, status } = props
 
   return (
-    <Button
-      title={status}
-      onClick={() => {
-        CheckoutFn()
-      }}
-      type={'button'}
+    <Switch
+      value={status}
+      onChange={HandleCheckout}
+      label="Checkout"
+      style={{ width: '100%' }}
+      size="lg"
+      color="blue"
     />
   )
 }

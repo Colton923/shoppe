@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo, createContext, useContext, useState, useEffect } from 'react'
+import { useMemo, memo, createContext, useContext, useState } from 'react'
 
 type RGBA = {
   r: number

@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import styles from './Login.module.scss'
 import { useFirebaseContext } from '@components/context/FirebaseContext'

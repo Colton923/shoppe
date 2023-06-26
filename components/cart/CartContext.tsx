@@ -33,6 +33,7 @@ export const CartContextProvider = (props: Props) => {
   const { cart, setCart } = useLocalContext()
   const [localCart, setLocalCart] = useState<SanityTypes.SanityItem[]>(cart)
   const [updateCart, setUpdateCart] = useState(false)
+  const [subTotal, setSubTotal] = useState('0')
 
   const handleDeleteItem = (id: string | undefined) => {
     if (!id) return
@@ -45,6 +46,11 @@ export const CartContextProvider = (props: Props) => {
     if (newCart.length === localCart.length) return
 
     if (newCart.length > 0) setLocalCart(newCart)
+    setSubTotal(HandleSubTotal())
+  }
+
+  const GetSubTotal = () => {
+    return subTotal
   }
 
   useEffect(() => {
@@ -54,7 +60,7 @@ export const CartContextProvider = (props: Props) => {
     setUpdateCart(true)
   }, [localCart])
 
-  const GetSubTotal = () => {
+  const HandleSubTotal = () => {
     let subTotal = 0
     if (!localCart) return intToCash(subTotal)
     localCart.forEach((item) => {
