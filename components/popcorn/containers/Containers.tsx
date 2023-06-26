@@ -32,7 +32,6 @@ export default function Containers(props: ContainerProps) {
             href={{
               pathname: `/containers/${container._id}`,
             }}
-            prefetch={false}
             style={{ textDecoration: 'none' }}
           >
             <BackgroundImage

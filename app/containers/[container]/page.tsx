@@ -1,23 +1,16 @@
-import client from '@lib/sanity/client'
-import queries from '@lib/sanity/queries'
-import * as SanityTypes from 'types/SanityItem'
+'use client'
 import Flavors from '@components/popcorn/flavors/Flavors'
-
-export async function getContainer(id: string) {
-  return await client.fetch(queries.container(id))
-}
-
-export default async function Page({ params }: { params: { container: string } }) {
-  const { container } = params
-  const contain: SanityTypes.Container[] = await getContainer(container)
-  if (!contain.length) {
-    if (!(contain.length > 0)) {
-      return
-    }
-  }
+import { useLocalContext } from '@components/context/LocalContext'
+import { usePathname } from 'next/navigation'
+export default function Page() {
+  const { data } = useLocalContext()
+  const pathname = usePathname()
+  if (!pathname) return null
+  const containerId = pathname.split('/')[2]
+  const container = data.containers.filter((c) => c._id === containerId)
   return (
     <>
-      <Flavors container={contain} />
+      <Flavors container={container} />
     </>
   )
 }

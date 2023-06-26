@@ -98,6 +98,7 @@ export default function Cart(props: CartProps) {
       }
     }
   }
+
   const HandleDrawerClose = () => {
     setShowCart(false)
     close()

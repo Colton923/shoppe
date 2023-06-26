@@ -6,18 +6,8 @@ import PopcornNamer from '@utils/PopcornNamer'
 import intToCash from '@utils/intToCash'
 import Button from '@components/button/Button'
 import urlFor from '@lib/sanity/urlFor'
-import { useEffect, useState } from 'react'
-import {
-  Grid,
-  Image,
-  Col,
-  Text,
-  Input,
-  Chip,
-  Title,
-  Space,
-  Container,
-} from '@mantine/core'
+import { useEffect } from 'react'
+import { Grid, Image, Col, Text, Chip, Title, Space, Container } from '@mantine/core'
 
 const ActiveProduct = () => {
   const {
@@ -27,7 +17,6 @@ const ActiveProduct = () => {
     HandleSetQuantity,
     activePrice,
   } = useLocalContext()
-  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     if (!activePopcorn?.flavor) return

@@ -278,7 +278,8 @@ export const LocalContextProvider = (props: Props) => {
       container: container,
     })
     activePopcorn.container = container
-    router.push(`/containers/${container._id}`, { shallow: true })
+    if (!container._id) return
+    router.push(`/containers/${container?._id}`, { shallow: true })
   }
 
   const HandleProductSelect = async (product: SanityTypes.Product) => {
@@ -372,9 +373,6 @@ export const LocalContextProvider = (props: Props) => {
         setPopcornStoreActive(false)
         setActiveProduct(null)
         setActivePrice(0)
-        setTimeout(() => {
-          router.push('/', { shallow: true })
-        }, 1000)
       }
     }
   }

@@ -14,6 +14,7 @@ import {
   Container,
   Group,
   Center,
+  Space,
 } from '@mantine/core'
 import mascot from 'public/icons/favicon.ico'
 import intToCash from '@utils/intToCash'
@@ -40,14 +41,17 @@ export default function Flavors(props: FlavorsProps) {
   const flavors = data.flavors
   const HandleFlavorSelected = (flavor: SanityTypes.Flavor) => {
     if (!flavor.name) return
-    if (localActiveFlavors.filter((f) => f.name === flavor.name).length > 0) {
-      setLocalActiveFlavors(localActiveFlavors.filter((f) => f.name !== flavor.name))
-      setActiveFlavor(null)
-    } else {
-      setLocalActiveFlavors([...localActiveFlavors, flavor])
 
-      setActiveFlavor(flavor)
+    if (localActiveFlavors.includes(flavor)) {
+      const newFlavors = localActiveFlavors.filter(
+        (flavor: SanityTypes.Flavor) => flavor.name !== flavor.name
+      )
+      setLocalActiveFlavors(newFlavors)
+      return
     }
+    setLocalActiveFlavors([...localActiveFlavors, flavor])
+
+    setActiveFlavor(flavor)
   }
 
   useEffect(() => {
@@ -71,44 +75,22 @@ export default function Flavors(props: FlavorsProps) {
     })
     setLocalSizes(sizesWithFlavors)
     setPopcornStoreActive(true)
-
-    if (container[0].name === 'Tin') {
-      if (
-        localActiveFlavors.length ===
-        sizes.reduce((a, b) => {
-          if (!a.maxFlavors) return b
-          if (!b.maxFlavors) return a
-          if (a.maxFlavors > b.maxFlavors) {
-            return a
-          }
-          return b
-        }).maxFlavors
-      ) {
-        router.push(
-          `/containers/${container[0].name}/flavors/${localActiveFlavors
-            .map((flavor: SanityTypes.Flavor) => flavor.name as string)
-            .join('+')}/size/${sizesWithFlavors
-            .map((size: SanityTypes.Size) => size._id as string)
-            .join('+')}`
-        )
-      }
-    } else {
-      router.push(
-        `/containers/${container[0].name}/flavors/${
-          localActiveFlavors[0].name
-        }/size/${sizesWithFlavors
-          .map((size: SanityTypes.Size) => size._id as string)
-          .join('+')}`
-      )
+    if (!activePopcorn.container?.name) return
+    if (activePopcorn.container.name !== 'Tin') {
+      router.push('/item/' + 'popcorn', { shallow: true })
     }
   }, [localActiveFlavors])
+
+  if (!container) return
+  if (!container[0]) return
+  if (!container[0].name) return
+
+  const isTin = container[0].name === 'Tin'
 
   const Flavor = (flavor: SanityTypes.Flavor, category: SanityTypes.Category) => {
     let value = 0
     if (wholesaler) {
-      if (!category.markupWholesale) return
-      if (!category.markupWholesale[0]) return
-      if (!category.markupWholesale[0].value) return
+      if (category.markupWholesale === undefined) return
 
       value = category.markupWholesale.reduce((a: any, b: any) => {
         if (a.value > b.value) {
@@ -117,9 +99,7 @@ export default function Flavors(props: FlavorsProps) {
         return b
       }).value as number
     } else {
-      if (!category.markupRetail) return
-      if (!category.markupRetail[0]) return
-      if (!category.markupRetail[0].value) return
+      if (category.markupRetail === undefined) return
       value = category.markupRetail.reduce((a: any, b: any) => {
         if (a.value <= b.value) {
           return a
@@ -132,7 +112,6 @@ export default function Flavors(props: FlavorsProps) {
     const imgString = flavor.image
       ? (urlFor(flavor.image).url() as string)
       : (mascot.src as string)
-
     return (
       <Card
         key={flavor._id + 'flavor'}
@@ -149,7 +128,7 @@ export default function Flavors(props: FlavorsProps) {
           height: '280px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'space-around',
           flexDirection: 'column',
         }}
         bg={'rgba(255,255,255,0.8)'}
@@ -165,7 +144,7 @@ export default function Flavors(props: FlavorsProps) {
         <Card.Section>
           <Title
             m={0}
-            p={'xs'}
+            p={'3px'}
             style={{
               fontWeight: 900,
               fontSize: '1rem',
@@ -181,6 +160,8 @@ export default function Flavors(props: FlavorsProps) {
   return (
     <Container
       size="xl"
+      p={0}
+      m={0}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -201,13 +182,14 @@ export default function Flavors(props: FlavorsProps) {
       </Title>
       <Center>
         <Text fz={'xs'} w={'40%'}>
-          {container[0].name === 'Tin'
-            ? 'Select up to four flavors. 3 Gallon Tins can hold up to 4, 2 Gallon Tins can hold up to 3, 1 Gallon Tins can hold up to 2.'
+          {isTin
+            ? 'Select up to four flavors. 3 Gallon Tins can hold up to 4 flavors, 2 Gallon Tins can hold up to 3 flavors, 1 Gallon Tins can hold up to 2 flavors.'
             : 'Select any of the flavors below'}
         </Text>
       </Center>
-      <Group m={'sm'}>
-        {container[0].name === 'Tin' && (
+      <Space h="md" />
+      <Group>
+        {isTin && (
           <>
             {localActiveFlavors.length > 0 && (
               <Tin
@@ -219,11 +201,21 @@ export default function Flavors(props: FlavorsProps) {
           </>
         )}
       </Group>
+      <Space h="md" />
       {categories.map((category) => {
         if (!category) return null
+
         return (
-          <Container size="xl" m={'sm'} key={category._id + 'category'}>
-            <Text fz={'xl'} fw={'bolder'} c={'red'}>
+          <Container key={category._id + 'category'}>
+            <Text
+              fz={'xl'}
+              fw={'bolder'}
+              c={'red'}
+              w={'50%'}
+              style={{
+                textIndent: '1rem',
+              }}
+            >
               {category.name}
             </Text>
             <Container

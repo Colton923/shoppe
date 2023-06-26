@@ -18,10 +18,10 @@ const Tin = (props: TinProps) => {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         borderRadius: '0.2rem',
         flexWrap: 'wrap',
-        width: '100%',
+        width: '100vw',
       }}
     >
       <Container w={'33%'} p={'sm'}>
@@ -41,21 +41,22 @@ const Tin = (props: TinProps) => {
           borderRadius: '1rem',
           backgroundColor: 'white',
           boxShadow: '0 0 1rem 0.5rem rgba(0,0,0,0.1)',
+          position: 'fixed',
+          top: '50%',
+          right: '3px',
+          height: '70px',
+          width: '130px',
         }}
       >
         {localActiveFlavors.length > 0 && (
           <Link
             href={{
-              pathname: `/containers/${containerId}/flavors/${localActiveFlavors
-                .map((flavor: SanityTypes.Flavor) => flavor.name as string)
-                .join('+')}/size/${sizes
-                .map((size: SanityTypes.Size) => size._id as string)
-                .join('+')}`,
+              pathname: '/item/popcorn',
             }}
             style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}
           >
             <Center>
-              <Text p={'sm'} fw={'bolder'} fz={'md'} c={'red'}>
+              <Text p={'sm'} fw={'bolder'} fz={'md'} c={'red'} ta={'center'}>
                 Continue to Checkout
               </Text>
             </Center>
@@ -67,9 +68,9 @@ const Tin = (props: TinProps) => {
           <Container>
             <Text>Available Sizes</Text>
             {sizes.map((size) => (
-              <Container key={'available-size' + size._id}>
-                <Text>{size.name}</Text>
-              </Container>
+              <Badge key={'available-size' + size._id} c={'indigo'}>
+                {size.name}
+              </Badge>
             ))}
           </Container>
         )}
