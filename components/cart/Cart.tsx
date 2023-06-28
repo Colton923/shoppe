@@ -73,14 +73,12 @@ export default function Cart(props: CartProps) {
       if (res) {
         if (!HandleCheckout) return
         HandleCheckout()
-        console.log('checking Out')
         return null
       } else {
         return undefined
       }
     })
     return Promise.resolve(ret).then(() => {
-      console.log('cart.tsx promise resolved')
       setShowCart(false)
       setCart([])
     })

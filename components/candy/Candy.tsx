@@ -33,7 +33,7 @@ const Candy = (props: ProductsProps) => {
   useEffect(() => {
     if (!embla) return
     setLoading(false)
-  }, [embla, products])
+  }, [embla, products, popcornStoreActive])
 
   products.map((product: SanityTypes.Product) => {
     if (!product.category) {
@@ -138,7 +138,7 @@ const Candy = (props: ProductsProps) => {
               onClick={() => {
                 setActiveProduct(item)
               }}
-              style={{ textDecoration: 'none', backgroundColor: 'transparent' }}
+              style={{ textDecoration: 'none' }}
             >
               <Card
                 shadow="sm"
@@ -158,6 +158,7 @@ const Candy = (props: ProductsProps) => {
                     h={175}
                     p={0}
                     m={0}
+                    radius={'xs'}
                   >
                     <Badge
                       bg={'rgba(139,0,0,1)'}

@@ -297,6 +297,7 @@ export const LocalContextProvider = (props: Props) => {
     } else {
       setActivePrice((product.retailPrice as number) * 100)
     }
+    HandleAddToCart()
   }
 
   const HandleSetQuantity = (quantity: number) => {
@@ -510,10 +511,7 @@ export const LocalContextProvider = (props: Props) => {
 
       PriceGetter()
     }
-    if (activeProduct) {
-      HandleAddToCart()
-    }
-  }, [activePopcorn, activeProduct])
+  }, [activePopcorn])
 
   const contextValue = useMemo(
     () => ({

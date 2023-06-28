@@ -11,7 +11,6 @@ const SelectSize = (props: Props) => {
   const { data, setActivePopcorn, activePopcorn } = useLocalContext()
 
   if (!sizenames) return null
-  console.log(sizenames[0])
   return (
     <Container
       style={{
@@ -39,6 +38,7 @@ const SelectSize = (props: Props) => {
           })
         }}
         required={true}
+        placeholder={sizenames[0]}
         defaultValue={sizenames.length ? sizenames[0] : 'Select a Size'}
       ></Select>
     </Container>

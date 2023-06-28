@@ -15,7 +15,7 @@ const CheckoutButton = (props: CheckoutProps) => {
       label="Checkout"
       style={{ width: '100%' }}
       size="lg"
-      color="blue"
+      color="white"
     />
   )
 }

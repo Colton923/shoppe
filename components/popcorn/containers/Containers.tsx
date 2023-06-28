@@ -22,7 +22,7 @@ export default function Containers(props: ContainerProps) {
         flexDirection: 'row',
         flexWrap: 'wrap',
         padding: '0',
-        opacity: '0.95',
+        opacity: '0.8',
       }}
     >
       {containers.map((container: SanityTypes.Container) => (
@@ -40,6 +40,7 @@ export default function Containers(props: ContainerProps) {
                 display: 'flex',
                 flexDirection: 'row',
                 borderRadius: '0.2rem',
+                backgroundColor: 'white',
               }}
               h={'150px'}
             >

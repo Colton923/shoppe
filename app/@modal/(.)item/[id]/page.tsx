@@ -264,9 +264,52 @@ export default function Page() {
               height={'300px'}
               style={{ objectFit: 'contain' }}
             />
-            <Title order={2} className={styles.title}>
-              {item?.name !== null ? item?.name : 'Loading...'}
-            </Title>
+            <Flex direction="column" align={'center'}>
+              <Title order={2} className={styles.title} ta={'center'}>
+                {item?.name !== null ? item?.name : 'Loading...'}
+              </Title>
+              <Flex
+                w={'180px'}
+                m={'sm'}
+                align="center"
+                direction={'column'}
+                justify={'center'}
+              >
+                <Flex direction="row" align={'center'}>
+                  <Text p={'xs'} ta={'center'}>
+                    Quantity:
+                  </Text>
+                  <Text fw={'bold'} p={'xs'} ta={'center'}>
+                    {activeQuantity}
+                  </Text>
+                </Flex>
+                <Flex direction="row" justify={'space-between'}>
+                  <Chip
+                    onChange={(checked: boolean) => {
+                      HandleSetQuantity(activeQuantity + 1)
+                    }}
+                    checked={false}
+                    defaultChecked={false}
+                    radius="xl"
+                    p={'xs'}
+                  >
+                    +
+                  </Chip>
+                  <Chip
+                    onChange={(checked: boolean) => {
+                      HandleSetQuantity(activeQuantity - 1)
+                    }}
+                    checked={false}
+                    defaultChecked={false}
+                    radius="xl"
+                    size={'sm'}
+                    p={'xs'}
+                  >
+                    -
+                  </Chip>
+                </Flex>
+              </Flex>
+            </Flex>
           </Group>
           <Text p={'md'} classNames={styles.description} ta={'left'}>
             {item?.description !== null ? item?.description : 'Loading...'}
@@ -276,7 +319,6 @@ export default function Page() {
             color={'dark'}
             radius={'xl'}
             size={'lg'}
-            m={'sm'}
             p={'sm'}
             className={styles.addToCartButton}
             mr={'xl'}
@@ -295,8 +337,8 @@ export default function Page() {
               ta={'right'}
             >
               {wholesaler
-                ? intToCash((item?.wholesalePrice as number) * 100)
-                : intToCash((item?.retailPrice as number) * 100)}
+                ? intToCash((item?.wholesalePrice as number) * 100 * activeQuantity)
+                : intToCash((item?.retailPrice as number) * 100 * activeQuantity)}
             </Text>
           </Button>
           <Space h="lg" />

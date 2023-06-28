@@ -8,6 +8,8 @@ interface TinProps {
 
 const Tin = (props: TinProps) => {
   const { sizes, localActiveFlavors } = { ...props }
+  const top = (80 - 2 * localActiveFlavors.length).toString() + 'vh'
+
   return (
     <Container
       m={0}
@@ -21,7 +23,7 @@ const Tin = (props: TinProps) => {
         flexWrap: 'wrap',
         width: '100%',
         position: 'sticky',
-        top: '80vh',
+        top: top,
         zIndex: 100,
         alignSelf: 'center',
       }}
@@ -43,9 +45,8 @@ const Tin = (props: TinProps) => {
         style={{
           border: '1px solid black',
           borderRadius: '1rem',
-          backgroundColor: 'rgba(139,0,0,1)',
-          color: 'rgba(255,255,255,1)',
-          boxShadow: '0 0 1rem 0.5rem rgba(0,0,0,0.1)',
+          backgroundColor: 'white',
+          boxShadow: '1px 1px 1px 0px rgba(0,0,0,0.1)',
         }}
       >
         <Group align="center">
@@ -57,12 +58,12 @@ const Tin = (props: TinProps) => {
               style={{
                 width: '100%',
                 textDecoration: 'none',
-                color: 'black',
                 cursor: 'pointer',
+                color: 'rgba(139,0,0,1',
               }}
             >
               <Center>
-                <Text p={'xs'} fw={'bolder'} fz={'xs'} c={'black'} ta={'center'}>
+                <Text p={'xs'} fw={'bolder'} fz={'xs'} ta={'center'}>
                   Checkout
                 </Text>
               </Center>
