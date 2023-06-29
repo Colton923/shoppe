@@ -328,9 +328,6 @@ export const LocalContextProvider = (props: Props) => {
       ) {
         const newCart = [...cart]
         const stripePopcorn = await StripePopcornProduct(activePopcorn)
-        if (stripePopcorn === null) {
-          return
-        }
         for (let i = 0; i < activeQuantity; i++) {
           newCart.push({
             item: activePopcorn,
@@ -352,9 +349,6 @@ export const LocalContextProvider = (props: Props) => {
       if (activeProduct && activeQuantity > 0 && activeQuantity < 100) {
         const newCart = [...cart]
         const stripeProduct = await StripeProduct(activeProduct)
-        if (stripeProduct === null) {
-          return
-        }
         if (!activeProduct.category) return
         if (!activeProduct.category._id) return
         if (!activeProduct.category.name) return
