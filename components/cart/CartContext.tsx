@@ -35,6 +35,15 @@ export const CartContextProvider = (props: Props) => {
   const [updateCart, setUpdateCart] = useState(false)
   const [subTotal, setSubTotal] = useState('0')
 
+  const HandleSubTotal = () => {
+    let subTotal = 0
+    if (!localCart) return intToCash(subTotal)
+    localCart.forEach((item) => {
+      subTotal += parseInt(item.stripeProduct?.metadata?.retailPrice || '0')
+    })
+    return intToCash(subTotal)
+  }
+
   const handleDeleteItem = (id: string | undefined) => {
     if (!id) return
     const newCart = localCart.filter((item) => item?.stripeProduct?.id !== id)
@@ -58,16 +67,8 @@ export const CartContextProvider = (props: Props) => {
       setCart(localCart)
     }
     setUpdateCart(true)
-  }, [localCart])
-
-  const HandleSubTotal = () => {
-    let subTotal = 0
-    if (!localCart) return intToCash(subTotal)
-    localCart.forEach((item) => {
-      subTotal += parseInt(item.stripeProduct?.metadata?.retailPrice || '0')
-    })
-    return intToCash(subTotal)
-  }
+    setSubTotal(HandleSubTotal())
+  }, [localCart, setCart])
 
   const handleCheckout = () => {
     setCart(localCart)

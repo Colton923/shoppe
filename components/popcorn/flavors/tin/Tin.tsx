@@ -64,7 +64,7 @@ const Tin = (props: TinProps) => {
             >
               <Center>
                 <Text p={'xs'} fw={'bolder'} fz={'xs'} ta={'center'}>
-                  Checkout
+                  Select Tin Size
                 </Text>
               </Center>
             </Link>

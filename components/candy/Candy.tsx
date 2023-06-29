@@ -13,19 +13,17 @@ import {
   Group,
   Container,
   BackgroundImage,
-  Center,
 } from '@mantine/core'
 import { Carousel, Embla } from '@mantine/carousel'
 import intToCash from '@utils/intToCash'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './Candy.module.scss'
-interface ProductsProps {
-  products: SanityTypes.Product[]
-}
+import { useFirebaseContext } from '@components/context/FirebaseContext'
 
-const Candy = (props: ProductsProps) => {
-  const { setActiveProduct, popcornStoreActive, wholesaler } = useLocalContext()
-  const { products } = { ...props }
+const Candy = () => {
+  const { setActiveProduct, popcornStoreActive, data } = useLocalContext()
+  const { loggedIn } = useFirebaseContext()
+  const products = data.products
   const [embla, setEmbla] = useState<Embla | null>(null)
   const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState<SanityTypes.Category[]>([])
@@ -35,6 +33,7 @@ const Candy = (props: ProductsProps) => {
     setLoading(false)
   }, [embla, products, popcornStoreActive])
 
+  if (!products) return null
   products.map((product: SanityTypes.Product) => {
     if (!product.category) {
       return
@@ -52,7 +51,6 @@ const Candy = (props: ProductsProps) => {
       setCategories([...categories, product.category as SanityTypes.Category])
     }
   })
-
   if (popcornStoreActive) {
     return null
   }
@@ -73,16 +71,26 @@ const Candy = (props: ProductsProps) => {
         containScroll=""
         dragFree={true}
         draggable={true}
+        withControls={false}
         inViewThreshold={0.1}
         getEmblaApi={setEmbla}
-        withIndicators={true}
+        withIndicators={false}
         w={'100%'}
         slideSize={'33% 100%'}
         p={0}
         m={0}
         style={
           loading
-            ? { visibility: 'hidden' }
+            ? {
+                visibility: 'hidden',
+                width: '100%',
+                height: '400px',
+                margin: 'auto',
+                marginBottom: '0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyItems: 'center',
+              }
             : {
                 width: '100%',
                 height: '400px',
@@ -167,8 +175,10 @@ const Candy = (props: ProductsProps) => {
                       m={'xl'}
                       className={styles.activeText}
                     >
-                      {wholesaler ? (
-                        <Text fz="xs">{item.wholesalePrice}</Text>
+                      {loggedIn ? (
+                        <Text fz="xs">
+                          {intToCash((item.wholesalePrice as number) * 100)}
+                        </Text>
                       ) : (
                         <Text fz="md">
                           {intToCash((item.retailPrice as number) * 100)}

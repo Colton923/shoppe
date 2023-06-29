@@ -7,7 +7,8 @@ import MantineContextProvider from '@components/context/MantineContext'
 import styles from '../styles/Home.module.scss'
 import client from '@lib/sanity/client'
 import queries from '@lib/sanity/queries'
-
+import Footer from '@components/footer/Footer'
+import Navbar from '@components/navbar/Navbar'
 export async function getProducts() {
   const products = await client.fetch(queries.products)
   return products
@@ -77,11 +78,12 @@ export default async function RootLayout(props: {
           <LocalContextProvider data={data}>
             <FirebaseContextProvider>
               <MantineContextProvider>
-                <Clientize>
-                  {children}
-                  {modal}
-                  {authModal}
-                </Clientize>
+                <Navbar />
+                <Clientize />
+                {children}
+                {modal}
+                {authModal}
+                <Footer />
               </MantineContextProvider>
             </FirebaseContextProvider>
           </LocalContextProvider>

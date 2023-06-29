@@ -1,9 +1,6 @@
-'use client'
-
-import Popcorn from '@components/popcorn/Popcorn'
-import Candy from '@components/candy/Candy'
 import * as SanityTypes from 'types/SanityItem'
-import { useLocalContext } from '@components/context/LocalContext'
+import Candy from '@components/candy/Candy'
+import Containers from '@components/popcorn/containers/Containers'
 
 export type Data = {
   products: SanityTypes.Product[]
@@ -14,12 +11,10 @@ export type Data = {
 }
 
 export default function Page() {
-  const { data } = useLocalContext()
-
   return (
     <>
-      <Popcorn data={data} />
-      <Candy products={data.products} />
+      <Containers />
+      <Candy />
     </>
   )
 }

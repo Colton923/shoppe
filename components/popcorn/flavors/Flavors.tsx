@@ -12,12 +12,12 @@ import {
   Title,
   Text,
   Container,
-  Group,
   Center,
   Space,
 } from '@mantine/core'
 import mascot from 'public/icons/favicon.ico'
 import intToCash from '@utils/intToCash'
+import { useFirebaseContext } from '@components/context/FirebaseContext'
 interface FlavorsProps {
   container: SanityTypes.Container[]
 }
@@ -31,8 +31,9 @@ export default function Flavors(props: FlavorsProps) {
     data,
     activePopcorn,
     setPopcornStoreActive,
-    wholesaler,
   } = useLocalContext()
+  const { loggedIn } = useFirebaseContext()
+
   const [localActiveFlavors, setLocalActiveFlavors] = useState<SanityTypes.Flavor[]>(
     []
   )
@@ -97,7 +98,7 @@ export default function Flavors(props: FlavorsProps) {
 
   const Flavor = (flavor: SanityTypes.Flavor, category: SanityTypes.Category) => {
     let value = 0
-    if (wholesaler) {
+    if (loggedIn) {
       if (category.markupWholesale === undefined) return
 
       value = category.markupWholesale.reduce((a: any, b: any) => {

@@ -7,4 +7,5 @@ export type Customer = {
   email?: string
   phone?: string
   shippingCost?: number
+  wholesaler?: boolean
 }

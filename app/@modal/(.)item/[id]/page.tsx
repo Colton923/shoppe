@@ -21,6 +21,7 @@ import {
   Button,
 } from '@mantine/core'
 import intToCash from '@utils/intToCash'
+import { useFirebaseContext } from '@components/context/FirebaseContext'
 
 export default function Page() {
   const {
@@ -32,9 +33,9 @@ export default function Page() {
     activePrice,
     data,
     router,
-    wholesaler,
     HandleProductSelect,
   } = useLocalContext()
+  const { loggedIn } = useFirebaseContext()
   const [item, setItem] = useState<SanityTypes.Product | null>(null)
   const [imagesrc, setImagesrc] = useState<string | null>(null)
   const [sizeData, setSizeData] = useState<string[] | null>(null)
@@ -45,7 +46,6 @@ export default function Page() {
       router.push('/')
     }, 100)
   }, [])
-
   useEffect(() => {
     if (!pathname) return
     if (popcornStoreActive) {
@@ -56,9 +56,10 @@ export default function Page() {
       }
       const sizes = data.sizes.filter((size: SanityTypes.Size) => {
         if (size.container?._id === activePopcorn.container?._id) {
-          return true
+          if (size.maxFlavors && size.maxFlavors >= activePopcorn.flavor.length) {
+            return true
+          }
         }
-
         return false
       })
       const sizeData = sizes.reduce((acc: string[], size: SanityTypes.Size) => {
@@ -80,7 +81,6 @@ export default function Page() {
       })
     }
   }, [])
-
   if (popcornStoreActive) {
     if (!activePrice) return
     return (
@@ -100,6 +100,7 @@ export default function Page() {
           <Group align="center" w={'100%'}>
             <Button
               onClick={() => {
+                activePopcorn.flavor.pop()
                 router.back()
               }}
               variant={'light'}
@@ -336,7 +337,7 @@ export default function Page() {
               className={styles.price}
               ta={'right'}
             >
-              {wholesaler
+              {loggedIn
                 ? intToCash((item?.wholesalePrice as number) * 100 * activeQuantity)
                 : intToCash((item?.retailPrice as number) * 100 * activeQuantity)}
             </Text>

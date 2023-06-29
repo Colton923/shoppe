@@ -8,6 +8,7 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const stripeCart: StripeCart[] = req.body.stripeCart
+
   try {
     if (!stripeCart[0].item?.id) return
     const GetPriceIDFromProductID = async (
@@ -15,18 +16,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       stripe: Stripe
     ): Promise<string> => {
       return stripe.prices
-        .search({
-          //@ts-ignore
-          query: `product:"${prodID}"`,
+        .list({
+          product: prodID,
         })
         .then((prices) => {
+          if (prices.data.length === 0) {
+            throw new Error('prices.data.length === 0')
+          }
           return prices.data[0].id
         })
     }
-
     const priceIDs = await Promise.all(
       stripeCart.map(async (item) => {
         if (item.item?.id) {
+          console.log('item.item.id', item.item.id)
           return await GetPriceIDFromProductID(item.item.id, stripe)
         } else return
       })

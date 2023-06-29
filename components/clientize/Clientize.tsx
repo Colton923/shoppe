@@ -1,10 +1,9 @@
 'use client'
 
-import Navbar from '@components/navbar/Navbar'
-import Footer from '@components/footer/Footer'
-import Cart from '@components/cart/Cart'
 import { useLocalContext } from '@components/context/LocalContext'
-const Clientize = ({ children }: { children: React.ReactNode }) => {
+import Cart from '@components/cart/Cart'
+
+const Clientize = () => {
   const {
     subTotal,
     showCart,
@@ -23,7 +22,6 @@ const Clientize = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Navbar />
       {showCart && (
         <Cart
           cart={cart}
@@ -41,8 +39,6 @@ const Clientize = ({ children }: { children: React.ReactNode }) => {
           close={close}
         />
       )}
-      {children}
-      <Footer />
     </>
   )
 }

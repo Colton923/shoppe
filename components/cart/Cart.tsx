@@ -1,18 +1,10 @@
 import ShoppingCartItem from './ShoppingCartItem'
 import SubTotal from './SubTotal'
-import CheckoutButton from './CheckoutButton'
-import ShippingCalculator from '@utils/ShippingCalculator'
 import { Customer } from 'types/Customer'
 import * as SanityTypes from 'types/SanityItem'
-import {
-  Drawer,
-  Group,
-  Title,
-  Text,
-  Container,
-  Space,
-  ScrollArea,
-} from '@mantine/core'
+import { Drawer, Group, Title, Text, Container, ScrollArea } from '@mantine/core'
+import CustomerForm from '@components/customer/Customer'
+
 interface CartProps {
   HandleCheckout?: any
   customer: Customer
@@ -33,69 +25,12 @@ export default function Cart(props: CartProps) {
   const {
     subTotal,
     HandleCheckout,
-    customer,
-    setStatus,
-    status,
-    setCart,
     setShowCart,
     cart,
     HandleDeleteItem,
     opened,
     close,
   } = { ...props }
-
-  const CheckoutToStripe = async () => {
-    const customerHandler = async () => {
-      if (!HandleCheckout) return
-      if (!customer) return
-      if (
-        customer.address === '' ||
-        customer.city === '' ||
-        customer.state === '' ||
-        customer.zip === '' ||
-        parseInt(customer.zip) < 10000 ||
-        parseInt(customer.zip) > 99999 ||
-        customer.name === ''
-      )
-        return
-      if (customer.zip) {
-        const shippingCost = await ShippingCalculator({ zip: customer.zip }).then(
-          (res) => {
-            if (res) return res
-            return 0
-          }
-        )
-        customer.shippingCost = shippingCost ?? 0
-      }
-      return customer
-    }
-    const ret = await customerHandler().then((res) => {
-      if (res) {
-        if (!HandleCheckout) return
-        HandleCheckout()
-        return null
-      } else {
-        return undefined
-      }
-    })
-    return Promise.resolve(ret).then(() => {
-      setShowCart(false)
-      setCart([])
-    })
-  }
-
-  const HandleThisCheckout = () => {
-    if (status === 'Checkout') {
-      return CheckoutToStripe()
-    } else if (status === 'Pay' && HandleCheckout) {
-      setStatus('Checkout')
-      return HandleCheckout()
-    } else {
-      return () => {
-        return null
-      }
-    }
-  }
 
   const HandleDrawerClose = () => {
     setShowCart(false)
@@ -168,9 +103,9 @@ export default function Cart(props: CartProps) {
               <Text style={{ textAlign: 'center' }}>Your cart is empty</Text>
             )}
           </Group>
+          <CustomerForm />
           <Group spacing="md">
             <SubTotal subTotal={subTotal} />
-            <CheckoutButton HandleCheckout={HandleThisCheckout} status={status} />
           </Group>
         </Container>
       </Drawer>

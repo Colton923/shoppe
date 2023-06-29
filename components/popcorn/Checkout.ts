@@ -14,6 +14,7 @@ export interface CheckoutProps {
 
 const Checkout = async (props: CheckoutProps) => {
   const { stripeCart, customer } = { ...props }
+
   const PriceIDs = async () => {
     const res = await fetch('/api/post/stripe/product_ID_to_price_ID', {
       method: 'POST',

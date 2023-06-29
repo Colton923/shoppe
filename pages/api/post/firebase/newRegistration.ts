@@ -22,9 +22,8 @@ const handler = async (req: newRegistration, res: any) => {
 
   const mailService = new MailService()
   mailService.setApiKey(process.env.SENDGRID_API_KEY as string)
-
   const msg = {
-    to: 'colton923@gmail.com',
+    to: 'fogtownltd@gmail.com',
     from: 'colton923@gmail.com',
     subject: 'New Wholesale Registration',
     text: 'New Wholesale Registration',
