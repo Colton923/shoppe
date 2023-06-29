@@ -290,7 +290,7 @@ export const LocalContextProvider = (props: Props) => {
     router.push(`/containers/${container?._id}`, { shallow: true })
   }
 
-  const HandleProductSelect = async (product: SanityTypes.Product) => {
+  const HandleProductSelect = (product: SanityTypes.Product) => {
     setActiveProduct(product)
     if (wholesaler) {
       setActivePrice((product.wholesalePrice as number) * 100)
