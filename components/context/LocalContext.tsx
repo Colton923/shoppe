@@ -30,12 +30,20 @@ export type Markup = {
         _ref: string
         _type: string
       }
+      container: {
+        _ref: string
+        _type: string
+      }
       _key: string
       value: number
       _type: string
     }[]
     markupWholesale: {
       name: {
+        _ref: string
+        _type: string
+      }
+      container: {
         _ref: string
         _type: string
       }
@@ -421,7 +429,9 @@ export const LocalContextProvider = (props: Props) => {
       if (wholesaler) {
         markup.category.map((category) => {
           category.markupWholesale.map((markup) => {
-            value += markup.value
+            if (markup.container._ref === activePopcorn.container._id) {
+              value += markup.value
+            }
           })
         })
         return value
@@ -429,7 +439,9 @@ export const LocalContextProvider = (props: Props) => {
         let value = 0
         markup.category.map((category) => {
           category.markupRetail.map((markup) => {
-            value += markup.value
+            if (markup.container._ref === activePopcorn.container._id) {
+              value += markup.value
+            }
           })
         })
         return value
