@@ -52,8 +52,6 @@ export async function checkoutSession(
         stripe?.redirectToCheckout({
           sessionId: data.sessionId,
         })
-      } else {
-        console.log('No sessionId')
       }
     })
   } catch (e) {

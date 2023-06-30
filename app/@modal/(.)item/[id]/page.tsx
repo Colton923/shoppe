@@ -3,9 +3,8 @@
 import { useLocalContext } from '@components/context/LocalContext'
 import styles from 'app/@modal/Modal.module.scss'
 import * as SanityTypes from 'types/SanityItem'
-import { usePathname } from 'next/navigation'
 import PopcornNamer from '@utils/PopcornNamer'
-import { useEffect, useState, Suspense, useCallback } from 'react'
+import { Suspense, useCallback } from 'react'
 import urlFor from '@lib/sanity/urlFor'
 import SelectSize from '@components/selectSize/SelectSize'
 import {
@@ -21,66 +20,48 @@ import {
   Button,
 } from '@mantine/core'
 import intToCash from '@utils/intToCash'
-import { useFirebaseContext } from '@components/context/FirebaseContext'
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   const {
     popcornStoreActive,
     activePopcorn,
     activeQuantity,
     HandleAddToCart,
-    HandleSetQuantity,
+    HandleSetQuantity, // Haven't adjusted this.
     activePrice,
     data,
     router,
     HandleProductSelect,
+    wholesaler,
   } = useLocalContext()
-  const { loggedIn } = useFirebaseContext()
-  const [item, setItem] = useState<SanityTypes.Product | null>(null)
-  const [imagesrc, setImagesrc] = useState<string | null>(null)
-  const [sizeData, setSizeData] = useState<string[] | null>(null)
-  const pathname = usePathname()
+
   const onDismiss = useCallback(() => {
     router.back()
     setTimeout(() => {
       router.push('/')
     }, 100)
   }, [])
-  useEffect(() => {
-    if (!pathname) return
-    if (popcornStoreActive) {
-      if (!activePopcorn?.flavor || !activePopcorn.flavor[0]) return
-      HandleSetQuantity(1)
-      if (activePopcorn.flavor[0].image) {
-        setImagesrc(urlFor(activePopcorn.flavor[0].image).url())
+  if (!data) return <></>
+
+  const sizeData = () => {
+    return data.sizes.reduce((acc: string[], size: SanityTypes.Size) => {
+      if (!size.maxFlavors) return acc
+      if (size.maxFlavors >= activePopcorn.flavor.length) {
+        if (!size.name) return acc
+        if (!size.container) return acc
+        if (!size.container._id) return acc
+        if (!activePopcorn.container) return acc
+        if (!(activePopcorn.container._id === size.container._id)) return acc
+        acc.push(size.name)
       }
-      const sizes = data.sizes.filter((size: SanityTypes.Size) => {
-        if (size.container?._id === activePopcorn.container?._id) {
-          if (size.maxFlavors && size.maxFlavors >= activePopcorn.flavor.length) {
-            return true
-          }
-        }
-        return false
-      })
-      const sizeData = sizes.reduce((acc: string[], size: SanityTypes.Size) => {
-        if (size.name) {
-          acc.push(size.name)
-        }
-        return acc
-      }, [])
-      setSizeData(sizeData)
-      return
-    } else {
-      const id = pathname.split('/').pop()
-      data.products.forEach((product: SanityTypes.Product) => {
-        if (product._id === id) {
-          setItem(product)
-          if (!product.image) return
-          setImagesrc(urlFor(product.image).url())
-        }
-      })
-    }
-  }, [])
+
+      return acc //return acc.sort in prod
+    }, [])
+  }
+
+  const Item = () => {
+    return data.products[data.products.findIndex((item) => item._id === params.id)]
+  }
   if (popcornStoreActive) {
     if (!activePrice) return
     return (
@@ -115,13 +96,39 @@ export default function Page() {
             align="center"
             style={{ display: 'flex', justifyContent: 'center' }}
           >
-            <Image
-              className={styles.image}
-              src={imagesrc}
-              width={300}
-              height={300}
-              style={{ objectFit: 'contain' }}
-            />
+            {activePopcorn.flavor[0].image ? (
+              <Image
+                className={styles.image}
+                src={urlFor(
+                  activePopcorn.flavor[0].image ? activePopcorn.flavor[0].image : ''
+                ).url()}
+                width={300}
+                height={300}
+                style={{ objectFit: 'contain' }}
+                alt="Popcorn Image"
+              />
+            ) : (
+              <div
+                style={{
+                  width: '300px',
+                  height: '300px',
+                  backgroundColor: 'gray',
+                  backdropFilter: 'blur(25px)',
+                  borderRadius: '0.2rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  size="lg"
+                  weight={700}
+                  style={{ color: 'white', textAlign: 'center' }}
+                >
+                  Image Not Found
+                </Text>
+              </div>
+            )}
           </Group>
           <Title
             w={'150px'}
@@ -143,10 +150,9 @@ export default function Page() {
             </Flex>
             <Flex direction="row" justify={'space-between'}>
               <Chip
-                onChange={(checked: boolean) => {
+                onChange={() => {
                   HandleSetQuantity(activeQuantity + 1)
                 }}
-                checked={false}
                 defaultChecked={false}
                 radius="xl"
                 p={'xs'}
@@ -154,10 +160,9 @@ export default function Page() {
                 +
               </Chip>
               <Chip
-                onChange={(checked: boolean) => {
+                onChange={() => {
                   HandleSetQuantity(activeQuantity - 1)
                 }}
-                checked={false}
                 defaultChecked={false}
                 radius="xl"
                 size={'sm'}
@@ -169,7 +174,7 @@ export default function Page() {
           </Group>
           <Group w={'25%'} style={{ minWidth: '250px' }}>
             <Suspense fallback={<p>Loading...</p>}>
-              <SelectSize sizenames={sizeData !== null ? sizeData : ['']} />
+              <SelectSize sizenames={sizeData()} />
             </Suspense>
           </Group>
           <Group m={'xs'} w={'25%'} style={{ minWidth: '250px' }} align="center">
@@ -260,14 +265,15 @@ export default function Page() {
           >
             <Image
               className={styles.image}
-              src={imagesrc}
+              src={urlFor(Item().image ? (Item().image as string) : '').url()}
               width={'300px'}
               height={'300px'}
               style={{ objectFit: 'contain' }}
+              alt="Popcorn Image"
             />
             <Flex direction="column" align={'center'}>
               <Title order={2} className={styles.title} ta={'center'}>
-                {item?.name !== null ? item?.name : 'Loading...'}
+                {Item().name}
               </Title>
               <Flex
                 w={'180px'}
@@ -286,10 +292,9 @@ export default function Page() {
                 </Flex>
                 <Flex direction="row" justify={'space-between'}>
                   <Chip
-                    onChange={(checked: boolean) => {
+                    onChange={() => {
                       HandleSetQuantity(activeQuantity + 1)
                     }}
-                    checked={false}
                     defaultChecked={false}
                     radius="xl"
                     p={'xs'}
@@ -297,10 +302,9 @@ export default function Page() {
                     +
                   </Chip>
                   <Chip
-                    onChange={(checked: boolean) => {
+                    onChange={() => {
                       HandleSetQuantity(activeQuantity - 1)
                     }}
-                    checked={false}
                     defaultChecked={false}
                     radius="xl"
                     size={'sm'}
@@ -313,7 +317,7 @@ export default function Page() {
             </Flex>
           </Group>
           <Text p={'md'} classNames={styles.description} ta={'left'}>
-            {item?.description !== null ? item?.description : 'Loading...'}
+            {Item().description}
           </Text>
           <Button
             variant={'light'}
@@ -325,7 +329,7 @@ export default function Page() {
             mr={'xl'}
             mt={'xl'}
             onClick={() => {
-              HandleProductSelect(item as SanityTypes.Product)
+              HandleProductSelect(Item())
               onDismiss()
             }}
           >
@@ -337,9 +341,11 @@ export default function Page() {
               className={styles.price}
               ta={'right'}
             >
-              {loggedIn
-                ? intToCash((item?.wholesalePrice as number) * 100 * activeQuantity)
-                : intToCash((item?.retailPrice as number) * 100 * activeQuantity)}
+              {wholesaler
+                ? intToCash(
+                    (Item()?.wholesalePrice as number) * 100 * activeQuantity
+                  )
+                : intToCash((Item()?.retailPrice as number) * 100 * activeQuantity)}
             </Text>
           </Button>
           <Space h="lg" />

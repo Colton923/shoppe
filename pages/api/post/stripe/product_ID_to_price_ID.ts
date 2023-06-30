@@ -2,11 +2,15 @@ import Stripe from 'stripe'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { StripeCart } from 'types/StripeCart'
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
-  apiVersion: '2022-11-15',
-})
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
+    throw new Error('Missing Stripe secret key env variable')
+  }
+
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15',
+  })
+
   const stripeCart: StripeCart[] = req.body.stripeCart
 
   try {
@@ -29,7 +33,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const priceIDs = await Promise.all(
       stripeCart.map(async (item) => {
         if (item.item?.id) {
-          console.log('item.item.id', item.item.id)
           return await GetPriceIDFromProductID(item.item.id, stripe)
         } else return
       })

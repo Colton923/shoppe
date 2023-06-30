@@ -13,7 +13,7 @@ export default function Containers() {
   if (!containers) return null
 
   return (
-    <div>
+    <div className={styles.animation}>
       <Container
         size={'xl'}
         style={{

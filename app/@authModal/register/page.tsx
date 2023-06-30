@@ -31,7 +31,6 @@ const Register = () => {
         alert(
           'Registration Successful. Please come back and login after you have been approved.'
         )
-        console.log('close modal')
       } else {
         alert('Registration Failed')
       }

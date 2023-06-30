@@ -5,17 +5,13 @@ import styles from './Navbar.module.scss'
 import Image from 'next/image'
 import CartIcon from '@public/icons/svg/cart.svg'
 import personIcon from '@public/icons/svg/account.svg'
-import { useFirebaseContext } from '@components/context/FirebaseContext'
 import { useLocalContext } from '@components/context/LocalContext'
 import { Text } from '@mantine/core'
 
 const Navbar = () => {
-  const { loggedIn } = useFirebaseContext()
-  const { open, opened, close, setShowCart, showCart, router, cart } =
-    useLocalContext()
+  const { open, opened, close, router, cart, wholesaler } = useLocalContext()
 
   const HandleShoppingCartActive = () => {
-    setShowCart(!showCart)
     if (opened) {
       close()
     } else {
@@ -45,7 +41,7 @@ const Navbar = () => {
             width={32}
             height={32}
             onClick={() => {
-              if (!loggedIn) {
+              if (!wholesaler) {
               } else {
                 alert('You are already logged in.')
                 router.back()

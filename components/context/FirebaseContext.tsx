@@ -1,12 +1,13 @@
 'use client'
 
-import { useMemo, memo, createContext, useContext, useState, useEffect } from 'react'
+import { useMemo, memo, createContext, useContext, useEffect } from 'react'
 import {
   isSignInWithEmailLink,
   sendSignInLinkToEmail,
   signInWithEmailLink,
 } from 'firebase/auth'
 import { auth } from 'utils/firebaseClient'
+import { useLocalContext } from './LocalContext'
 
 interface Props {
   children: React.ReactNode
@@ -14,14 +15,13 @@ interface Props {
 
 export interface FirebaseContextScope {
   handleSignIn: (email: string) => void
-  loggedIn?: boolean
 }
 
 export const FirebaseContext = createContext<FirebaseContextScope | null>(null)
 
 export const FirebaseContextProvider = (props: Props) => {
   const { children } = props
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const { setWholesaler } = useLocalContext()
 
   useEffect(() => {
     if (!auth) return
@@ -32,14 +32,14 @@ export const FirebaseContextProvider = (props: Props) => {
           .then(() => {
             window.localStorage.removeItem('emailForSignIn')
 
-            setLoggedIn(true)
+            setWholesaler(true)
           })
           .catch((error) => {
             console.log(error)
           })
       }
     }
-    if (auth.currentUser) setLoggedIn(true)
+    if (auth.currentUser) setWholesaler(true)
   }, [auth])
 
   const handleSignIn = async (email: string) => {
@@ -74,9 +74,8 @@ export const FirebaseContextProvider = (props: Props) => {
   const contextValue = useMemo<FirebaseContextScope | null>(
     () => ({
       handleSignIn,
-      loggedIn,
     }),
-    [handleSignIn, loggedIn]
+    [handleSignIn]
   )
 
   return (

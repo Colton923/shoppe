@@ -17,7 +17,7 @@ import {
 } from '@mantine/core'
 import mascot from 'public/icons/favicon.ico'
 import intToCash from '@utils/intToCash'
-import { useFirebaseContext } from '@components/context/FirebaseContext'
+import styles from './Flavors.module.scss'
 interface FlavorsProps {
   container: SanityTypes.Container[]
 }
@@ -31,8 +31,8 @@ export default function Flavors(props: FlavorsProps) {
     data,
     activePopcorn,
     setPopcornStoreActive,
+    wholesaler,
   } = useLocalContext()
-  const { loggedIn } = useFirebaseContext()
 
   const [localActiveFlavors, setLocalActiveFlavors] = useState<SanityTypes.Flavor[]>(
     []
@@ -98,7 +98,7 @@ export default function Flavors(props: FlavorsProps) {
 
   const Flavor = (flavor: SanityTypes.Flavor, category: SanityTypes.Category) => {
     let value = 0
-    if (loggedIn) {
+    if (wholesaler) {
       if (category.markupWholesale === undefined) return
 
       value = category.markupWholesale.reduce((a: any, b: any) => {
@@ -167,7 +167,7 @@ export default function Flavors(props: FlavorsProps) {
     )
   }
   return (
-    <>
+    <div className={styles.transition}>
       {isTin && (
         <>
           {localActiveFlavors.length > 0 && (
@@ -209,7 +209,10 @@ export default function Flavors(props: FlavorsProps) {
           if (!category) return null
 
           return (
-            <Container key={category._id + 'category'}>
+            <Container
+              key={category._id + 'category'}
+              className={styles.transitionChildren}
+            >
               <Text
                 fz={'xl'}
                 fw={'bolder'}
@@ -245,6 +248,6 @@ export default function Flavors(props: FlavorsProps) {
           )
         })}
       </Container>
-    </>
+    </div>
   )
 }

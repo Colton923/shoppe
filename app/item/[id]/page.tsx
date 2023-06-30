@@ -1,13 +1,11 @@
 'use client'
 
 import { useLocalContext } from '@components/context/LocalContext'
-import styles from './Item.module.scss'
+import styles from 'app/@modal/Modal.module.scss'
 import * as SanityTypes from 'types/SanityItem'
-import { usePathname } from 'next/navigation'
 import PopcornNamer from '@utils/PopcornNamer'
-import { useEffect, useState } from 'react'
+import { Suspense, lazy } from 'react'
 import urlFor from '@lib/sanity/urlFor'
-import SelectSize from '@components/selectSize/SelectSize'
 import {
   Text,
   Image,
@@ -15,298 +13,329 @@ import {
   Title,
   Space,
   Card,
+  Badge,
   Flex,
   Group,
   Button,
 } from '@mantine/core'
 import intToCash from '@utils/intToCash'
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   const {
     popcornStoreActive,
     activePopcorn,
     activeQuantity,
     HandleAddToCart,
-    HandleSetQuantity,
+    HandleSetQuantity, // Haven't adjusted this.
     activePrice,
     data,
     router,
-    wholesaler,
     HandleProductSelect,
+    wholesaler,
+    onDismiss,
   } = useLocalContext()
-  const [item, setItem] = useState<SanityTypes.Product | null>(null)
-  const [imagesrc, setImagesrc] = useState<string | null>(null)
-  const [sizeData, setSizeData] = useState<string[] | null>(null)
-  const pathname = usePathname()
 
-  useEffect(() => {
-    if (!pathname) return
-    if (popcornStoreActive) {
-      if (
-        !activePopcorn?.flavor ||
-        !activePopcorn.flavor[0] ||
-        !activePopcorn.flavor[0].image
-      )
-        return
-      HandleSetQuantity(1)
-      setImagesrc(urlFor(activePopcorn.flavor[0].image).url())
-      const sizes = data.sizes.filter((size: SanityTypes.Size) => {
-        if (size.container?._id === activePopcorn.container?._id) {
-          return true
-        }
+  if (!data) return <></>
+  const SelectSize = lazy(() => import('@components/selectSize/SelectSize'))
 
-        return false
-      })
-      const sizeData = sizes.reduce((acc: string[], size: SanityTypes.Size) => {
-        if (size.name) {
-          acc.push(size.name)
-        }
-        return acc
-      }, [])
+  const sizeData = () => {
+    return data.sizes.reduce((acc: string[], size: SanityTypes.Size) => {
+      if (!size.maxFlavors) return acc
+      if (size.maxFlavors >= activePopcorn.flavor.length) {
+        if (!size.name) return acc
+        if (!size.container) return acc
+        if (!size.container._id) return acc
+        if (!activePopcorn.container) return acc
+        if (!(activePopcorn.container._id === size.container._id)) return acc
+        acc.push(size.name)
+      }
 
-      setSizeData(sizeData)
-      return
-    } else {
-      const id = pathname.split('/').pop()
-      data.products.forEach((product: SanityTypes.Product) => {
-        if (product._id === id) {
-          setItem(product)
-          if (!product.image) return
-          setImagesrc(urlFor(product.image).url())
-        }
-      })
-    }
-  }, [pathname])
+      return acc //return acc.sort in prod
+    }, [])
+  }
 
-  if (!pathname) return null
-  if (!item && !activePopcorn) return null
-  if (!sizeData) return null
-  if (!activePrice) return null
+  const Item = () => {
+    return data.products[data.products.findIndex((item) => item._id === params.id)]
+  }
+
   if (popcornStoreActive) {
+    if (!activePrice) return
     return (
-      <Flex justify={'flex-start'} direction={'column'} align={'flex-start'}>
-        <Card
-          shadow="md"
-          padding="xl"
-          radius="lg"
-          style={{
-            justifyContent: 'flex-end',
-            alignItems: 'space-between',
-            display: 'flex',
-            flexDirection: 'column',
-            margin: '0 auto',
-            maxWidth: '90%',
-          }}
-        >
-          <Group align={'center'}>
-            <Space h="lg" />
-            <Button
-              onClick={() => {
-                router.back()
-              }}
-              variant={'light'}
-              color={'dark'}
-              radius={'xl'}
-              size={'lg'}
-              m={'sm'}
-              p={'sm'}
-              className={styles.addToCartButton}
-            >
-              Back
-            </Button>
-            <Space h="lg" />
-            <Space h="lg" />
-          </Group>
-          <Flex direction="row" justify="flex-end" align={'space-between'}>
-            <Image
-              className={styles.image}
-              src={imagesrc}
-              width={300}
-              height={300}
-              style={{ objectFit: 'contain' }}
-              m={0}
-            />
-            <Group w={'50%'} spacing="xl">
-              <Title order={2} className={styles.title}>
-                {PopcornNamer(activePopcorn)}
-              </Title>
-              <Text p={'md'} m={'sm'} classNames={styles.description}>
-                {activePopcorn.flavor.length > 1
-                  ? 'Selected Flavors: '
-                  : 'Selected Flavor: '}
-              </Text>
-              <SelectSize sizenames={sizeData} />
-              <Text m={'sm'} p={'sm'}>
-                Quantity:
-              </Text>
-              <Chip
-                onChange={(checked: boolean) => {
-                  return
-                }}
-                checked={false}
-                defaultChecked={false}
-                radius="xl"
-                size={'sm'}
-              >
-                {activeQuantity}
-              </Chip>
-              <Chip
-                onChange={(checked: boolean) => {
-                  HandleSetQuantity(activeQuantity + 1)
-                }}
-                checked={false}
-                defaultChecked={false}
-                radius="xl"
-                size={'sm'}
-                m={'sm'}
-              >
-                +
-              </Chip>
-              <Chip
-                onChange={(checked: boolean) => {
-                  HandleSetQuantity(activeQuantity - 1)
-                }}
-                checked={false}
-                defaultChecked={false}
-                radius="xl"
-                size={'sm'}
-                m={'sm'}
-              >
-                -
-              </Chip>
-              {activePopcorn.flavor.map((flavor) => {
-                return (
-                  <Text
-                    p={'md'}
-                    m={'sm'}
-                    key={flavor._id + 'flavorName'}
-                    classNames={styles.description}
-                  >
-                    {flavor.name}
-                  </Text>
-                )
-              })}
-              <Text
-                p={'md'}
-                size="xl"
-                weight={700}
-                className={styles.price}
-                mt={'xl'}
-                mr={'xl'}
-                ta={'right'}
-                w={'100%'}
-              >
-                {intToCash(activePrice * activeQuantity)}
-              </Text>
-              <Space h="lg" />
-            </Group>
-          </Flex>
-          <Space h="lg" />
+      <Card
+        shadow="md"
+        padding="sm"
+        radius="lg"
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Group align="center" w={'100%'}>
           <Button
-            variant={'light'}
-            color={'dark'}
-            radius={'xl'}
-            size={'lg'}
-            m={'sm'}
-            p={'sm'}
-            className={styles.addToCartButton}
-            mr={'xl'}
-            mt={'xl'}
             onClick={() => {
-              HandleAddToCart()
-            }}
-          >
-            Add to Cart
-          </Button>
-          <Space h="lg" />
-        </Card>
-      </Flex>
-    )
-  } else {
-    if (!item) return null
-    return (
-      <Flex justify={'flex-start'} direction={'column'} align={'flex-start'}>
-        <Card
-          shadow="md"
-          padding="xl"
-          radius="lg"
-          style={{
-            justifyContent: 'flex-end',
-            alignItems: 'space-between',
-            display: 'flex',
-            flexDirection: 'column',
-            maxWidth: '90%',
-          }}
-        >
-          <Group align={'center'}>
-            <Space h="lg" />
-            <Button
-              onClick={() => {
-                router.back()
-              }}
-              variant={'light'}
-              color={'dark'}
-              radius={'xl'}
-              size={'lg'}
-              p={'sm'}
-              className={styles.addToCartButton}
-            >
-              Back
-            </Button>
-            <Space h="lg" />
-            <Space h="lg" />
-          </Group>
-          <Flex direction="row" justify="flex-end" align={'space-between'}>
-            <Image
-              className={styles.image}
-              src={imagesrc}
-              width={300}
-              height={300}
-              style={{ objectFit: 'contain' }}
-            />
-            <Title order={2} className={styles.title}>
-              {item.name}
-            </Title>
-            <Group w={'50%'}>
-              <Text p={'md'} classNames={styles.description}>
-                {item.description}
-              </Text>
-              <Text
-                p={'md'}
-                size="sm"
-                weight={700}
-                className={styles.price}
-                ta={'right'}
-                w={'100%'}
-              >
-                {wholesaler
-                  ? intToCash((item.wholesalePrice as number) * 100)
-                  : intToCash((item.retailPrice as number) * 100)}
-              </Text>
-              <Space h="lg" />
-            </Group>
-          </Flex>
-          <Space h="lg" />
-          <Button
-            variant={'light'}
-            color={'dark'}
-            radius={'xl'}
-            size={'lg'}
-            m={'sm'}
-            p={'sm'}
-            className={styles.addToCartButton}
-            mr={'xl'}
-            mt={'xl'}
-            onClick={() => {
-              HandleProductSelect(item)
+              activePopcorn.flavor.pop()
               router.back()
             }}
+            variant={'light'}
+            color={'dark'}
+            radius={'xl'}
+            className={styles.addToCartButton}
+          >
+            Back
+          </Button>
+        </Group>
+        <Group align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+          {activePopcorn.flavor[0].image ? (
+            <Image
+              className={styles.image}
+              src={urlFor(
+                activePopcorn.flavor[0].image ? activePopcorn.flavor[0].image : ''
+              ).url()}
+              width={300}
+              height={300}
+              style={{ objectFit: 'contain' }}
+              alt="Popcorn Image"
+            />
+          ) : (
+            <div
+              style={{
+                width: '300px',
+                height: '300px',
+                backgroundColor: 'gray',
+                backdropFilter: 'blur(25px)',
+                borderRadius: '0.2rem',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                size="lg"
+                weight={700}
+                style={{ color: 'white', textAlign: 'center' }}
+              >
+                Image Not Found
+              </Text>
+            </div>
+          )}
+        </Group>
+        <Title w={'150px'} ta={'center'} order={2} className={styles.title} m={'sm'}>
+          {PopcornNamer(activePopcorn)}
+        </Title>
+        <Group w={'180px'}>
+          <Flex direction="row" align={'center'}>
+            <Text p={'xs'} ta={'center'}>
+              Quantity:
+            </Text>
+            <Text fw={'bold'} p={'xs'} ta={'center'}>
+              {activeQuantity}
+            </Text>
+          </Flex>
+          <Flex direction="row" justify={'space-between'}>
+            <Chip
+              onChange={() => {
+                HandleSetQuantity(activeQuantity + 1)
+              }}
+              checked={false}
+              defaultChecked={false}
+              radius="xl"
+              p={'xs'}
+            >
+              +
+            </Chip>
+            <Chip
+              onChange={() => {
+                HandleSetQuantity(activeQuantity - 1)
+              }}
+              checked={false}
+              defaultChecked={false}
+              radius="xl"
+              size={'sm'}
+              p={'xs'}
+            >
+              -
+            </Chip>
+          </Flex>
+        </Group>
+        <Group w={'25%'} style={{ minWidth: '250px' }}>
+          <Suspense fallback={<p>Loading...</p>}>
+            <SelectSize sizenames={sizeData()} />
+          </Suspense>
+        </Group>
+        <Group m={'xs'} w={'25%'} style={{ minWidth: '250px' }} align="center">
+          <Text p={'xs'} m={0} classNames={styles.description}>
+            Selected Flavors:
+          </Text>
+          <Group align="center">
+            {activePopcorn.flavor.map((flavor) => {
+              return (
+                <Badge
+                  key={flavor._id + 'badgeName'}
+                  color="blue"
+                  radius="xl"
+                  size={'sm'}
+                  p={'xs'}
+                >
+                  {flavor.name}
+                </Badge>
+              )
+            })}
+          </Group>
+        </Group>
+        <Button
+          variant={'light'}
+          color={'dark'}
+          radius={'xl'}
+          size={'lg'}
+          p={'sm'}
+          className={styles.addToCartButton}
+          onClick={() => {
+            HandleAddToCart()
+            onDismiss()
+          }}
+        >
+          <Text
+            p={'xs'}
+            size="xs"
+            weight={700}
+            className={styles.price}
+            ta={'left'}
+            w={'100%'}
           >
             Add to Cart
+          </Text>
+          <Text
+            p={'xs'}
+            size="xs"
+            weight={700}
+            className={styles.price}
+            ta={'right'}
+            w={'100%'}
+          >
+            {intToCash(activePrice * activeQuantity)}
+          </Text>
+        </Button>
+      </Card>
+    )
+  } else {
+    return (
+      <Card shadow="md" padding="xs" radius="lg" className={styles.card}>
+        <Group align={'center'}>
+          <Button
+            onClick={() => {
+              router.back()
+            }}
+            variant={'light'}
+            color={'dark'}
+            radius={'xl'}
+            size={'lg'}
+            m={'sm'}
+            p={'sm'}
+            className={styles.addToCartButton}
+          >
+            Back
           </Button>
-          <Space h="lg" />
-        </Card>
-      </Flex>
+        </Group>
+        <Group
+          spacing="md"
+          align="center"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+          }}
+        >
+          <Image
+            className={styles.image}
+            src={urlFor(Item().image ? (Item().image as string) : '').url()}
+            width={'300px'}
+            height={'300px'}
+            style={{ objectFit: 'contain' }}
+            alt="Popcorn Image"
+          />
+          <Flex direction="column" align={'center'}>
+            <Title order={2} className={styles.title} ta={'center'}>
+              {Item().name}
+            </Title>
+            <Flex
+              w={'180px'}
+              m={'sm'}
+              align="center"
+              direction={'column'}
+              justify={'center'}
+            >
+              <Flex direction="row" align={'center'}>
+                <Text p={'xs'} ta={'center'}>
+                  Quantity:
+                </Text>
+                <Text fw={'bold'} p={'xs'} ta={'center'}>
+                  {activeQuantity}
+                </Text>
+              </Flex>
+              <Flex direction="row" justify={'space-between'}>
+                <Chip
+                  onChange={() => {
+                    HandleSetQuantity(activeQuantity + 1)
+                  }}
+                  checked={false}
+                  defaultChecked={false}
+                  radius="xl"
+                  p={'xs'}
+                >
+                  +
+                </Chip>
+                <Chip
+                  onChange={() => {
+                    HandleSetQuantity(activeQuantity - 1)
+                  }}
+                  checked={false}
+                  defaultChecked={false}
+                  radius="xl"
+                  size={'sm'}
+                  p={'xs'}
+                >
+                  -
+                </Chip>
+              </Flex>
+            </Flex>
+          </Flex>
+        </Group>
+        <Text p={'md'} classNames={styles.description} ta={'left'}>
+          {Item().description}
+        </Text>
+        <Button
+          variant={'light'}
+          color={'dark'}
+          radius={'xl'}
+          size={'lg'}
+          p={'sm'}
+          className={styles.addToCartButton}
+          mr={'xl'}
+          mt={'xl'}
+          onClick={() => {
+            HandleProductSelect(Item())
+            onDismiss()
+          }}
+        >
+          Add to Cart
+          <Text
+            p={'md'}
+            size="lg"
+            weight={700}
+            className={styles.price}
+            ta={'right'}
+          >
+            {wholesaler
+              ? intToCash((Item()?.wholesalePrice as number) * 100 * activeQuantity)
+              : intToCash((Item()?.retailPrice as number) * 100 * activeQuantity)}
+          </Text>
+        </Button>
+        <Space h="lg" />
+      </Card>
     )
   }
 }

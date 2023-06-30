@@ -1,9 +1,16 @@
-const Register = () => {
+'use client'
+
+import { Container, Text } from '@mantine/core'
+
+const Contact = () => {
   return (
-    <div>
-      <h1>Register</h1>
-    </div>
+    <Container style={{ marginTop: '2rem' }}>
+      <Text size="xl" weight={700}>
+        {`Contact Us
+      fogtownltd@gmail.com`}
+      </Text>
+    </Container>
   )
 }
 
-export default Register
+export default Contact

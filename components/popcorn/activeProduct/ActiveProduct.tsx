@@ -1,13 +1,21 @@
 'use client'
 
 import { useLocalContext } from '@components/context/LocalContext'
-import styles from './ActiveProduct.module.scss'
 import PopcornNamer from '@utils/PopcornNamer'
 import intToCash from '@utils/intToCash'
-import Button from '@components/button/Button'
 import urlFor from '@lib/sanity/urlFor'
 import { useEffect } from 'react'
-import { Grid, Image, Col, Text, Chip, Title, Space, Container } from '@mantine/core'
+import {
+  Grid,
+  Image,
+  Col,
+  Text,
+  Chip,
+  Title,
+  Space,
+  Container,
+  Button,
+} from '@mantine/core'
 
 const ActiveProduct = () => {
   const {
@@ -51,6 +59,7 @@ const ActiveProduct = () => {
             <Image
               radius={'sm'}
               src={`${urlFor(activePopcorn.flavor[0].image).url()}`}
+              alt="Popcorn Image"
             />
           )}
         </Col>
@@ -90,7 +99,7 @@ const ActiveProduct = () => {
                 Quantity:
               </Text>
               <Chip
-                onChange={(checked: boolean) => {
+                onChange={() => {
                   return
                 }}
                 checked={false}
@@ -103,7 +112,7 @@ const ActiveProduct = () => {
             </Col>
             <Col span={6} m={'sm'}>
               <Chip
-                onChange={(checked: boolean) => {
+                onChange={() => {
                   HandleSetQuantity(activeQuantity + 1)
                 }}
                 checked={false}
@@ -115,7 +124,7 @@ const ActiveProduct = () => {
                 +
               </Chip>
               <Chip
-                onChange={(checked: boolean) => {
+                onChange={() => {
                   HandleSetQuantity(activeQuantity - 1)
                 }}
                 checked={false}

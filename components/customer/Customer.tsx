@@ -4,20 +4,10 @@ import { useLocalContext } from '@components/context/LocalContext'
 import CheckoutButton from '@components/cart/CheckoutButton'
 import { Paper, Text, TextInput, Space } from '@mantine/core'
 import ShippingCalculator from '@utils/ShippingCalculator'
-import { useEffect } from 'react'
-import { useFirebaseContext } from '@components/context/FirebaseContext'
 
 const Customer = () => {
-  const {
-    customer,
-    setCustomer,
-    status,
-    HandleCheckout,
-    setWholesaler,
-    wholesaler,
-    subTotal,
-  } = useLocalContext()
-  const { loggedIn } = useFirebaseContext()
+  const { customer, setCustomer, status, HandleCheckout, wholesaler, subTotal } =
+    useLocalContext()
 
   const HandleCustomerCheckout = async () => {
     if (!HandleCheckout) return
@@ -50,12 +40,6 @@ const Customer = () => {
       }
     }
   }
-
-  useEffect(() => {
-    if (loggedIn) {
-      setWholesaler(true)
-    }
-  }, [loggedIn])
 
   return (
     <Paper p="md" shadow="xs">

@@ -1,40 +1,34 @@
+'use client'
+
 import ShoppingCartItem from './ShoppingCartItem'
-import SubTotal from './SubTotal'
-import { Customer } from 'types/Customer'
 import * as SanityTypes from 'types/SanityItem'
 import { Drawer, Group, Title, Text, Container, ScrollArea } from '@mantine/core'
 import CustomerForm from '@components/customer/Customer'
+import { useLocalContext } from '@components/context/LocalContext'
 
-interface CartProps {
-  HandleCheckout?: any
-  customer: Customer
-  setStatus: (status: string) => void
-  status: string
-  showCart: boolean
-  setCart: (cart: SanityTypes.SanityItem[]) => void
-  cart: SanityTypes.SanityItem[]
-  setShowCart: (showCart: boolean) => void
-  HandleDeleteItem: (id: string) => void
-  subTotal: number
-  opened: boolean
-  open: () => void
-  close: () => void
-}
-
-export default function Cart(props: CartProps) {
+export default function Cart() {
   const {
     subTotal,
-    HandleCheckout,
-    setShowCart,
     cart,
+    HandleCheckout,
     HandleDeleteItem,
     opened,
     close,
-  } = { ...props }
+    wholesaler,
+  } = useLocalContext()
 
   const HandleDrawerClose = () => {
-    setShowCart(false)
     close()
+  }
+  const FormatSubtotal = (subTotal: number) => {
+    if (!subTotal) return '$0.00'
+    const subTotalStr = subTotal.toString()
+    const subTotalArr = subTotalStr.split('')
+    const cents = subTotalArr.slice(subTotalArr.length - 2, subTotalArr.length)
+    const dollars = subTotalArr.slice(0, subTotalArr.length - 2)
+    const dollarsStr = dollars.join('')
+    const centsStr = cents.join('')
+    return `$${dollarsStr}.${centsStr}`
   }
 
   const ShoppingCart = () => {
@@ -69,46 +63,43 @@ export default function Cart(props: CartProps) {
             quantity={quant[index]}
             HandleCheckout={HandleCheckout}
             HandleDeleteItem={HandleDeleteItem}
+            wholesaler={wholesaler}
           />
         )
       }
     )
-    const returnArea = <ScrollArea h={'50vh'}>{returnCart}</ScrollArea>
+    const returnArea = <ScrollArea h={'33vh'}>{returnCart}</ScrollArea>
 
     return returnArea
   }
 
   return (
-    <>
-      <Drawer
-        opened={opened}
-        onClose={close}
-        overlayProps={{ opacity: 0.75, blur: 4, onClick: close }}
-        keepMounted={true}
-        closeButtonProps={{
-          onClick: HandleDrawerClose,
-        }}
-        position="right"
-      >
-        <Container size="xl">
-          <Group spacing="md">
-            <Title order={3} style={{ textAlign: 'center' }}>
-              {HandleCheckout ? '' : 'Cart'}
-            </Title>
-          </Group>
-          <Group spacing="md">
-            {cart.length > 0 ? (
-              <ShoppingCart />
-            ) : (
-              <Text style={{ textAlign: 'center' }}>Your cart is empty</Text>
-            )}
-          </Group>
+    <Drawer
+      opened={opened}
+      onClose={close}
+      overlayProps={{ opacity: 0.75, blur: 4, onClick: close }}
+      keepMounted={true}
+      closeButtonProps={{
+        onClick: HandleDrawerClose,
+      }}
+      position="right"
+    >
+      <Container size="xl" p={'sm'}>
+        <Group spacing="md">
+          <Title order={3} style={{ textAlign: 'center' }}>
+            {'Cart'}
+          </Title>
+          {cart.length > 0 ? (
+            <ShoppingCart />
+          ) : (
+            <Text style={{ textAlign: 'center' }}>Your cart is empty</Text>
+          )}
           <CustomerForm />
-          <Group spacing="md">
-            <SubTotal subTotal={subTotal} />
-          </Group>
-        </Container>
-      </Drawer>
-    </>
+          <Text style={{ textAlign: 'center' }}>
+            {`Subtotal: ${FormatSubtotal(subTotal)}`}
+          </Text>
+        </Group>
+      </Container>
+    </Drawer>
   )
 }

@@ -1,14 +1,13 @@
 import '../styles/globals.scss'
-import LocalContextProvider from '@components/context/LocalContext'
-import FirebaseContextProvider from '@components/context/FirebaseContext'
 import { poppins } from '@styles/fonts'
-import Clientize from '@components/clientize/Clientize'
-import MantineContextProvider from '@components/context/MantineContext'
 import styles from '../styles/Home.module.scss'
 import client from '@lib/sanity/client'
 import queries from '@lib/sanity/queries'
 import Footer from '@components/footer/Footer'
 import Navbar from '@components/navbar/Navbar'
+import Cart from '@components/cart/Cart'
+import Providers from '@components/providers/Providers'
+
 export async function getProducts() {
   const products = await client.fetch(queries.products)
   return products
@@ -75,18 +74,14 @@ export default async function RootLayout(props: {
           style={poppins.style}
           className={styles.pageContent}
         >
-          <LocalContextProvider data={data}>
-            <FirebaseContextProvider>
-              <MantineContextProvider>
-                <Navbar />
-                <Clientize />
-                {children}
-                {modal}
-                {authModal}
-                <Footer />
-              </MantineContextProvider>
-            </FirebaseContextProvider>
-          </LocalContextProvider>
+          <Providers data={data}>
+            <Navbar />
+            <Cart />
+            {children}
+            {modal}
+            {authModal}
+          </Providers>
+          <Footer />
         </main>
       </body>
     </html>

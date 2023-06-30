@@ -18,11 +18,10 @@ import { Carousel, Embla } from '@mantine/carousel'
 import intToCash from '@utils/intToCash'
 import { useEffect, useState } from 'react'
 import styles from './Candy.module.scss'
-import { useFirebaseContext } from '@components/context/FirebaseContext'
 
 const Candy = () => {
-  const { setActiveProduct, popcornStoreActive, data } = useLocalContext()
-  const { loggedIn } = useFirebaseContext()
+  const { setActiveProduct, popcornStoreActive, data, wholesaler } =
+    useLocalContext()
   const products = data.products
   const [embla, setEmbla] = useState<Embla | null>(null)
   const [loading, setLoading] = useState(true)
@@ -82,7 +81,7 @@ const Candy = () => {
         style={
           loading
             ? {
-                visibility: 'hidden',
+                opacity: '0',
                 width: '100%',
                 height: '400px',
                 margin: 'auto',
@@ -92,6 +91,7 @@ const Candy = () => {
                 justifyItems: 'center',
               }
             : {
+                opacity: '1',
                 width: '100%',
                 height: '400px',
                 visibility: 'visible',
@@ -100,6 +100,7 @@ const Candy = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyItems: 'center',
+                transition: 'all 0.5s ease-in-out',
               }
         }
       >
@@ -175,7 +176,7 @@ const Candy = () => {
                       m={'xl'}
                       className={styles.activeText}
                     >
-                      {loggedIn ? (
+                      {wholesaler ? (
                         <Text fz="xs">
                           {intToCash((item.wholesalePrice as number) * 100)}
                         </Text>

@@ -1,11 +1,14 @@
 import Stripe from 'stripe'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
-  apiVersion: '2022-11-15',
-})
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
+    throw new Error('Missing Stripe secret key env variable')
+  }
+
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15',
+  })
   const id = req.body.id
   if (!id) {
     res.status(400).json({

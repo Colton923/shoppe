@@ -9,14 +9,11 @@ interface ShoppingCartItemProps {
   quantity: number
   HandleCheckout?: () => void
   HandleDeleteItem: (id: string) => void
+  wholesaler: boolean
 }
 
 const ShoppingCartItem = (props: ShoppingCartItemProps) => {
-  const { item, quantity, HandleCheckout, HandleDeleteItem } = props
-
-  const { metadata } = { ...item.stripeProduct }
-  if (!metadata) return null
-  const { size, retailPrice } = metadata
+  const { item, quantity, HandleDeleteItem, wholesaler } = props
   if (!item) return null
 
   const NameHelper = () => {
@@ -51,7 +48,24 @@ const ShoppingCartItem = (props: ShoppingCartItemProps) => {
         <Col span={6}>
           <Text>Quantity: {quantity}</Text>
           <Text>
-            Price: {intToCash(quantity * parseInt(retailPrice ? retailPrice : '0'))}
+            Price:{' '}
+            {wholesaler
+              ? intToCash(
+                  quantity *
+                    parseInt(
+                      item?.stripeProduct?.metadata?.wholesalePrice
+                        ? item?.stripeProduct?.metadata?.wholesalePrice
+                        : '0'
+                    )
+                )
+              : intToCash(
+                  quantity *
+                    parseInt(
+                      item?.stripeProduct?.metadata?.retailPrice
+                        ? item?.stripeProduct?.metadata?.retailPrice
+                        : '0'
+                    )
+                )}
           </Text>
         </Col>
         <Col span={12}>

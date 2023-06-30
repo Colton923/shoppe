@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import * as SanityTypes from 'types/SanityItem'
 import { Text, Container, Center, Group, Badge } from '@mantine/core'
+import styles from './Tin.module.scss'
 interface TinProps {
   sizes: SanityTypes.Size[]
   localActiveFlavors: SanityTypes.Flavor[]
@@ -27,6 +28,7 @@ const Tin = (props: TinProps) => {
         zIndex: 100,
         alignSelf: 'center',
       }}
+      className={styles.transition}
     >
       <Container w={'33%'} p={'sm'}>
         <Group align="right">

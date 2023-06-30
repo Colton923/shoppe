@@ -72,7 +72,6 @@ type LocalContextScope = {
   customer: Customer
   status: string
   wholesaler: boolean
-  showCart: boolean
   data: Data
   activePopcorn: SanityTypes.Popcorn
   activePrice: number
@@ -92,8 +91,7 @@ type LocalContextScope = {
   setActiveProduct: (product: SanityTypes.Product | null) => void
   setActivePopcorn: (popcorn: SanityTypes.Popcorn) => void
   setActivePrice: (price: number) => void
-  setShowCart: (show: boolean) => void
-
+  onDismiss: () => void
   CheckoutFormat: (cart: StripeProduct[]) => StripeCart[]
 
   HandleSizeSelect: (size: SanityTypes.Size) => void
@@ -144,10 +142,15 @@ export const LocalContextProvider = (props: Props) => {
     phone: '',
   })
   const [wholesaler, setWholesaler] = useState<boolean>(false)
-  const [showCart, setShowCart] = useState<boolean>(false)
   const [sizesForTin, setSizesForTin] = useState<SanityTypes.Size[] | null>(null)
   const [subTotal, setSubTotal] = useState<number | null>(null)
   const [opened, { open, close }] = useDisclosure()
+  const onDismiss = useCallback(() => {
+    router.back()
+    setTimeout(() => {
+      router.push('/')
+    }, 100)
+  }, [])
 
   const router = useRouter()
 
@@ -164,28 +167,20 @@ export const LocalContextProvider = (props: Props) => {
       }
     })
   }
-
   const StripePopcornProduct = async (popcorn: SanityTypes.Popcorn) => {
     const body = {
       name: PopcornNamer(popcorn),
-      product: false,
     } as {
       name: string
       retailPrice: number | undefined
       wholesalePrice: number | undefined
-      product: boolean
     }
-    setSubTotal((prev) => {
-      if (prev) {
-        return prev + activePrice * activeQuantity
-      }
-      return activePrice * activeQuantity
-    })
     if (wholesaler) {
       body.wholesalePrice = activePrice
     } else {
       body.retailPrice = activePrice
     }
+
     const Product = async () => {
       const prod = await fetch('/api/post/stripe/productCheck', {
         method: 'POST',
@@ -221,12 +216,6 @@ export const LocalContextProvider = (props: Props) => {
     } else {
       body.retailPrice = (product.retailPrice as number) * 100
     }
-    setSubTotal((prev) => {
-      if (prev) {
-        return prev + activePrice * activeQuantity
-      }
-      return activePrice * activeQuantity
-    })
 
     const stripeProduct = await fetch('/api/post/stripe/productCheck', {
       method: 'POST',
@@ -245,32 +234,6 @@ export const LocalContextProvider = (props: Props) => {
   const HandleDeleteItem = (id: string) => {
     const newCart = cart.filter((item) => item.stripeProduct?.id !== id)
     setCart(newCart)
-    if (newCart.length === 0) {
-      setSubTotal(0)
-    } else {
-      let total = 0
-      if (wholesaler) {
-        const newSubTotal = newCart.map((item) => {
-          return item.stripeProduct?.metadata?.wholesalePrice
-        })
-        newSubTotal.forEach((item) => {
-          if (item) {
-            total += parseInt(item)
-          }
-        })
-        setSubTotal(total)
-      } else {
-        const newSubTotal = newCart.map((item) => {
-          return item.stripeProduct?.metadata?.retailPrice
-        })
-        newSubTotal.forEach((item) => {
-          if (item) {
-            total += parseInt(item)
-          }
-        })
-        setSubTotal(total)
-      }
-    }
   }
 
   const HandleSizeSelect = (size: SanityTypes.Size) => {
@@ -507,6 +470,27 @@ export const LocalContextProvider = (props: Props) => {
     }
   }, [activePopcorn])
 
+  useEffect(() => {
+    const subTotalGetter = () => {
+      let subTotal = 0
+      cart.map((item) => {
+        if (wholesaler) {
+          if (!item.stripeProduct?.metadata?.wholesalePrice) return
+          subTotal += parseInt(item.stripeProduct?.metadata?.wholesalePrice)
+        } else {
+          if (!item.stripeProduct?.metadata?.retailPrice) return
+          subTotal += parseInt(item.stripeProduct?.metadata?.retailPrice)
+        }
+      })
+      setSubTotal(subTotal)
+    }
+    if (cart.length > 0) {
+      subTotalGetter()
+    } else {
+      setSubTotal(0)
+    }
+  }, [cart])
+
   const contextValue = useMemo(
     () => ({
       cart,
@@ -541,8 +525,6 @@ export const LocalContextProvider = (props: Props) => {
       HandleCheckout,
       router,
       wholesaler,
-      showCart,
-      setShowCart,
       setWholesaler,
       HandleDeleteItem,
       subTotal,
@@ -551,6 +533,7 @@ export const LocalContextProvider = (props: Props) => {
       opened,
       open,
       close,
+      onDismiss,
     }),
     [
       cart,
@@ -585,8 +568,6 @@ export const LocalContextProvider = (props: Props) => {
       HandleCheckout,
       router,
       wholesaler,
-      showCart,
-      setShowCart,
       setWholesaler,
       HandleDeleteItem,
       subTotal,
@@ -595,6 +576,7 @@ export const LocalContextProvider = (props: Props) => {
       opened,
       open,
       close,
+      onDismiss,
     ]
   )
 

@@ -2,7 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, {
+  if (!process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
+    throw new Error('Missing Stripe secret key env variable')
+  }
+
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
     apiVersion: '2022-11-15',
   })
 
@@ -145,57 +149,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else {
       const prices = await stripe.prices.list({ product: product.id })
 
-      if (!prices.data.some((price: any) => price.metadata?.wholesale === 'true')) {
-        await updateWholesalePrice(stripe, product, wholesalePrice)
+      if (wholesalePrice && !retailPrice) {
+        if (
+          !prices.data.some((price: any) => price.metadata?.wholesale === 'true')
+        ) {
+          await updateWholesalePrice(stripe, product, wholesalePrice)
+        }
       }
-      if (!prices.data.some((price: any) => price.unit_amount === retailPrice)) {
-        await updateRetailPrice(stripe, product, retailPrice)
+      if (retailPrice && !wholesalePrice) {
+        if (!prices.data.some((price: any) => price.unit_amount === retailPrice)) {
+          await updateRetailPrice(stripe, product, retailPrice)
+        }
       }
     }
     if (product) {
-      if (
-        (!product.metadata.retailPrice && retailPrice) ||
-        (!product.metadata.wholesalePrice && wholesalePrice)
-      ) {
-        if (retailPrice) {
-          product.metadata.retailPrice = retailPriceMetadata
-          await stripe.products.update(product.id, {
-            metadata: {
-              retailPrice: retailPriceMetadata,
-            },
-          })
-
-          await stripe.prices.create({
-            product: product.id,
-            unit_amount: retailPrice,
-            currency: 'usd',
-            metadata: {
-              wholesale: 'false',
-            },
-          })
-        } else if (wholesalePrice) {
-          product.metadata.wholesalePrice = wholesalePriceMetadata
-          await stripe.products.update(product.id, {
-            metadata: {
-              wholesalePrice: wholesalePriceMetadata,
-            },
-          })
-          await stripe.prices.create({
-            product: product.id,
-            unit_amount: wholesalePrice,
-            currency: 'usd',
-            metadata: {
-              wholesale: 'true',
-            },
-          })
-        } else {
-          res.status(400).json({ message: 'Missing required parameters' })
-          return
-        }
-        res.status(200).json(product || {})
-      } else {
-        res.status(200).json(product || {})
+      if (retailPrice && retailPrice !== product.metadata.retailPrice) {
+        product.metadata.retailPrice = retailPriceMetadata
+        await stripe.products.update(product.id, {
+          metadata: {
+            retailPrice: retailPriceMetadata,
+          },
+        })
+        await updateRetailPrice(stripe, product, retailPrice)
       }
+      if (wholesalePrice && wholesalePrice !== product.metadata.wholesalePrice) {
+        product.metadata.wholesalePrice = wholesalePriceMetadata
+        await stripe.products.update(product.id, {
+          metadata: {
+            wholesalePrice: wholesalePriceMetadata,
+          },
+        })
+        await updateWholesalePrice(stripe, product, wholesalePrice)
+      }
+      res.status(200).json(product || {})
+      return
     } else {
       res.status(400).json({ message: 'Missing required parameters' })
       return
